@@ -1,0 +1,6 @@
+<h1>Scoreboard</h1>
+<ol>
+    <% @scores.each do |score| %>
+        <li><%= score.person %> (<%= score.points %>)</li>
+    <% end %>
+</ol>
