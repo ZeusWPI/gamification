@@ -1,13 +1,21 @@
+**.orig
 *.gem
 *.rbc
+.rspec
 /.config
-/coverage/
 /InstalledFiles
+/coverage/
+/db/*.sqlite3
+/log
 /pkg/
+/public/system
 /spec/reports/
 /test/tmp/
 /test/version_tmp/
 /tmp/
+capybara-*.html
+pickle-email-*.html
+rerun.txt
 
 ## Specific to RubyMotion:
 .dat*
@@ -23,6 +31,7 @@ build/
 ## Environment normalisation:
 /.bundle/
 /lib/bundler/man/
+/vendor/bundle
 
 # for a library or gem, you might want to ignore these files since the code is
 # intended to run in multiple environments; otherwise, check them in:
