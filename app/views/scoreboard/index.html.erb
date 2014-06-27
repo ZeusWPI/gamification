@@ -1,11 +1,24 @@
-<h1>Scoreboard</h1>
-<table>
-    <tr><th></th><th>Contributor</th><th>Points</th></tr>
-    <% @scores.each do |score| %>
-        <tr>
-            <td><img src="<%= score.avatar %>?s=30" alt="<%= score.person %>" width="30" height="30" /></td>
-            <td><%= score.person %></td>
-            <td><%= score.points %></td>
-        </tr>
-    <% end %>
-</table>
+<div class="row">
+    <div class="col-md-12">
+        <h1>Scoreboard</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover tablesorter">
+                <tr><th></th><th>Contributor</th><th>Points</th></tr>
+                    <% @scores.each do |score| %>
+                        <tr>
+                            <td><img src="<%= score.avatar %>" alt="<%= score.person %>" width="30" height="30" /></td>
+                            <td><%= score.person %></td>
+                            <td><%= score.points %></td>
+                        </tr>
+                    <% end %>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>

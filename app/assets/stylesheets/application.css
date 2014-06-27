@@ -10,4 +10,6 @@
  *
  *= require_self
  *= require_tree .
+ *= require_tree ../../../vendor/assets/stylesheets/.
+ *= require ../../../vendor/assets/font-awesome/css/font-awesome.min.css
  */
