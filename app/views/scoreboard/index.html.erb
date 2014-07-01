@@ -8,15 +8,38 @@
     <div class="col-md-3"></div>
     <div class="col-md-6">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover tablesorter">
-                <tr><th></th><th>Contributor</th><th>Points</th></tr>
-                    <% @scores.each do |score| %>
+            <table id="scoreboard" class="table table-striped table-hover tablesorter">
+                <thead>
+                    <tr>
+                        <th rowspan="2"></th>
+                        <th rowspan="2"></th>
+                        <th rowspan="2">Contributor</th>
+                        <th rowspan="2">Score</th>
+                        <th rowspan="2">Commits</th>
+                        <th colspan="3">Lines</th>
+                    </tr>
+                    <tr>
+                        <th>Added</th>
+                        <th>Changed</th>
+                        <th>Deleted</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% @coders.each_with_index do |coder, index| %>
                         <tr>
-                            <td><img src="<%= score.avatar %>" alt="<%= score.person %>" width="30" height="30" /></td>
-                            <td><%= score.person %></td>
-                            <td><%= score.points %></td>
+                            <td><%= index + 1 %>.</td>
+                            <td><img src="<%= coder.avatar_url %>"
+                                     alt="<%= coder.github_name %>"
+                                     width="30" height="30" /></td>
+                            <td><%= coder.github_name %></td>
+                            <td><%= coder.total_score %></td>
+                            <td><%= coder.commits %></td>
+                            <td><%= coder.additions %></td>
+                            <td><%= coder.modifications %></td>
+                            <td><%= coder.deletions %></td>
                         </tr>
                     <% end %>
+                </tbody>
             </table>
         </div>
     </div>

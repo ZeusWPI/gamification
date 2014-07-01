@@ -1,5 +1,5 @@
 class ScoreboardController < ApplicationController
   def index
-    @scores = Score.all
+    @coders = Coder.all.sort_by { |coder| - coder.total_score }
   end
 end
