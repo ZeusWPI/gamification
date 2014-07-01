@@ -14,7 +14,6 @@ github.repos.list(org: 'ZeusWPI').each do |repo|
   # Add amount of commits to the corresponding Coder objects in `coders`. Make
   # new Coder objects along the way.
   github.repos.contributors('ZeusWPI', repo.name).each do |cont|
-    Rails.logger.debug(repo.name + ': ' + cont.login + ' committed')
     if coders.has_key?(cont.login)
       coders[cont.login].commits += cont.contributions
     else
@@ -32,16 +31,17 @@ github.repos.list(org: 'ZeusWPI').each do |repo|
   # Add amount of line additions, changes and deletions to the corresponding
   # Coder objects.
   github.repos.stats.contributors('ZeusWPI', repo.name).each do |cont|
-    Rails.logger.debug(repo.name + ': ' + cont.author.login + ' ACDd')
     coders[cont.author.login].additions += cont.weeks.map(&:a).sum
     coders[cont.author.login].modifications += cont.weeks.map(&:c).sum
     coders[cont.author.login].deletions += cont.weeks.map(&:d).sum
   end
 end
 
-# Calculate reward and bounty points according to the total score,
-# and save all newly created Coder objects.
+# (a) Fetch the real name of the coder,
+# (b) calculate reward and bounty points according to the total score,
+# (c) and save all newly created Coder objects.
 coders.values.each do |coder|
+  coder.full_name = github.users.get(user: coder.github_name).name
   score = coder.total_score
   coder.reward_residual = score
   coder.bounty_residual = score

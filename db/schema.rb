@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 20140630213046) do
 
   create_table "coders", force: true do |t|
     t.string   "github_name"
+    t.string   "full_name"
     t.string   "avatar_url"
     t.integer  "reward_residual"
     t.integer  "bounty_residual"
