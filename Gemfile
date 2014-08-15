@@ -17,7 +17,6 @@ gem 'coffee-rails', '~> 4.0.0'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
-
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
 
@@ -46,3 +45,11 @@ end
 
 # Use GitHub API (https://github.com/peter-murach/github)
 gem 'github_api'
+
+# Use Devise (https://github.com/plataformatec/devise)
+gem 'devise'
+
+# Use OmniAuth (https://github.com/intridea/omniauth)
+gem 'omniauth'
+# Use GitHub provider for OmniAuth (https://github.com/intridea/omniauth-github)
+gem 'omniauth-github'

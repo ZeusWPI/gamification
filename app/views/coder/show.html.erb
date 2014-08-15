@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-md-12">
+        <h1>Progress</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <% if @coder.blank? %>
+            <p>This coder does not exist.</p>
+        <% else %>
+            <div class="table-responsive">
+                <table id="scoreboard" class="table table-striped table-hover tablesorter">
+                    <thead>
+                        <tr>
+                            <th rowspan="2"></th>
+                            <th rowspan="2">Contributor</th>
+                            <th rowspan="2">Score</th>
+                            <th rowspan="2">Commits</th>
+                            <th colspan="3">Lines</th>
+                        </tr>
+                        <tr>
+                            <th>Added</th>
+                            <th>Changed</th>
+                            <th>Deleted</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><img src="<%= @coder.avatar_url %>"
+                                     alt="<%= @coder.github_name %>"
+                                     width="30" height="30" /></td>
+                            <td><%= @coder.github_name %> (<%= @coder.full_name %>)</td>
+                            <td><%= @coder.total_score %></td>
+                            <td><%= @coder.commits %></td>
+                            <td><%= @coder.additions %></td>
+                            <td><%= @coder.modifications %></td>
+                            <td><%= @coder.deletions %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        <% end %>
+    </div>
+    <div class="col-md-3"></div>
+</div>

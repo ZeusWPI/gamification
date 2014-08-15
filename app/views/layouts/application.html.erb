@@ -32,12 +32,15 @@
 
             <ul class="nav navbar-nav navbar-right navbar-user">
                 <li><a href="#"><i class="fa fa-user"></i> Lepoev</a></li>
-                <li><a href="#"><i class="fa fa-power-off"></i></a></li>
+                <li><%= link_to raw('<i class="fa fa-power-off"></i>'), coder_omniauth_authorize_path(:github) %></li>
             </ul>
         </div>
     </nav>
 
     <div id="page-wrapper">
+        <% flash.each do |key, msg| %>
+            <div class="message <%= key %>"><%= msg %></div>
+        <% end %>
         <%= yield %>
     </div>
 
