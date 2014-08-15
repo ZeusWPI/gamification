@@ -41,7 +41,8 @@ end
 # (b) calculate reward and bounty points according to the total score,
 # (c) and save all newly created Coder objects.
 coders.values.each do |coder|
-  coder.full_name = github.users.get(user: coder.github_name).name
+  github_info = github.users.get(user: coder.github_name)
+  coder.full_name = github_info.has_key?(:name) ? github_info.name : ''
   score = coder.total_score
   coder.reward_residual = score
   coder.bounty_residual = score
