@@ -6,7 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-github = Github.new
+github = Github.new :oauth_token => Rails.application.secrets.github_token
 coders = Hash.new
 
 # Get contributor statistics for every repo
