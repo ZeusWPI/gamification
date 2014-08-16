@@ -26,7 +26,7 @@
                 <% if coder_signed_in? %>
                     <li><%= link_to raw('<i class="fa fa-dashboard"></i> Your progress'), current_coder %></li>
                 <% end %>
-                <li><%= link_to raw('<i class="fa fa-bar-chart-o"></i> Scoreboard'), scoreboard_index_path %></li>
+                <li><%= link_to raw('<i class="fa fa-bar-chart-o"></i> Scoreboard'), coders_path %></li>
                 <% if coder_signed_in? %>
                     <li><a href="#"><i class="fa fa-money"></i> Put bounty</a></li>
                     <li><a href="#"><i class="fa fa-code-fork"></i> Tech tree shizzle</a></li>

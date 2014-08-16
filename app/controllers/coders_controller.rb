@@ -1,9 +1,9 @@
-class CoderController < ApplicationController
+class CodersController < ApplicationController
   before_action :authenticate_coder!
   before_action :set_coder, only: [:show]
 
   def index
-    redirect_to scoreboard_index_path
+    @coders = Coder.all.sort_by { |coder| - coder.total_score }
   end
 
   def show
