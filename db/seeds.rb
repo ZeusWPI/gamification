@@ -19,6 +19,7 @@ github.repos.list(org: 'ZeusWPI').each do |repo|
     else
       coders[cont.login] = Coder.new(github_name: cont.login,
                                      avatar_url: cont.avatar_url,
+                                     github_url: cont.html_url,
                                      commits: cont.contributions,
                                      additions: 0,
                                      modifications: 0,

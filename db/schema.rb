@@ -11,12 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140630213046) do
+ActiveRecord::Schema.define(version: 20140816191245) do
 
   create_table "coders", force: true do |t|
     t.string   "github_name"
     t.string   "full_name"
     t.string   "avatar_url"
+    t.string   "github_url"
     t.integer  "reward_residual"
     t.integer  "bounty_residual"
     t.integer  "commits"

@@ -4,7 +4,11 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h1><%= @coder.github_name %> <small><%= @coder.full_name %></small></h1>
+        <h1>
+            <%= @coder.github_name %>
+            <small><%= @coder.full_name %></small>
+            <%= link_to image_tag('github.png'), @coder.github_url, title: 'View profile on GitHub' %>
+        </h1>
     </div>
 </div>
 
