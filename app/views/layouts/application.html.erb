@@ -23,16 +23,23 @@
 
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav side-nav">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Your progress</a></li>
-                <li><a href="#"><i class="fa fa-bar-chart-o"></i> Scoreboard</a></li>
-                <li><a href="#"><i class="fa fa-money"></i> Put bounty</a></li>
-                <li><a href="#"><i class="fa fa-code-fork"></i> Tech tree shizzle</a></li>
-                <li><a href="#"><i class="fa fa-star"></i> Claim reward</a></li>
+                <% if coder_signed_in? %>
+                    <li><%= link_to raw('<i class="fa fa-dashboard"></i> Your progress'), current_coder %></li>
+                <% end %>
+                <li><%= link_to raw('<i class="fa fa-bar-chart-o"></i> Scoreboard'), scoreboard_index_path %></li>
+                <% if coder_signed_in? %>
+                    <li><a href="#"><i class="fa fa-money"></i> Put bounty</a></li>
+                    <li><a href="#"><i class="fa fa-code-fork"></i> Tech tree shizzle</a></li>
+                    <li><a href="#"><i class="fa fa-star"></i> Claim reward</a></li>
+                <% end %>
             </ul>
 
             <ul class="nav navbar-nav navbar-right navbar-user">
-                <li><a href="#"><i class="fa fa-user"></i> Lepoev</a></li>
-                <li><%= link_to raw('<i class="fa fa-power-off"></i>'), coder_omniauth_authorize_path(:github) %></li>
+                <% if coder_signed_in? %>
+                    <li><%= link_to raw('<i class="fa fa-user"></i> ' + current_coder.github_name), current_coder %></li>
+                <% else %>
+                    <li><%= link_to raw('<i class="fa fa-power-off"></i>'), coder_omniauth_authorize_path(:github) %></li>
+                <% end %>
             </ul>
         </div>
     </nav>
