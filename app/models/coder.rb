@@ -9,6 +9,6 @@ class Coder < ActiveRecord::Base
   end
 
   def self.from_omniauth(auth)
-    where(github_name: auth.info.nickname)
+    find_by_github_name(auth.info.nickname)
   end
 end

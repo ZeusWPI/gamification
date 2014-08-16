@@ -37,17 +37,22 @@
             <ul class="nav navbar-nav navbar-right navbar-user">
                 <% if coder_signed_in? %>
                     <li><%= link_to raw('<i class="fa fa-user"></i> ' + current_coder.github_name), current_coder %></li>
+                    <li><%= link_to raw('<i class="fa fa-power-off"></i>'), destroy_session_path, :title => "Log out" %></li>
                 <% else %>
-                    <li><%= link_to raw('<i class="fa fa-power-off"></i>'), coder_omniauth_authorize_path(:github) %></li>
+                    <li><%= link_to raw('<i class="fa fa-power-off"></i>'), coder_omniauth_authorize_path(:github), :title => "Log in" %></li>
                 <% end %>
             </ul>
         </div>
     </nav>
 
     <div id="page-wrapper">
-        <% flash.each do |key, msg| %>
-            <div class="message <%= key %>"><%= msg %></div>
+        <% flash.each do |type, message| %>
+            <div class="alert <%= alert_class_for type  %> fade in">
+                <button class="close" data-dismiss="alert">×</button>
+                <%= message %>
+            </div>
         <% end %>
+
         <%= yield %>
     </div>
 
