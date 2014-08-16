@@ -32,7 +32,7 @@
                                      alt="<%= coder.github_name %>"
                                      width="30" height="30" /></td>
                             <td><%= link_to coder.github_name, coder %>
-                                <% if coder_signed_in? %>
+                                <% unless coder.full_name.blank? %>
                                     <small><%= coder.full_name %></small>
                                 <% end %>
                             </td>
