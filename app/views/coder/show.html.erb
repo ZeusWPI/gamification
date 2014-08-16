@@ -1,47 +1,30 @@
+<% if @coder.blank? %>
+    <p>This person does not exist.</p>
+<% else %>
+
 <div class="row">
     <div class="col-md-12">
-        <h1>Progress</h1>
+        <h1><%= @coder.github_name %> <small><%= @coder.full_name %></small></h1>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
-        <% if @coder.blank? %>
-            <p>This coder does not exist.</p>
-        <% else %>
-            <div class="table-responsive">
-                <table id="scoreboard" class="table table-striped table-hover tablesorter">
-                    <thead>
-                        <tr>
-                            <th rowspan="2"></th>
-                            <th rowspan="2">Contributor</th>
-                            <th rowspan="2">Score</th>
-                            <th rowspan="2">Commits</th>
-                            <th colspan="3">Lines</th>
-                        </tr>
-                        <tr>
-                            <th>Added</th>
-                            <th>Changed</th>
-                            <th>Deleted</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><img src="<%= @coder.avatar_url %>"
-                                     alt="<%= @coder.github_name %>"
-                                     width="30" height="30" /></td>
-                            <td><%= @coder.github_name %> (<%= @coder.full_name %>)</td>
-                            <td><%= @coder.total_score %></td>
-                            <td><%= @coder.commits %></td>
-                            <td><%= @coder.additions %></td>
-                            <td><%= @coder.modifications %></td>
-                            <td><%= @coder.deletions %></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        <% end %>
+    <div class="col-md-7 well">
+        <div class="col-md-5">
+            <img src="<%= @coder.avatar_url %>"
+                 alt="<%= @coder.github_name %>"
+                 style="max-width:100%" />
+        </div>
+        <div class="col-md-7">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-info">Score <span class="badge"><%= @coder.total_score %></span></li>
+                <li class="list-group-item">Commits <span class="badge"><%= @coder.commits %></span></li>
+                <li class="list-group-item">Line additions <span class="badge"><%= @coder.additions %></span></li>
+                <li class="list-group-item">Line modifications <span class="badge"><%= @coder.modifications %></span></li>
+                <li class="list-group-item">Line deletions <span class="badge"><%= @coder.deletions %></span></li>
+            </ul>
+        </div>
     </div>
-    <div class="col-md-3"></div>
 </div>
+
+<% end %>
