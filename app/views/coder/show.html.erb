@@ -11,9 +11,7 @@
 <div class="row">
     <div class="col-md-7 well">
         <div class="col-md-5">
-            <img src="<%= @coder.avatar_url %>"
-                 alt="<%= @coder.github_name %>"
-                 style="max-width:100%" />
+            <%= image_tag @coder.avatar_url, alt: @coder.github_name, class: 'profile_pic' %>
         </div>
         <div class="col-md-7">
             <ul class="list-group">
