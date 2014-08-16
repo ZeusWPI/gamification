@@ -11,6 +11,6 @@ class CoderController < ApplicationController
 
   private
    def set_coder
-     @coder = Coder.where(github_name: params[:id]).first
+     @coder = Coder.friendly.find(params[:id])
    end
 end

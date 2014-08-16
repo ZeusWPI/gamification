@@ -53,3 +53,7 @@ gem 'devise'
 gem 'omniauth'
 # Use GitHub provider for OmniAuth (https://github.com/intridea/omniauth-github)
 gem 'omniauth-github'
+
+# Use FriendlyId to have nice-looking URLs
+# (https://github.com/norman/friendly_id)
+gem 'friendly_id'

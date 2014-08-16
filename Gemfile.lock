@@ -48,6 +48,8 @@ GEM
     execjs (2.2.1)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
+    friendly_id (5.0.4)
+      activerecord (>= 4.0.0)
     github_api (0.12.0)
       addressable (~> 2.3)
       descendants_tracker (~> 0.0.4)
@@ -156,6 +158,7 @@ PLATFORMS
 DEPENDENCIES
   coffee-rails (~> 4.0.0)
   devise
+  friendly_id
   github_api
   jbuilder (~> 1.2)
   jquery-rails

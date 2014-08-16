@@ -1,4 +1,7 @@
 class Coder < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :github_name
+
   devise :omniauthable, omniauth_providers: [:github]
 
   def total_score

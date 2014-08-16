@@ -31,7 +31,7 @@
                             <td><img src="<%= coder.avatar_url %>"
                                      alt="<%= coder.github_name %>"
                                      width="30" height="30" /></td>
-                            <td><%= coder.github_name %> (<%= coder.full_name %>)</td>
+                            <td><%= link_to coder.github_name, coder %> (<%= coder.full_name %>)</td>
                             <td><%= coder.total_score %></td>
                             <td><%= coder.commits %></td>
                             <td><%= coder.additions %></td>
