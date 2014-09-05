@@ -2,12 +2,15 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-$ ->
+ready = ->
     $('.my-bounty').editable(saveBounty, {
         submit: 'Put',
         event:  'mouseover'
     }).mouseover ->
         $(this).parent().removeClass('danger')
+
+$(document).ready ready
+$(document).on 'page:load', ready
 
 # Add a click handler for the save buttons that makes an Ajax POST that
 # either updates or creates a bounty with the given value.
