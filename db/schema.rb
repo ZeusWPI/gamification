@@ -17,7 +17,6 @@ ActiveRecord::Schema.define(version: 20140816191245) do
     t.string   "github_name"
     t.string   "full_name"
     t.string   "avatar_url"
-    t.string   "github_url"
     t.integer  "reward_residual"
     t.integer  "bounty_residual"
     t.integer  "commits"
@@ -28,6 +27,7 @@ ActiveRecord::Schema.define(version: 20140816191245) do
     t.integer  "other_score"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "github_url"
   end
 
 end

@@ -1,5 +1,4 @@
 class CodersController < ApplicationController
-  before_action :authenticate_coder!
   before_action :set_coder, only: [:show]
 
   def index
