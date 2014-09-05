@@ -6,7 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-github = Github.new
+github = Github.new :oauth_token => Rails.application.secrets.github_token
 coders = Hash.new
 
 # Get contributor statistics for every repo
@@ -19,6 +19,7 @@ github.repos.list(org: 'ZeusWPI').each do |repo|
     else
       coders[cont.login] = Coder.new(github_name: cont.login,
                                      avatar_url: cont.avatar_url,
+                                     github_url: cont.html_url,
                                      commits: cont.contributions,
                                      additions: 0,
                                      modifications: 0,
@@ -41,7 +42,8 @@ end
 # (b) calculate reward and bounty points according to the total score,
 # (c) and save all newly created Coder objects.
 coders.values.each do |coder|
-  coder.full_name = github.users.get(user: coder.github_name).name
+  github_info = github.users.get(user: coder.github_name)
+  coder.full_name = github_info.has_key?(:name) ? github_info.name : ''
   score = coder.total_score
   coder.reward_residual = score
   coder.bounty_residual = score
