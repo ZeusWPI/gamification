@@ -1,0 +1,16 @@
+language: ruby
+rvm:
+  - 2.1.0
+
+before_script:
+  - "RAILS_ENV=test bundle exec rake db:setup"
+
+notifications:
+  slack: zeuswpi:xpKSw4tg8JIvQb7Z3svBq0tD
+
+  email:
+    recipients:
+      - gamification@zeus.ugent.be
+    on_success: never
+    on_failure: change
+
