@@ -39,6 +39,10 @@ group :deployment do
   gem 'capistrano-rvm'
 end
 
+group :production do
+  gem 'mysql2'
+end
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.1.2'
 
