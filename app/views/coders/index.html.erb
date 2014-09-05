@@ -1,49 +1,47 @@
-<div class="row">
-    <div class="col-md-12">
-        <h1>Scoreboard</h1>
+<div class="container-fluid">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <div class="page-header">
+      <h1>Scoreboard</h1>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
-        <div class="table-responsive">
-            <table id="scoreboard" class="table table-striped tablesorter">
-                <thead>
-                    <tr>
-                        <th rowspan="2"></th>
-                        <th rowspan="2"></th>
-                        <th rowspan="2">Contributor</th>
-                        <th rowspan="2">Score</th>
-                        <th rowspan="2">Commits</th>
-                        <th colspan="3">Lines</th>
-                    </tr>
-                    <tr>
-                        <th>Added</th>
-                        <th>Changed</th>
-                        <th>Deleted</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% @coders.each_with_index do |coder, index| %>
-                        <tr <% if coder_signed_in? && coder == current_coder%>class="info"<% end %>>
-                            <td><%= index + 1 %>.</td>
-                            <td><%= image_tag coder.avatar_url, alt: coder.github_name, size: '30' %></td>
-                            <td><%= link_to coder.github_name, coder %>
-                                <% unless coder.full_name.blank? %>
-                                    <small><%= coder.full_name %></small>
-                                <% end %>
-                            </td>
-                            <td><%= coder.total_score %></td>
-                            <td><%= coder.commits %></td>
-                            <td><%= coder.additions %></td>
-                            <td><%= coder.modifications %></td>
-                            <td><%= coder.deletions %></td>
-                        </tr>
-                    <% end %>
-                </tbody>
-            </table>
-        </div>
+    <div class="table-responsive">
+      <table id="scoreboard" class="table table-striped tablesorter">
+        <thead>
+          <tr>
+            <th rowspan="2"></th>
+            <th rowspan="2"></th>
+            <th rowspan="2">Contributor</th>
+            <th rowspan="2">Score</th>
+            <th rowspan="2">Commits</th>
+            <th colspan="3">Lines</th>
+          </tr>
+          <tr>
+            <th>Added</th>
+            <th>Changed</th>
+            <th>Deleted</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @coders.each_with_index do |coder, index| %>
+            <tr <% if coder_signed_in? && coder == current_coder%>class="info"<% end %>>
+              <td><%= index + 1 %>.</td>
+              <td><%= image_tag coder.avatar_url, alt: coder.github_name, size: '30' %></td>
+              <td><%= link_to coder.github_name, coder %>
+              <% unless coder.full_name.blank? %>
+                <small><%= coder.full_name %></small>
+              <% end %>
+              </td>
+              <td><%= coder.total_score %></td>
+              <td><%= coder.commits %></td>
+              <td><%= coder.additions %></td>
+              <td><%= coder.modifications %></td>
+              <td><%= coder.deletions %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
-    <div class="col-md-3"></div>
+  </div>
+  <div class="col-md-2"></div>
 </div>

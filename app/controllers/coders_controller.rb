@@ -1,5 +1,4 @@
 class CodersController < ApplicationController
-  before_action :authenticate_coder!
   before_action :set_coder, only: [:show]
 
   def index
@@ -11,6 +10,6 @@ class CodersController < ApplicationController
 
   private
    def set_coder
-     @coder = Coder.friendly.find(params[:id])
+     @coder = Coder.friendly.find_by_friendly_id(params[:id])
    end
 end

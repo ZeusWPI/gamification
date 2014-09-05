@@ -17,5 +17,7 @@
 //= require bootstrap.min
 //= require tablesorter/jquery.tablesorter
 //= require tablesorter/tables.js
+//= require jquery.jeditable.min
 
+//= require_self
 //= require_tree .

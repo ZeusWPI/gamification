@@ -1,0 +1,22 @@
+// Place all the styles related to the bounties controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#bounties-table {
+    // Total bounty cell
+    td:nth-child(3), th:nth-child(3) {
+        text-align: center;
+    }
+
+    // My bounty cell
+    td:nth-child(4) {
+        text-align: center;
+        input {
+            max-width: 2.8em;
+        }
+    }
+    // Status cell
+    td:nth-child(5) {
+        max-width: 0px;
+    }
+}

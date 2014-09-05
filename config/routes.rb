@@ -7,4 +7,7 @@ Rails.application.routes.draw do
   end
 
   resources :coders, only: [:index, :show]
+  resources :bounties, only: [:index] do
+    post 'update_or_create', on: :collection
+  end
 end
