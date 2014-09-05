@@ -20,7 +20,7 @@ github.repos.list(org: 'ZeusWPI').each do |repo|
   # Add amount of commits to the corresponding Coder objects in `coders`. Make
   # new Coder objects along the way.
   github.repos.contributors('ZeusWPI', repo.name).each do |cont|
-    if coders.has_key?(cont.login)
+    if coders.has_key? cont.login
       coders[cont.login].commits += cont.contributions
     else
       coders[cont.login] = Coder.new(github_name: cont.login,
