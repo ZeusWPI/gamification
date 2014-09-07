@@ -21,18 +21,10 @@ class Coder < ActiveRecord::Base
     if coder.nil?
       github = Github.new oauth_token: Rails.application.secrets.github_token
       github_info = github.users.get(user: github_name)
-      coder = create(github_name: github_name,
+      coder = create github_name: github_name,
                      full_name: github_info.has_key?(:name) ? github_info.name : '',
-                     reward_residual: 0,
-                     bounty_residual: 0,
                      avatar_url: github_info.avatar_url,
-                     github_url: github_info.html_url,
-                     commits: 0,
-                     additions: 0,
-                     modifications: 0,
-                     deletions: 0,
-                     bounty_score: 0,
-                     other_score: 0)
+                     github_url: github_info.html_url
     end
     coder
   end

@@ -16,18 +16,13 @@ github.repos.list(org: 'ZeusWPI').each do |repo|
   # new Coder objects along the way.
   github.repos.contributors('ZeusWPI', repo.name).each do |cont|
     next if cont.blank?
-    if coders.has_key?(cont.login)
+    if coders.has_key? cont.login
       coders[cont.login].commits += cont.contributions
     else
-      coders[cont.login] = Coder.new(github_name: cont.login,
+      coders[cont.login] = Coder.new github_name: cont.login,
                                      avatar_url: cont.avatar_url,
                                      github_url: cont.html_url,
-                                     commits: cont.contributions,
-                                     additions: 0,
-                                     modifications: 0,
-                                     deletions: 0,
-                                     bounty_score: 0,
-                                     other_score: 0)
+                                     commits: cont.contributions
     end
   end
 
