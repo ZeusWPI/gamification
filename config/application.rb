@@ -19,5 +19,10 @@ module Gamification
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
+
+    # Bounty point limit
+    config.bounty_limit = 100000
+    # factor to scale bounty point income
+    config.bounty_factor = 10
   end
 end

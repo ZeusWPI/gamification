@@ -13,4 +13,25 @@ class Bounty < ActiveRecord::Base
   def to_s
     value.to_s
   end
+
+  def cash_in
+    assignee = issue.assignee
+    if assignee && assignee != coder
+      assignee.bounty_score += value
+      assignee.reward_residual += value
+      assignee.save!
+    else
+      # refund bounty points
+      coder.bounty_residual += value
+      coder.save!
+    end
+    destroy
+  end
+
+  def self.bounty_factor
+    bounty_total = Coder.sum(:bounty_residual) + Bounty.sum(:value)
+    # Factor should be >= 0.
+    factor = [1 - (bounty_total.to_f / Rails.configuration.bounty_limit), 0].max
+    factor * Rails.configuration.bounty_factor
+  end
 end

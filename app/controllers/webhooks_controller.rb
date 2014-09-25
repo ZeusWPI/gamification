@@ -21,11 +21,16 @@ class WebhooksController < ApplicationController
         author = Coder.find_by_github_name(commit['author']['username'])
         if author
           commit = @@github.repos.commits.find user: repo_owner, repo: repo, sha: commit['id']
+
+          # stats
           author.commits += 1
           author.additions += commit.stats.additions
           author.deletions += commit.stats.deletions
-          # TODO: Add points
-          author.save
+
+          # points
+          author.reward_residual += commit.stats.additions
+          author.bounty_residual += commit.stats.additions * Bounty.bounty_factor
+          author.save!
         end
       end
     end
@@ -46,8 +51,6 @@ class WebhooksController < ApplicationController
         when 'assigned'
           issue = Issue.find_by repo: json['repository']['name'], number: json['issue']['number']
           assignee = Coder.find_by github_name: json['issue']['assignee']['login']
-          p issue.inspect
-          p assignee.inspect
           issue.update! assignee: assignee
         when 'unassigned'
           issue.update! assignee: nil

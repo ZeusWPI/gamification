@@ -12,7 +12,7 @@ class Issue < ActiveRecord::Base
   end
 
   def close
-    # TODO: hand out bounties
+    bounties.each { |b| b.cash_in }
     update! open: false
     save!
   end

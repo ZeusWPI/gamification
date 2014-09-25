@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'issues/index'
+
+  get 'issues/show'
+
   root 'coders#index'
 
   post 'payload', :to => 'webhooks#receive'
