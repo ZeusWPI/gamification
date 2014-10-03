@@ -29,8 +29,7 @@ class Bounty < ActiveRecord::Base
   def cash_in
     assignee = issue.assignee
     if assignee && assignee != coder
-      assignee.bounty_score += value
-      assignee.reward_residual += value
+      assignee.reward bounty: value
       assignee.save!
     else
       # refund bounty points

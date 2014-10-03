@@ -29,8 +29,25 @@ class Coder < ActiveRecord::Base
   has_many :assigned_issues, inverse_of: :assignee
   has_many :bounties
 
+  # parameters:
+  #   loc
+  #   bounty
+  #   other
+  #   reward_bounty_points -> boolean
+  def reward hash
+    hash.default = 0
+    # calculate bounty value
+    bounty_score = Application.config.total_bounty_value * hash[:bounty] /
+      (Coder.sum(:bounty_residual) + Bounty.sum(:value))
+    other_score += hash[:other]
+    bounty_score += bounty_score
+    reward_residual += hash[:loc] + hash[:other] + bounty_score
+    bounty_residual += hash[:loc] + bounty_score if hash[:reward_bounty_points]
+    save!
+  end
+
   def total_score
-    10 * commits + additions + modifications + bounty_score + other_score
+    10 * commits + additions + bounty_score + other_score
   end
 
   def self.from_omniauth(auth)

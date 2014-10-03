@@ -28,8 +28,8 @@ class WebhooksController < ApplicationController
           author.deletions += commit.stats.deletions
 
           # points
-          author.reward_residual += commit.stats.additions
-          author.bounty_residual += commit.stats.additions * Bounty.bounty_factor
+          author.reward loc: commit.stats.additions
+
           author.save!
         end
       end

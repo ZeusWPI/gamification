@@ -20,9 +20,7 @@ module Gamification
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    # Bounty point limit
-    config.bounty_limit = 100000
-    # factor to scale bounty point income
-    config.bounty_factor = 10
+    # Total bounty value
+    config.total_bounty_value = 1000
   end
 end
