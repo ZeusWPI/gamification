@@ -2,7 +2,7 @@ class BountiesController < ApplicationController
   before_action :authenticate_coder!
 
   def index
-    @issues = Issue.all.sort_by { |issue| [issue.repo, issue.title] }
+    @issues = Issue.all.sort_by { |issue| [issue.repository.name, issue.title] }
   end
 
   def update_or_create
@@ -13,26 +13,20 @@ class BountiesController < ApplicationController
     end
 
     # Find the bounty for this issue if it already exists
-    @bounty = Bounty.find_by issue_id: params[:issue_id],
-                             coder_id: current_coder.id
+    @bounty = Bounty.find_or_create_by issue_id: params[:issue_id], coder_id: current_coder.id do |b|
+      b.value = 0
+    end
 
     # Check whether the user has got enought points to spend
-    old_value = @bounty.value || 0
-    delta = params[:value].to_i - old_value
+    delta = params[:value].to_i - @bounty.value
     if delta > current_coder.bounty_residual
       render json: {value: 'is too big considering your remaining bounty points'},
              status: :unprocessable_entity
       return
     end
 
-    # Set the new value for an existing bounty or create a new one
-    if @bounty.present?
-      @bounty.value += delta
-    else
-      @bounty = Bounty.new issue_id: params[:issue_id],
-                           coder_id: current_coder.id,
-                           value:    params[:value]
-    end
+    # Increase value
+    @bounty.value += delta
 
     # Try to save the bounty, update the remaining bounty points, and return
     # some possibly updated records

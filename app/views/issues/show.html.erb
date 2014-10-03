@@ -1,2 +1,27 @@
-<h1>Issues#show</h1>
-<p>Find me in app/views/issues/show.html.erb</p>
+<div class="container">
+<div class="col-md-8 col-md-offset 2">
+  <%= @issue.title %>
+  </br>
+  <%= @issue.body %>
+  <div class = "table-responsive">
+    <table id = "bounties-table" class="table table-striped tablesorter">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Issued by</th>
+          <th>Bounty</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @issue.bounties.each do |bounty| %>
+          <tr class="<%= "info" if coder_signed_in? && bounty.coder == current_coder%>">
+            <td><%= image_tag bounty.coder.avatar_url, alt: bounty.coder.github_name, size: '30' %></td>
+            <td><%= link_to bounty.coder.github_name, bounty.coder %></td>
+            <td><%= bounty.value%>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>

@@ -57,3 +57,7 @@ gem 'omniauth-github'
 # Use FriendlyId to have nice-looking URLs
 # (https://github.com/norman/friendly_id)
 gem 'friendly_id'
+
+group :dev do
+  gem 'annotate'
+end

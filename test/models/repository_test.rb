@@ -1,18 +1,16 @@
 # == Schema Information
 #
-# Table name: bounties
+# Table name: repositories
 #
 #  id         :integer          not null, primary key
-#  value      :integer          not null
-#  issue_id   :integer          not null
-#  coder_id   :integer          not null
+#  name       :string(255)
 #  created_at :datetime
 #  updated_at :datetime
 #
 
 require 'test_helper'
 
-class BountyTest < ActiveSupport::TestCase
+class RepositoryTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

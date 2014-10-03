@@ -27,7 +27,7 @@
         <tbody>
           <% @issues.each do |issue| %>
             <tr>
-              <td><%= issue.repo %></td>
+              <td><%= issue.repository.name %></td>
               <td><%= link_to issue.title, issue.github_url %></td>
               <td><%= issue.bounties.map { |bounty| bounty.value }.sum %></td>
               <td><%= content_tag :div, issue.find_bounty_by_coder(current_coder),

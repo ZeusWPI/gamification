@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140906170824) do
+ActiveRecord::Schema.define(version: 20140930231538) do
 
   create_table "bounties", force: true do |t|
     t.integer  "value",      null: false
@@ -46,21 +46,28 @@ ActiveRecord::Schema.define(version: 20140906170824) do
   add_index "coders", ["github_url"], name: "index_coders_on_github_url", unique: true
 
   create_table "issues", force: true do |t|
-    t.string   "github_url",                       null: false
-    t.integer  "number",                           null: false
-    t.string   "repo",                             null: false
-    t.boolean  "open",                             null: false
-    t.string   "title",       default: "Untitled", null: false
+    t.string   "github_url",                         null: false
+    t.integer  "number",                             null: false
+    t.boolean  "open",                               null: false
+    t.string   "title",         default: "Untitled", null: false
     t.string   "body"
-    t.integer  "issuer_id",                        null: false
-    t.text     "labels",                           null: false
+    t.integer  "issuer_id",                          null: false
+    t.text     "labels",                             null: false
     t.integer  "assignee_id"
     t.string   "milestone"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "repository_id"
   end
 
   add_index "issues", ["github_url"], name: "index_issues_on_github_url", unique: true
-  add_index "issues", ["repo", "number"], name: "index_issues_on_repo_and_number", unique: true
+  add_index "issues", ["repository_id", "number"], name: "index_issues_on_repository_id_and_number", unique: true
+  add_index "issues", ["repository_id"], name: "index_issues_on_repository_id"
+
+  create_table "repositories", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

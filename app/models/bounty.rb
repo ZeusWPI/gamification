@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: bounties
+#
+#  id         :integer          not null, primary key
+#  value      :integer          not null
+#  issue_id   :integer          not null
+#  coder_id   :integer          not null
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class Bounty < ActiveRecord::Base
   belongs_to :issue
   belongs_to :coder

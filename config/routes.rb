@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   get 'issues/index'
-
-  get 'issues/show'
+  get 'issues/:id', :to => 'issues#show'
 
   root 'coders#index'
 
