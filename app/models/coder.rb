@@ -28,6 +28,7 @@ class Coder < ActiveRecord::Base
   has_many :created_issues, inverse_of: :coder
   has_many :assigned_issues, inverse_of: :assignee
   has_many :bounties
+  after_save :clear_caches
 
   # parameters:
   #   loc
@@ -37,10 +38,15 @@ class Coder < ActiveRecord::Base
   def reward hash
     hash.default = 0
     # calculate bounty value
-    bounty_score = Application.config.total_bounty_value * hash[:bounty] /
-      (Coder.sum(:bounty_residual) + Bounty.sum(:value))
+    if hash.key? :bounty  # Do not calculate sum when not needed
+      delta_bounty_score = hash[:bounty] / Stats.total_bounty_points *
+        [ Application.config.total_bounty_value, Stats.total_bounty_points ].min
+    else 
+      delta_bounty_score = 0
+    end
+
     other_score += hash[:other]
-    bounty_score += bounty_score
+    bounty_score += delta_bounty_score
     reward_residual += hash[:loc] + hash[:other] + bounty_score
     bounty_residual += hash[:loc] + bounty_score if hash[:reward_bounty_points]
     save!
@@ -66,4 +72,9 @@ class Coder < ActiveRecord::Base
     end
     coder
   end
+
+  private
+    def clear_caches
+      Stats.expire_coder_bounty_points
+    end
 end

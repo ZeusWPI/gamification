@@ -30,9 +30,11 @@ github.repos.list(org: 'ZeusWPI').each do |repo|
   # Coder objects.
   github.repos.stats.contributors('ZeusWPI', repo.name).each do |cont|
     next if cont.blank?
-    coders[cont.author.login].additions += cont.weeks.map(&:a).sum
+    additions = cont.weeks.map(&:a).sum
+    coders[cont.author.login].additions += additions
     coders[cont.author.login].modifications += cont.weeks.map(&:c).sum
     coders[cont.author.login].deletions += cont.weeks.map(&:d).sum
+    coders[cont.author.login].reward loc: additions, reward_bounty_points: false
   end
 end
 

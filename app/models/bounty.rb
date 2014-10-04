@@ -21,6 +21,7 @@ class Bounty < ActiveRecord::Base
     only_integer: true,
     greater_than_or_equal_to: 0
   }
+  after_save :expire_caches
 
   def to_s
     value.to_s
@@ -45,4 +46,9 @@ class Bounty < ActiveRecord::Base
     factor = [1 - (bounty_total.to_f / Rails.configuration.bounty_limit), 0].max
     factor * Rails.configuration.bounty_factor
   end
+
+  private
+    def expire_caches
+      Stats.expire_issue_bounty_points
+    end
 end
