@@ -37,16 +37,9 @@ class Coder < ActiveRecord::Base
   #   reward_bounty_points -> boolean
   def reward hash
     hash.default = 0
-    # calculate bounty value
-    if hash.key? :bounty  # Do not calculate sum when not needed
-      delta_bounty_score = hash[:bounty] / Stats.total_bounty_points *
-        [ Application.config.total_bounty_value, Stats.total_bounty_points ].min
-    else 
-      delta_bounty_score = 0
-    end
 
     other_score += hash[:other]
-    bounty_score += delta_bounty_score
+    bounty_score += hash[:bounty]
     reward_residual += hash[:loc] + hash[:other] + bounty_score
     bounty_residual += hash[:loc] + bounty_score if hash[:reward_bounty_points]
     save!

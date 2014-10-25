@@ -30,7 +30,7 @@ class Bounty < ActiveRecord::Base
   def cash_in
     assignee = issue.assignee
     if assignee && assignee != coder
-      assignee.reward bounty: value
+      assignee.reward bounty: get_value
       assignee.save!
     else
       # refund bounty points
@@ -38,6 +38,11 @@ class Bounty < ActiveRecord::Base
       coder.save!
     end
     destroy
+  end
+
+  def get_value
+      value / Stats.total_bounty_points *
+        [ Application.config.total_bounty_value, Stats.total_bounty_points ].min
   end
 
   def self.bounty_factor
