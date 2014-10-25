@@ -1,14 +1,9 @@
 $('#flash-messages').append '<%= escape_javascript render 'flash', locals: { flash: flash } %>'
 
-console.log('no error occured')
 $hiddenField = $('input[type=hidden][name=bounty\\[issue_id\\]][value=<%= @issue.id %>]')
-console.log('no error occured')
 $textField = $hiddenField.nextAll('input[type=text]')
-console.log('no error occured')
 $formCell = $hiddenField.parent().parent()
-console.log('no error occured')
 $totalBountyCell = $formCell.prev()
-console.log('no error occured')
 
 
 <% if flash[:error] %>
