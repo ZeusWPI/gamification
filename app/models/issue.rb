@@ -8,7 +8,11 @@ class Issue < ActiveRecord::Base
 
   def find_bounty_by_coder coder
     bounty = bounties.where(coder: coder).first
-    bounty.present? ? bounty.value : 0
+    bounty.present? ? bounty : bounties.build
+  end
+
+  def total_bounty_value
+    bounties.inject(0) { |sum, bounty| sum + bounty.value }
   end
 
   def self.create_from_hash json, repo

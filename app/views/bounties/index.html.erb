@@ -20,7 +20,7 @@
             <th>Repo</th>
             <th>Issue</th>
             <th>Total bounty</th>
-            <th colspan="2">My bounty</th>
+            <th>My bounty</th>
           </tr>
         </thead>
 
@@ -30,13 +30,17 @@
               <td><%= issue.repo %></td>
               <td><%= link_to issue.title, issue.github_url %></td>
               <td><%= issue.bounties.map { |bounty| bounty.value }.sum %></td>
-              <td><%= content_tag :div, issue.find_bounty_by_coder(current_coder),
-                        class: 'my-bounty',
-                        data: {
-                          issue: issue.id,
-                          url: url_for(controller: 'bounties', action: 'update_or_create')
-                        } %></td>
-              <td></td>
+              <td>
+                <%= form_for issue.find_bounty_by_coder(current_coder),
+                             url: {action: 'update_or_create'},
+                             method: :post,
+                             html: {class: 'form-inline'},
+                             remote: true do |f| %>
+                  <%= f.hidden_field :issue_id %>
+                  <%= f.text_field :value, class: 'form-control' %>
+                  <%= f.submit(value: 'Put', data: {disable_with: 'Saving'}, class: 'form-control') %>
+                <% end %>
+              </td>
             </tr>
           <% end %>
         </tbody>

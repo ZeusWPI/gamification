@@ -1,27 +1,34 @@
 class BountiesController < ApplicationController
   before_action :authenticate_coder!
 
+  respond_to :html, :coffee
+
   def index
     @issues = Issue.all.sort_by { |issue| [issue.repo, issue.title] }
   end
 
   def update_or_create
+    issue_id = bounty_params[:issue_id]
+    new_value = bounty_params[:value]
+
+    @issue = Issue.find issue_id
+
     # Value must be a non-negative integer
-    unless params[:value] =~ /^\d+$/
-      render json: {value: 'is not an integer'}, status: :bad_request
+    unless new_value =~ /^\d+$/
+      flash.now[:error] = 'This value is not an integer.'
       return
     end
 
     # Find the bounty for this issue if it already exists
-    @bounty = Bounty.find_by issue_id: params[:issue_id],
+    @bounty = Bounty.find_by issue_id: issue_id,
                              coder_id: current_coder.id
 
     # Check whether the user has got enought points to spend
-    old_value = @bounty.value || 0
-    delta = params[:value].to_i - old_value
+    old_value = @bounty.present? ? @bounty.value : 0
+    delta = new_value.to_i - old_value
     if delta > current_coder.bounty_residual
-      render json: {value: 'is too big considering your remaining bounty points'},
-             status: :unprocessable_entity
+      flash.now[:error] = 'You don\'t have enough bounty points to put a'\
+                          ' bounty of this amount.'
       return
     end
 
@@ -29,9 +36,9 @@ class BountiesController < ApplicationController
     if @bounty.present?
       @bounty.value += delta
     else
-      @bounty = Bounty.new issue_id: params[:issue_id],
+      @bounty = Bounty.new issue_id: issue_id,
                            coder_id: current_coder.id,
-                           value:    params[:value]
+                           value:    new_value
     end
 
     # Try to save the bounty, update the remaining bounty points, and return
@@ -39,12 +46,15 @@ class BountiesController < ApplicationController
     if @bounty.save
       current_coder.bounty_residual -= delta
       current_coder.save!
-      render json: {
-        new_bounty_value: @bounty.value,
-        new_remaining_points: current_coder.bounty_residual
-      }
+      @new_bounty_residual = current_coder.bounty_residual
     else
-      render json: @bounty.errors, status: :unprocessable_entity
+      flash.now[:error] = "There occured an error while trying to save your"\
+                          " bounty (#{@bounty.errors})"
     end
   end
+
+  private
+    def bounty_params
+      params.require(:bounty).permit(:issue_id, :value)
+    end
 end
