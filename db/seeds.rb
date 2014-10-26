@@ -19,10 +19,10 @@ github.repos.list(org: 'ZeusWPI').each do |repo|
     if coders.has_key? cont.login
       coders[cont.login].commits += cont.contributions
     else
-      coders[cont.login] = Coder.new github_name: cont.login,
-                                     avatar_url: cont.avatar_url,
-                                     github_url: cont.html_url,
-                                     commits: cont.contributions
+      coders[cont.login] = Coder.new  github_name: cont.login,
+                                      avatar_url: cont.avatar_url,
+                                      github_url: cont.html_url,
+                                      commits: cont.contributions
     end
   end
 
@@ -30,9 +30,11 @@ github.repos.list(org: 'ZeusWPI').each do |repo|
   # Coder objects.
   github.repos.stats.contributors('ZeusWPI', repo.name).each do |cont|
     next if cont.blank?
-    coders[cont.author.login].additions += cont.weeks.map(&:a).sum
+    additions = cont.weeks.map(&:a).sum
+    coders[cont.author.login].additions += additions
     coders[cont.author.login].modifications += cont.weeks.map(&:c).sum
     coders[cont.author.login].deletions += cont.weeks.map(&:d).sum
+    #coders[cont.author.login].reward loc: additions, reward_bounty_points: false
   end
 end
 
@@ -42,9 +44,9 @@ end
 coders.values.each do |coder|
   github_info = github.users.get(user: coder.github_name)
   coder.full_name = github_info.has_key?(:name) ? github_info.name : ''
-  score = coder.total_score
-  coder.reward_residual = score
-  coder.bounty_residual = score
+  #score = coder.total_score
+  #coder.reward_residual = score
+  #coder.bounty_residual = score
   coder.save!
 end
 

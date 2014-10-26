@@ -60,3 +60,6 @@ gem 'friendly_id'
 
 # Use Turbolinks in a sane way (https://github.com/kossnocorp/jquery.turbolinks)
 gem 'jquery-turbolinks'
+group :dev do
+  gem 'annotate'
+end

@@ -1,3 +1,15 @@
+# == Schema Information
+#
+# Table name: bounties
+#
+#  id         :integer          not null, primary key
+#  value      :integer          not null
+#  issue_id   :integer          not null
+#  coder_id   :integer          not null
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class Bounty < ActiveRecord::Base
   belongs_to :issue
   belongs_to :coder
@@ -9,8 +21,39 @@ class Bounty < ActiveRecord::Base
     only_integer: true,
     greater_than_or_equal_to: 0
   }
+  after_save :expire_caches
 
   def to_s
     value.to_s
   end
+
+  def cash_in
+    assignee = issue.assignee
+    if assignee && assignee != coder
+      assignee.reward bounty: get_value
+      assignee.save!
+    else
+      # refund bounty points
+      coder.bounty_residual += value
+      coder.save!
+    end
+    destroy
+  end
+
+  def get_value
+      value / Stats.total_bounty_points *
+        [ Application.config.total_bounty_value, Stats.total_bounty_points ].min
+  end
+
+  def self.bounty_factor
+    bounty_total = Coder.sum(:bounty_residual) + Bounty.sum(:value)
+    # Factor should be >= 0.
+    factor = [1 - (bounty_total.to_f / Rails.configuration.bounty_limit), 0].max
+    factor * Rails.configuration.bounty_factor
+  end
+
+  private
+    def expire_caches
+      Stats.expire_issue_bounty_points
+    end
 end
