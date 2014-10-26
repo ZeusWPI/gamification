@@ -9,26 +9,24 @@ class BountiesController < ApplicationController
 
   def update_or_create
     issue_id = bounty_params[:issue_id]
-    new_value = bounty_params[:value]
-
-    p issue_id
-    p new_value
-
-    @issue = Issue.find issue_id
+    new_abs_value = bounty_params[:absolute_value]
 
     # Value must be a non-negative integer
-    unless new_value =~ /^\d+$/
+    unless new_abs_value =~ /^\d+$/
       flash.now[:error] = 'This value is not an integer.'
       return
     end
+    new_value = BountyPoints::bounty_points_from_abs new_abs_value.to_i
+    @issue = Issue.find issue_id
 
     # Find the bounty for this issue if it already exists
-    @bounty = Bounty.find_or_create_by issue_id: issue_id, coder_id: current_coder.id do |b|
+    @bounty = Bounty.find_or_create_by issue_id: issue_id,
+      coder_id: current_coder.id do |b|
       b.value = 0
     end
 
     # Check whether the user has got enought points to spend
-    delta = new_value.to_i - @bounty.value
+    delta = new_value - @bounty.value
     if delta > current_coder.bounty_residual
       flash.now[:error] = 'You don\'t have enough bounty points to put a'\
                           ' bounty of this amount.'
@@ -43,11 +41,7 @@ class BountiesController < ApplicationController
     if @bounty.save
       current_coder.bounty_residual -= delta
       current_coder.save!
-      puts "saved bounty"
-      p @bounty
-      @new_bounty_residual = current_coder.bounty_residual
     else
-      puts "saving failed"
       flash.now[:error] = "There occured an error while trying to save your"\
                           " bounty (#{@bounty.errors.full_messages})"
     end
@@ -55,6 +49,6 @@ class BountiesController < ApplicationController
 
   private
     def bounty_params
-      params.require(:bounty).permit(:issue_id, :value)
+      params.require(:bounty).permit(:issue_id, :absolute_value)
     end
 end

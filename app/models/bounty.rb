@@ -30,7 +30,7 @@ class Bounty < ActiveRecord::Base
   def cash_in
     assignee = issue.assignee
     if assignee && assignee != coder
-      assignee.reward bounty: get_value
+      assignee.reward bounty: absolute_value
       assignee.save!
     else
       # refund bounty points
@@ -40,20 +40,12 @@ class Bounty < ActiveRecord::Base
     destroy
   end
 
-  def get_value
-      value / Stats.total_bounty_points *
-        [ Application.config.total_bounty_value, Stats.total_bounty_points ].min
-  end
-
-  def self.bounty_factor
-    bounty_total = Coder.sum(:bounty_residual) + Bounty.sum(:value)
-    # Factor should be >= 0.
-    factor = [1 - (bounty_total.to_f / Rails.configuration.bounty_limit), 0].max
-    factor * Rails.configuration.bounty_factor
+  def absolute_value
+    BountyPoints::bounty_points_to_abs value
   end
 
   private
     def expire_caches
-      Stats.expire_issue_bounty_points
+      BountyPoints::expire_assigned_bounty_points
     end
 end

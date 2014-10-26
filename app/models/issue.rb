@@ -28,11 +28,11 @@ class Issue < ActiveRecord::Base
 
   def find_bounty_by_coder coder
     bounty = bounties.where(coder: coder).first
-    bounty.present? ? bounty : bounties.build
+    bounty.present? ? bounty : bounties.build(value: 0)
   end
 
   def total_bounty_value
-    bounties.inject(0) { |sum, bounty| sum + bounty.value }
+    bounties.map {|b| b.absolute_value}.sum
   end
 
   def close

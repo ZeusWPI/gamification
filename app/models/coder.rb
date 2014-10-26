@@ -42,6 +42,10 @@ class Coder < ActiveRecord::Base
     10 * commits + additions + bounty_score + other_score
   end
 
+  def abs_bounty_residual
+    BountyPoints::bounty_points_to_abs bounty_residual
+  end
+
   def self.from_omniauth(auth)
     find_by_github_name(auth.info.nickname)
   end
@@ -61,6 +65,6 @@ class Coder < ActiveRecord::Base
 
   private
     def clear_caches
-      Stats.expire_coder_bounty_points
+      BountyPoints::expire_coder_bounty_points
     end
 end

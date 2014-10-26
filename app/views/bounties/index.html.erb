@@ -6,7 +6,7 @@
         <li class="list-group-item">
           Remaining points&nbsp;&nbsp;&nbsp;&nbsp;
           <span id="remaining-points" class="badge">
-            <%= current_coder.bounty_residual %>
+            <%= current_coder.abs_bounty_residual %>
           </span>
         </li>
       </ul>
@@ -29,16 +29,18 @@
             <tr>
               <td><%= issue.repository.name %></td>
               <td><%= link_to issue.title, issue.github_url %></td>
-              <td><%= issue.bounties.map { |bounty| bounty.value }.sum %></td>
+              <td><%= issue.total_bounty_value %></td>
               <td>
                 <%= form_for issue.find_bounty_by_coder(current_coder),
                              url: {action: 'update_or_create'},
                              method: :post,
-                             html: {class: 'form-inline'},
+                             html: {class: 'input-group'},
                              remote: true do |f| %>
                   <%= f.hidden_field :issue_id %>
-                  <%= f.text_field :value, class: 'form-control' %>
-                  <%= f.submit(value: 'Put', data: {disable_with: 'Saving'}, class: 'form-control') %>
+                  <%= f.text_field :absolute_value, class: 'form-control' %>
+                  <span class='input-group-btn'>
+                    <%= f.submit(value: 'Put', data: {disable_with: 'Saving'}, class: 'btn btn-default') %>
+                  </span>
                 <% end %>
               </td>
             </tr>

@@ -18,6 +18,7 @@ $formCell.addClass('danger')
 # Update the total bounty value
 $totalBountyCell.text <%= @issue.total_bounty_value %>
 # Update the total bounty points that can be spend
-$('#remaining-points').text <%= @new_bounty_residual %>
+$('#remaining-points').text <%= current_coder.abs_bounty_residual %>
+$formCell.addClass('success')
 
 <% end %>
