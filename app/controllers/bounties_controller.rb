@@ -11,13 +11,14 @@ class BountiesController < ApplicationController
     issue_id = bounty_params[:issue_id]
     new_abs_value = bounty_params[:absolute_value]
 
+    @issue = Issue.find issue_id
     # Value must be a non-negative integer
     unless new_abs_value =~ /^\d+$/
       flash.now[:error] = 'This value is not an integer.'
       return
     end
+
     new_value = BountyPoints::bounty_points_from_abs new_abs_value.to_i
-    @issue = Issue.find issue_id
 
     # Find the bounty for this issue if it already exists
     @bounty = Bounty.find_or_create_by issue_id: issue_id,
