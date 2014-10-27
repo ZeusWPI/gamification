@@ -1,0 +1,55 @@
+<div class="container-fluid">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <div class="page-header">
+      <ul class="pull-right list-group">
+        <li class="list-group-item">
+          Remaining points&nbsp;&nbsp;&nbsp;&nbsp;
+          <span id="remaining-points" class="badge">
+            <%= current_coder.abs_bounty_residual %>
+          </span>
+        </li>
+      </ul>
+      <h1>Bounties</h1>
+    </div>
+
+    <div class="table-responsive">
+      <table id="bounties-table" class="table table-striped tablesorter">
+        <thead>
+          <tr>
+            <th>Repo</th>
+            <th>Issue</th>
+            <th>Total bounty</th>
+            <th>My bounty</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @issues.each do |issue| %>
+            <tr>
+              <td><%= issue.repository.name %></td>
+              <td><%= link_to issue.title, issue.github_url %></td>
+              <td><%= issue.total_bounty_value %></td>
+              <td>
+                <div class="input-group">
+                  <%= form_for issue.find_bounty_by_coder(current_coder),
+                               url: {action: 'update_or_create'},
+                               method: :post,
+                               remote: true do |f| %>
+                    <%= f.hidden_field :issue_id %>
+                    <%= f.text_field :absolute_value, class: 'form-control text-right' %>
+                    <span class='input-group-btn'>
+                      <%= f.submit(value: 'Put', data: {disable_with: 'Saving'},
+                                   class: 'btn btn-default') %>
+                    </span>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-md-2"></div>
+</div>

@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
 //= require turbolinks
 
@@ -18,4 +19,5 @@
 //= require tablesorter/jquery.tablesorter
 //= require tablesorter/tables.js
 
+//= require_self
 //= require_tree .

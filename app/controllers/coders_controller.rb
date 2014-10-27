@@ -10,6 +10,6 @@ class CodersController < ApplicationController
 
   private
    def set_coder
-     @coder = Coder.friendly.find params[:id]
+     @coder = Coder.friendly.find_by_friendly_id params[:id]
    end
 end

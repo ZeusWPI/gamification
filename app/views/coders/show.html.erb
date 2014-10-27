@@ -1,30 +1,34 @@
 <% if @coder.blank? %>
-    <p>This person does not exist.</p>
+  <div class="alert alert-danger fade in">
+    This person does not exist.
+  </div>
 <% else %>
-    <div class="row">
-        <div class="col-md-12">
-            <h1>
-                <%= @coder.github_name %>
-                <small><%= @coder.full_name %></small>
-                <%= link_to image_tag('github.png'), @coder.github_url, title: 'View profile on GitHub' %>
-            </h1>
-        </div>
-    </div>
+  <div class="container-fluid">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+      <div class="page-header">
+        <h1>
+          <%= @coder.github_name %>
+          <small><%= @coder.full_name %></small>
+          <%= link_to image_tag('github.png'), @coder.github_url, title: 'View profile on GitHub' %>
+        </h1>
+      </div>
 
-    <div class="row">
-        <div class="col-md-7 well">
-            <div class="col-md-5">
-                <%= image_tag @coder.avatar_url, alt: @coder.github_name, id: 'profile_pic' %>
-            </div>
-            <div class="col-md-7">
-                <ul class="list-group">
-                    <li class="list-group-item list-group-item-info">Score <span class="badge"><%= @coder.total_score %></span></li>
-                    <li class="list-group-item">Commits <span class="badge"><%= @coder.commits %></span></li>
-                    <li class="list-group-item">Line additions <span class="badge"><%= @coder.additions %></span></li>
-                    <li class="list-group-item">Line modifications <span class="badge"><%= @coder.modifications %></span></li>
-                    <li class="list-group-item">Line deletions <span class="badge"><%= @coder.deletions %></span></li>
-                </ul>
-            </div>
+      <div class="well container-fluid">
+        <div class="col-md-5">
+          <%= image_tag @coder.avatar_url, alt: @coder.github_name, id: 'profile_pic' %>
         </div>
+        <div class="col-md-7">
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-info">Score <span class="badge"><%= @coder.total_score %></span></li>
+            <li class="list-group-item">Commits <span class="badge"><%= @coder.commits %></span></li>
+            <li class="list-group-item">Line additions <span class="badge"><%= @coder.additions %></span></li>
+            <li class="list-group-item">Line modifications <span class="badge"><%= @coder.modifications %></span></li>
+            <li class="list-group-item">Line deletions <span class="badge"><%= @coder.deletions %></span></li>
+          </ul>
+        </div>
+      </div>
     </div>
+    <div class="col-md-2"></div>
+  </div>
 <% end %>

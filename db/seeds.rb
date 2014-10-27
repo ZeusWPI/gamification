@@ -8,11 +8,12 @@
 
 # Use OAuth organisation secrets in production
 if Rails.env.production?
-  github = Github.new basic_auth: Rails.application.secrets.github_oauth_secrets
-else # but user tokens in dev
-  github = Github.new oauth_token: Rails.application.secrets.github_token
+  github = Github.new basic_auth: Rails.application.secrets.github_oauth_secrets,
+                      auto_pagination: true
+else  # but user tokens in dev
+  github = Github.new oauth_token: Rails.application.secrets.github_token,
+                      auto_pagination: true
 end
-
 coders = Hash.new
 
 # Get contributor statistics for every repo
@@ -20,27 +21,26 @@ github.repos.list(org: 'ZeusWPI').each do |repo|
   # Add amount of commits to the corresponding Coder objects in `coders`. Make
   # new Coder objects along the way.
   github.repos.contributors('ZeusWPI', repo.name).each do |cont|
+    next if cont.blank?
     if coders.has_key? cont.login
       coders[cont.login].commits += cont.contributions
     else
-      coders[cont.login] = Coder.new(github_name: cont.login,
-                                     avatar_url: cont.avatar_url,
-                                     github_url: cont.html_url,
-                                     commits: cont.contributions,
-                                     additions: 0,
-                                     modifications: 0,
-                                     deletions: 0,
-                                     bounty_score: 0,
-                                     other_score: 0)
+      coders[cont.login] = Coder.new  github_name: cont.login,
+                                      avatar_url: cont.avatar_url,
+                                      github_url: cont.html_url,
+                                      commits: cont.contributions
     end
   end
 
   # Add amount of line additions, changes and deletions to the corresponding
   # Coder objects.
   github.repos.stats.contributors('ZeusWPI', repo.name).each do |cont|
-    coders[cont.author.login].additions += cont.weeks.map(&:a).sum
+    next if cont.blank?
+    additions = cont.weeks.map(&:a).sum
+    coders[cont.author.login].additions += additions
     coders[cont.author.login].modifications += cont.weeks.map(&:c).sum
     coders[cont.author.login].deletions += cont.weeks.map(&:d).sum
+    #coders[cont.author.login].reward loc: additions, reward_bounty_points: false
   end
 end
 
@@ -50,8 +50,12 @@ end
 coders.values.each do |coder|
   github_info = github.users.get(user: coder.github_name)
   coder.full_name = github_info.has_key?(:name) ? github_info.name : ''
-  score = coder.total_score
-  coder.reward_residual = score
-  coder.bounty_residual = score
   coder.save!
+end
+
+# Fetch and store issues for all public repos
+github.repos.list(org: 'ZeusWPI', type: 'public') do |repo|
+  github.issues.list(user: 'ZeusWPI', repo: repo.name, filter: 'all').each do |issue_hash|
+    Issue.create_from_hash issue_hash, repo.name
+  end
 end
