@@ -23,6 +23,6 @@ module Gamification
     # config.i18n.default_locale = :de
 
     # Total bounty value
-    config.total_bounty_value = 1000
+    config.total_bounty_value = 5000
   end
 end
