@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140930231538) do
+ActiveRecord::Schema.define(version: 20141028220439) do
 
   create_table "bounties", force: true do |t|
     t.integer  "value",      null: false
@@ -46,13 +46,13 @@ ActiveRecord::Schema.define(version: 20140930231538) do
   add_index "coders", ["github_url"], name: "index_coders_on_github_url", unique: true
 
   create_table "issues", force: true do |t|
-    t.string   "github_url",                         null: false
-    t.integer  "number",                             null: false
-    t.boolean  "open",                               null: false
-    t.string   "title",         default: "Untitled", null: false
-    t.string   "body"
-    t.integer  "issuer_id",                          null: false
-    t.text     "labels",                             null: false
+    t.string   "github_url",                                     null: false
+    t.integer  "number",                                         null: false
+    t.boolean  "open",                                           null: false
+    t.string   "title",                     default: "Untitled", null: false
+    t.text     "body",          limit: 255
+    t.integer  "issuer_id",                                      null: false
+    t.text     "labels",                                         null: false
     t.integer  "assignee_id"
     t.string   "milestone"
     t.datetime "created_at"
@@ -68,7 +68,6 @@ ActiveRecord::Schema.define(version: 20140930231538) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "github_url"
   end
 
 end
