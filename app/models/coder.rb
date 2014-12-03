@@ -8,9 +8,7 @@
 #  avatar_url      :string(255)
 #  reward_residual :integer          default(0), not null
 #  bounty_residual :integer          default(0), not null
-#  commits         :integer          default(0), not null
 #  additions       :integer          default(0), not null
-#  modifications   :integer          default(0), not null
 #  deletions       :integer          default(0), not null
 #  bounty_score    :integer          default(0), not null
 #  other_score     :integer          default(0), not null
@@ -28,18 +26,28 @@ class Coder < ActiveRecord::Base
   has_many :created_issues, inverse_of: :coder
   has_many :assigned_issues, inverse_of: :assignee
   has_many :bounties
+  has_many :commits
   after_save :clear_caches
 
-  def reward loc: 0, bounty: 0, other: 0, reward_bounty_points: true
+  def reward loc: 0, bounty: 0, other: 0, options: {}
     self.other_score += other
     self.bounty_score += bounty
     self.reward_residual += loc + other + bounty
-    self.bounty_residual += loc + bounty if reward_bounty_points
-    save!
+    if options.fetch(:reward_bounty_points, true)
+      self.bounty_residual += loc + bounty 
+    end
+  end
+
+  def additions
+    commits.sum(:additions)
+  end
+
+  def deletions
+    commits.sum(:deletions)
   end
 
   def total_score
-    10 * commits + additions + bounty_score + other_score
+    10 * commits.count + additions + bounty_score + other_score
   end
 
   def abs_bounty_residual
@@ -50,17 +58,12 @@ class Coder < ActiveRecord::Base
     find_by_github_name(auth.info.nickname)
   end
 
-  def self.find_or_create_by_github_name(github_name)
-    coder = find_by_github_name(github_name)
-    if coder.nil?
-      github = Github.new oauth_token: Rails.application.secrets.github_token
-      github_info = github.users.get(user: github_name)
-      coder = create github_name: github_name,
-                     full_name: github_info.has_key?(:name) ? github_info.name : '',
-                     avatar_url: github_info.avatar_url,
-                     github_url: github_info.html_url
+  def self.find_or_create_by_github_data(data)
+    Coder.find_or_create_by(github_name: data.login) do |coder|
+      coder.full_name = data.name || ''
+      coder.avatar_url = data.avatar_url
+      coder.github_url = data.github_url
     end
-    coder
   end
 
   private

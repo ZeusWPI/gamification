@@ -11,6 +11,7 @@ class WebhooksController < ApplicationController
     end
   end
 
+  # Todo: use rugged!
   class Hooker
     @@github = Github.new oauth_token: Rails.application.secrets.github_token
 
@@ -46,10 +47,8 @@ class WebhooksController < ApplicationController
         when 'opened', 'reopened'
           issue.update! open: true
         when 'closed'
-          issue = Issue.find_by repo: json['repository']['name'], number: json['issue']['number']
           issue.close
         when 'assigned'
-          issue = Issue.find_by repo: json['repository']['name'], number: json['issue']['number']
           assignee = Coder.find_by github_name: json['issue']['assignee']['login']
           issue.update! assignee: assignee
         when 'unassigned'

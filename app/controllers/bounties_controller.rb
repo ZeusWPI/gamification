@@ -7,6 +7,7 @@ class BountiesController < ApplicationController
     @issues = Issue.all.sort_by { |issue| [issue.repository.name, issue.title] }
   end
 
+  # Todo split this
   def update_or_create
     issue_id = bounty_params[:issue_id]
     new_abs_value = bounty_params[:absolute_value]

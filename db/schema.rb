@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141028220439) do
+ActiveRecord::Schema.define(version: 20141203154945) do
 
   create_table "bounties", force: true do |t|
     t.integer  "value",      null: false
@@ -31,9 +31,7 @@ ActiveRecord::Schema.define(version: 20141028220439) do
     t.string   "avatar_url"
     t.integer  "reward_residual", default: 0, null: false
     t.integer  "bounty_residual", default: 0, null: false
-    t.integer  "commits",         default: 0, null: false
     t.integer  "additions",       default: 0, null: false
-    t.integer  "modifications",   default: 0, null: false
     t.integer  "deletions",       default: 0, null: false
     t.integer  "bounty_score",    default: 0, null: false
     t.integer  "other_score",     default: 0, null: false
@@ -44,6 +42,32 @@ ActiveRecord::Schema.define(version: 20141028220439) do
 
   add_index "coders", ["github_name"], name: "index_coders_on_github_name", unique: true
   add_index "coders", ["github_url"], name: "index_coders_on_github_url", unique: true
+
+  create_table "commits", force: true do |t|
+    t.integer  "coder_id"
+    t.integer  "repository_id"
+    t.string   "sha"
+    t.integer  "additions"
+    t.integer  "deletions"
+    t.datetime "date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "commits", ["coder_id"], name: "index_commits_on_coder_id"
+  add_index "commits", ["repository_id", "sha"], name: "index_commits_on_repository_id_and_sha", unique: true
+  add_index "commits", ["repository_id"], name: "index_commits_on_repository_id"
+
+  create_table "git_identities", force: true do |t|
+    t.text     "name"
+    t.text     "email"
+    t.integer  "coder_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "git_identities", ["coder_id"], name: "index_git_identities_on_coder_id"
+  add_index "git_identities", ["name", "email"], name: "index_git_identities_on_name_and_email", unique: true
 
   create_table "issues", force: true do |t|
     t.string   "github_url",                                     null: false
@@ -65,6 +89,7 @@ ActiveRecord::Schema.define(version: 20141028220439) do
   add_index "issues", ["repository_id"], name: "index_issues_on_repository_id"
 
   create_table "repositories", force: true do |t|
+    t.string   "user"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"

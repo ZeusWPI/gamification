@@ -10,7 +10,6 @@
 #  bounty_residual :integer          default(0), not null
 #  commits         :integer          default(0), not null
 #  additions       :integer          default(0), not null
-#  modifications   :integer          default(0), not null
 #  deletions       :integer          default(0), not null
 #  bounty_score    :integer          default(0), not null
 #  other_score     :integer          default(0), not null

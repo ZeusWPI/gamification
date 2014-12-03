@@ -1,10 +1,11 @@
 # == Schema Information
 #
-# Table name: repositories
+# Table name: git_identities
 #
 #  id         :integer          not null, primary key
-#  user       :string(255)
-#  name       :string(255)
+#  name       :text
+#  email      :text
+#  coder_id   :integer
 #  created_at :datetime
 #  updated_at :datetime
 #
@@ -12,9 +13,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  github_id: 1
+  name: MyText
+  email: MyText
+  coder_id: 
 
 two:
-  name: MyString
-  github_id: 1
+  name: MyText
+  email: MyText
+  coder_id: 

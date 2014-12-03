@@ -53,6 +53,8 @@ end
 
 # Use GitHub API (https://github.com/peter-murach/github)
 gem 'github_api'
+# Use Rugged
+gem 'rugged'
 
 # Use Devise (https://github.com/plataformatec/devise)
 gem 'devise'

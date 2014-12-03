@@ -1,17 +1,18 @@
 # == Schema Information
 #
-# Table name: repositories
+# Table name: git_identities
 #
 #  id         :integer          not null, primary key
-#  user       :string(255)
-#  name       :string(255)
+#  name       :text
+#  email      :text
+#  coder_id   :integer
 #  created_at :datetime
 #  updated_at :datetime
 #
 
 require 'test_helper'
 
-class RepositoryTest < ActiveSupport::TestCase
+class GitIdentityTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

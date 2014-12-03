@@ -1,6 +1,7 @@
 class CreateRepositories < ActiveRecord::Migration
   def change
     create_table :repositories do |t|
+      t.string :user
       t.string :name
 
       t.timestamps
