@@ -5,7 +5,7 @@ class CreateIssues < ActiveRecord::Migration
       t.integer :number,        null: false
       t.boolean :open,          null: false
       t.string :title,          null: false, default: 'Untitled'
-      t.integer :issuer_id,     null: false
+      t.references :issuer,     null: false
       t.references :repository, null: false, index: true
       t.text :labels,           null: false, default: [].to_yaml
       t.text :body

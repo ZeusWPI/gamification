@@ -28,7 +28,7 @@ class WebhooksController < ApplicationController
       # get issue
       repo = Repository.find_by name: json['repository']['name'],
                                 user: json['repository']['owner']['login']
-      issue = find_or_create_from_hash json['issue'], repo
+      issue = Issue.find_or_create_from_hash json['issue'], repo
 
       case json['action']
         when 'opened', 'reopened'

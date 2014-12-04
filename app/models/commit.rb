@@ -34,7 +34,7 @@ class Commit < ActiveRecord::Base
                               sha: r_commit.oid do |commit|
       commit.coder = get_committer repo, r_commit
       commit.set_stats r_commit
-      commit.reward! options
+      commit.reward! options if options.fetch(:reward, true)
     end
   end
 

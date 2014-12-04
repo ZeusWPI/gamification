@@ -36,6 +36,12 @@ class Repository < ActiveRecord::Base
     end
   end
 
+  def fetch_issues
+    $github.issues.list(user: user, repo: name, filter: 'all').each do |hash|
+      Issue.find_or_create_from_hash hash, self
+    end
+  end
+
   require 'rugged'
   def rugged_repo
     Rugged::Repository.new(path)

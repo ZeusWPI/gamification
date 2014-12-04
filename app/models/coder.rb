@@ -4,17 +4,15 @@
 #
 #  id              :integer          not null, primary key
 #  github_name     :string(255)      not null
-#  full_name       :string(255)
-#  avatar_url      :string(255)
+#  full_name       :string(255)      not null
+#  avatar_url      :string(255)      not null
+#  github_url      :string(255)      not null
 #  reward_residual :integer          default(0), not null
 #  bounty_residual :integer          default(0), not null
-#  additions       :integer          default(0), not null
-#  deletions       :integer          default(0), not null
 #  bounty_score    :integer          default(0), not null
 #  other_score     :integer          default(0), not null
 #  created_at      :datetime
 #  updated_at      :datetime
-#  github_url      :string(255)
 #
 
 class Coder < ActiveRecord::Base
@@ -23,7 +21,7 @@ class Coder < ActiveRecord::Base
 
   devise :omniauthable, omniauth_providers: [:github]
 
-  has_many :created_issues, inverse_of: :coder
+  has_many :created_issues, inverse_of: :issuer
   has_many :assigned_issues, inverse_of: :assignee
   has_many :bounties
   has_many :commits
