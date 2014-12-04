@@ -11,37 +11,24 @@ class WebhooksController < ApplicationController
     end
   end
 
-  # Todo: use rugged!
   class Hooker
-    @@github = Github.new oauth_token: Rails.application.secrets.github_token
-
     def self.push(json)
-      repo       = json['repository']['name']
+      repo_name  = json['repository']['name']
       repo_owner = json['repository']['owner']['name']
+
+      repo = Repository.find_by user: repo_owner, name: repo_name
+      repo.pull
+
       json['commits'].each do |commit|
-        author = Coder.find_by_github_name(commit['author']['username'])
-        if author
-          commit = @@github.repos.commits.find user: repo_owner, repo: repo, sha: commit['id']
-
-          # stats
-          author.commits += 1
-          author.additions += commit.stats.additions
-          author.deletions += commit.stats.deletions
-
-          # points
-          author.reward loc: commit.stats.additions
-
-          author.save!
-        end
+        Commits.register_from_sha repo, commit['id']
       end
     end
 
     def self.issues(json)
-      issue = Issue.find_by repo: json['repository']['name'], number: json['issue']['number']
-      if not issue
-        issue = Issue.create_from_hash(json['issue'], json['repository']['name'])
-        issue.save!
-      end
+      # get issue
+      repo = Repository.find_by name: json['repository']['name'],
+                                user: json['repository']['owner']['login']
+      issue = find_or_create_from_hash json['issue'], repo
 
       case json['action']
         when 'opened', 'reopened'

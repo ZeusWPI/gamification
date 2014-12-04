@@ -41,22 +41,24 @@ class Issue < ActiveRecord::Base
     save!
   end
 
-  def self.create_from_hash json, repo_name
-    issue = Issue.new({
-      github_url: json['html_url'],
-      number:     json['number'],
-      repository: Repository.find_or_create_by(name: repo_name),
-      open:       json['state'] == 'open',
-      title:      json['title'],
-      body:       json['body'],
-      issuer_id:  Coder.find_or_create_by_github_name(json['user']['login']).id,
-      labels:     (json['labels'] || [] ).map { |label| label.name },
-      milestone:  json['milestone'].try(:[], :title)
-    })
-    unless json['assignee'].blank?
-      assignee = Coder.find_by_github_name(json['assignee']['login'])
-      issue.assignee_id = assignee.id unless assignee.nil?
+  def self.find_or_create_from_hash json, repo
+    Issue.find_or_create_by number: json['issue']['number'],
+                                    repository: repo do |issue|
+      issue.github_url = json['html_url'],
+      issue.number     = json['number'],
+      issue.repository = repo
+      issue.open       = json['state'] == 'open',
+      issue.title      = json['title'],
+      issue.body       = json['body'],
+      issue.issuer_id  =
+          Coder.find_or_create_by_github_name( json['user']['login']).id,
+      issue.labels     = (json['labels'] || [] ).map { |label| label.name },
+      issue.milestone  = json['milestone'].try(:[], :title)
+
+      unless json['assignee'].blank?
+        assignee = Coder.find_by_github_name(json['assignee']['login'])
+        issue.assignee_id = assignee.id unless assignee.nil?
+      end
     end
-    issue.save!
   end
 end

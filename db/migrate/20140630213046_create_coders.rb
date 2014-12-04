@@ -6,8 +6,6 @@ class CreateCoders < ActiveRecord::Migration
       t.string :avatar_url
       t.integer :reward_residual
       t.integer :bounty_residual
-      t.integer :additions
-      t.integer :deletions
       t.integer :bounty_score
       t.integer :other_score
 

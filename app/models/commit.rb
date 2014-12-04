@@ -58,14 +58,14 @@ class Commit < ActiveRecord::Base
   private
   def self.get_committer repo, r_commit
     identity = GitIdentity.find_or_create_by name:  r_commit.committer[:name],
-                                  email: r_commit.committer[:email] do |identity|
-        identity.coder = get_committer_from_github repo, r_commit
+                                  email: r_commit.committer[:email] do |id|
+        id.coder = get_committer_from_github repo, r_commit
       end
     identity.coder
   end
 
   def self.get_committer_from_github repo, r_commit
     commit = $github.repos.commits.get repo.user, repo.name, r_commit.oid
-    Coder.find_or_create_by_github_data commit.committer
+    Coder.find_or_create_by_github_name commit.committer.login
   end
 end

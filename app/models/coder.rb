@@ -58,11 +58,13 @@ class Coder < ActiveRecord::Base
     find_by_github_name(auth.info.nickname)
   end
 
-  def self.find_or_create_by_github_data(data)
-    Coder.find_or_create_by(github_name: data.login) do |coder|
+  def self.find_or_create_by_github_name(name)
+    Coder.find_or_create_by(github_name: name) do |coder|
+      # Fetch data from github
+      data = $github.users.get(user: name)
       coder.full_name = data.name || ''
       coder.avatar_url = data.avatar_url
-      coder.github_url = data.github_url
+      coder.github_url = data.html_url
     end
   end
 
