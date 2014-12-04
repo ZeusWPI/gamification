@@ -32,7 +32,7 @@ class Repository < ActiveRecord::Base
     walker = Rugged::Walker.new(r_repo)
     walker.push(r_repo.last_commit)
     walker.each do |commit|
-      Commit.register_rugged self, commit
+      Commit.register_rugged self, commit, reward_bounty_points: false
     end
   end
 

@@ -27,17 +27,15 @@ ActiveRecord::Schema.define(version: 20141203154945) do
 
   create_table "coders", force: true do |t|
     t.string   "github_name",                 null: false
-    t.string   "full_name"
-    t.string   "avatar_url"
+    t.string   "full_name",                   null: false
+    t.string   "avatar_url",                  null: false
+    t.string   "github_url",                  null: false
     t.integer  "reward_residual", default: 0, null: false
     t.integer  "bounty_residual", default: 0, null: false
-    t.integer  "additions",       default: 0, null: false
-    t.integer  "deletions",       default: 0, null: false
     t.integer  "bounty_score",    default: 0, null: false
     t.integer  "other_score",     default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "github_url"
   end
 
   add_index "coders", ["github_name"], name: "index_coders_on_github_name", unique: true
@@ -70,18 +68,18 @@ ActiveRecord::Schema.define(version: 20141203154945) do
   add_index "git_identities", ["name", "email"], name: "index_git_identities_on_name_and_email", unique: true
 
   create_table "issues", force: true do |t|
-    t.string   "github_url",                                     null: false
-    t.integer  "number",                                         null: false
-    t.boolean  "open",                                           null: false
-    t.string   "title",                     default: "Untitled", null: false
-    t.text     "body",          limit: 255
-    t.integer  "issuer_id",                                      null: false
-    t.text     "labels",                                         null: false
+    t.string   "github_url",                         null: false
+    t.integer  "number",                             null: false
+    t.boolean  "open",                               null: false
+    t.string   "title",         default: "Untitled", null: false
+    t.integer  "issuer_id",                          null: false
+    t.integer  "repository_id",                      null: false
+    t.text     "labels",        default: "--- []\n", null: false
+    t.text     "body"
     t.integer  "assignee_id"
     t.string   "milestone"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "repository_id"
   end
 
   add_index "issues", ["github_url"], name: "index_issues_on_github_url", unique: true
