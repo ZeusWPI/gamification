@@ -21,9 +21,8 @@
         <div class="col-md-7">
           <ul class="list-group">
             <li class="list-group-item list-group-item-info">Score <span class="badge"><%= @coder.total_score %></span></li>
-            <li class="list-group-item">Commits <span class="badge"><%= @coder.commits %></span></li>
+            <li class="list-group-item">Commits <span class="badge"><%= @coder.commits.count %></span></li>
             <li class="list-group-item">Line additions <span class="badge"><%= @coder.additions %></span></li>
-            <li class="list-group-item">Line modifications <span class="badge"><%= @coder.modifications %></span></li>
             <li class="list-group-item">Line deletions <span class="badge"><%= @coder.deletions %></span></li>
           </ul>
         </div>
