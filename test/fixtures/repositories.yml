@@ -3,8 +3,8 @@
 # Table name: repositories
 #
 #  id         :integer          not null, primary key
-#  user       :string(255)
-#  name       :string(255)
+#  user       :string(255)      not null
+#  name       :string(255)      not null
 #  created_at :datetime
 #  updated_at :datetime
 #

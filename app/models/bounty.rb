@@ -2,17 +2,20 @@
 #
 # Table name: bounties
 #
-#  id         :integer          not null, primary key
-#  value      :integer          not null
-#  issue_id   :integer          not null
-#  coder_id   :integer          not null
-#  created_at :datetime
-#  updated_at :datetime
+#  id          :integer          not null, primary key
+#  value       :integer          not null
+#  issue_id    :integer          not null
+#  issuer_id   :integer          not null
+#  claimant_id :integer
+#  claimed_at  :datetime
+#  created_at  :datetime
+#  updated_at  :datetime
 #
 
 class Bounty < ActiveRecord::Base
   belongs_to :issue
-  belongs_to :coder
+  belongs_to :issuer, class_name: 'Coder', foreign_key: 'issuer_id'
+  belongs_to :claimant, class_name: 'Coder', foreign_key: 'claimant_id'
 
   validates_presence_of :issue_id
   validates_presence_of :coder_id
@@ -27,17 +30,23 @@ class Bounty < ActiveRecord::Base
     value.to_s
   end
 
-  def cash_in
+  def claim time: Time.now
     assignee = issue.assignee
     if assignee && assignee != coder
+      # Mark bounty
+      self.claimant = assignee
+      self.claimed_at = time
+      save!
+      # Reward assignee
       assignee.reward bounty: absolute_value
       assignee.save!
     else
       # refund bounty points
       coder.bounty_residual += value
       coder.save!
+      # This bounty is of no use; destroy it.
+      destroy
     end
-    destroy
   end
 
   def absolute_value

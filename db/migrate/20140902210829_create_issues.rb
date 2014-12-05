@@ -3,7 +3,6 @@ class CreateIssues < ActiveRecord::Migration
     create_table :issues do |t|
       t.string :github_url,     null: false
       t.integer :number,        null: false
-      t.boolean :open,          null: false
       t.string :title,          null: false, default: 'Untitled'
       t.references :issuer,     null: false
       t.references :repository, null: false, index: true
@@ -11,6 +10,9 @@ class CreateIssues < ActiveRecord::Migration
       t.text :body
       t.integer :assignee_id
       t.string :milestone
+
+      t.timestamp :opened_at, null: false
+      t.timestamp :closed_at
 
       t.timestamps
     end

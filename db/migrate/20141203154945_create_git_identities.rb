@@ -1,8 +1,8 @@
 class CreateGitIdentities < ActiveRecord::Migration
   def change
     create_table :git_identities do |t|
-      t.text :name
-      t.text :email
+      t.text :name, null: false
+      t.text :email, null: false
       t.references :coder, index: true
 
       t.timestamps

@@ -32,7 +32,7 @@
               <td class="total-bounty"><%= issue.total_bounty_value %></td>
               <td>
                 <div class="input-group">
-                  <%= form_for issue.find_bounty_by_coder(current_coder),
+                  <%= form_for find_bounty(issue, current_coder),
                                url: {action: 'update_or_create'},
                                method: :post,
                                remote: true do |f| %>

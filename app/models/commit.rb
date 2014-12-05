@@ -5,10 +5,10 @@
 #  id            :integer          not null, primary key
 #  coder_id      :integer
 #  repository_id :integer
-#  sha           :string(255)
-#  additions     :integer
-#  deletions     :integer
-#  date          :datetime
+#  sha           :string(255)      not null
+#  additions     :integer          default(0), not null
+#  deletions     :integer          default(0), not null
+#  date          :datetime         not null
 #  created_at    :datetime
 #  updated_at    :datetime
 #
@@ -18,6 +18,9 @@ class Commit < ActiveRecord::Base
   belongs_to :repository
 
   require 'rugged'
+
+  scope :additions, -> { sum :additions }
+  scope :deletions, -> { sum :deletions }
 
   def reward! options = {}
     coder.reward loc: additions, options: options
@@ -36,6 +39,7 @@ class Commit < ActiveRecord::Base
     Commit.find_or_create_by  repository: repo,
                               sha: r_commit.oid,
                               coder: committer do |commit|
+      commit.date = r_commit.time
       commit.set_stats r_commit
       commit.reward! options if options.fetch(:reward, true)
     end
@@ -43,7 +47,7 @@ class Commit < ActiveRecord::Base
 
   # should be private
   def set_stats r_commit
-    if r_commit.parents.size < 2
+    if r_commit.parents.size >= 2
       # Do not reward merges
       self.additions = self.deletions = 0
     else

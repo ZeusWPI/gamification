@@ -3,8 +3,8 @@
 # Table name: git_identities
 #
 #  id         :integer          not null, primary key
-#  name       :text
-#  email      :text
+#  name       :text             not null
+#  email      :text             not null
 #  coder_id   :integer
 #  created_at :datetime
 #  updated_at :datetime
