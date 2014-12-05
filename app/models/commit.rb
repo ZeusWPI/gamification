@@ -30,9 +30,12 @@ class Commit < ActiveRecord::Base
   end
 
   def self.register_rugged repo, r_commit, options = {}
+    # if committer can't be determined, fuck this shit
+    committer = get_committer repo, r_commit
+    return nil if not committer
     Commit.find_or_create_by  repository: repo,
-                              sha: r_commit.oid do |commit|
-      commit.coder = get_committer repo, r_commit
+                              sha: r_commit.oid,
+                              coder: committer do |commit|
       commit.set_stats r_commit
       commit.reward! options if options.fetch(:reward, true)
     end
@@ -57,15 +60,24 @@ class Commit < ActiveRecord::Base
 
   private
   def self.get_committer repo, r_commit
-    identity = GitIdentity.find_or_create_by name:  r_commit.committer[:name],
-                                  email: r_commit.committer[:email] do |id|
-        id.coder = get_committer_from_github repo, r_commit
-      end
+    identity = GitIdentity.find_by  name: r_commit.committer[:name],
+                                    email: r_commit.committer[:email]
+    if not identity
+      coder = get_committer_from_github repo, r_commit
+      return nil if not coder
+      identity = GitIdentity.create name:  r_commit.committer[:name],
+                                    email: r_commit.committer[:email],
+                                    coder: coder
+    end
     identity.coder
   end
 
   def self.get_committer_from_github repo, r_commit
     commit = $github.repos.commits.get repo.user, repo.name, r_commit.oid
-    Coder.find_or_create_by_github_name commit.committer.login
+    if commit.committer
+      Coder.find_or_create_by_github_name commit.committer.login
+    else
+      nil
+    end
   end
 end
