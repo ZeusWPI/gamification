@@ -4,7 +4,7 @@ class BountiesController < ApplicationController
   respond_to :html, :coffee
 
   def index
-    @issues = Issue.all.sort_by { |issue| [issue.repository.name, issue.title] }
+    @issues = Issue.where(open: true).sort_by { |issue| [issue.repository.name, issue.title] }
   end
 
   # Todo split this

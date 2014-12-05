@@ -56,7 +56,8 @@ class Issue < ActiveRecord::Base
       issue.milestone  = json['milestone'].try(:[], :title)
 
       unless json['assignee'].blank?
-        issue.assignee = Coder.find_by_github_name(json['assignee']['login'])
+        issue.assignee =
+          Coder.find_or_create_by_github_name(json['assignee']['login'])
       end
     end
   end

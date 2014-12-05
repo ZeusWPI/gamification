@@ -26,10 +26,10 @@
 
         <tbody>
           <% @issues.each do |issue| %>
-            <tr>
+            <tr id="issue-<%= issue.id %>">
               <td><%= issue.repository.name %></td>
               <td><%= link_to issue.title, issue.github_url %></td>
-              <td><%= issue.total_bounty_value %></td>
+              <td class="total-bounty"><%= issue.total_bounty_value %></td>
               <td>
                 <div class="input-group">
                   <%= form_for issue.find_bounty_by_coder(current_coder),
