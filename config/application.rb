@@ -25,7 +25,7 @@ module Gamification
     # Repositories to track
     config.repositories = [
       { user: 'ZeusWPI', name: 'gamification'},
-      { user: 'ZeusWPI', name: 'slotmachien'}
+      #{ user: 'ZeusWPI', name: 'slotmachien'}
     ]
 
     # Total bounty value
