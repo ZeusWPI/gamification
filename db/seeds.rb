@@ -11,6 +11,7 @@ if Rails.env.production?
   github = Github.new client_id: Rails.application.secrets.github_app_id,
                       client_secret: Rails.application.secrets.github_app_secret,
                       auto_pagination: true
+
 else  # but user tokens in dev
   github = Github.new oauth_token: Rails.application.secrets.github_token,
                       auto_pagination: true

@@ -11,13 +11,3 @@
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  value: 1
-  issue_id: 
-  coder_id: 
-
-two:
-  value: 1
-  issue_id: 
-  coder_id: 

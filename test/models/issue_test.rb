@@ -7,7 +7,7 @@
 #  number        :integer          not null
 #  open          :boolean          not null
 #  title         :string(255)      default("Untitled"), not null
-#  body          :string(255)
+#  body          :text(255)
 #  issuer_id     :integer          not null
 #  labels        :text             not null
 #  assignee_id   :integer
