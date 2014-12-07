@@ -31,6 +31,12 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+group :test do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem 'faker'
+end
+
 # Deployment
 group :deployment do
   gem 'capistrano', '~> 3.2'
