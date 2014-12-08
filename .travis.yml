@@ -3,7 +3,9 @@ rvm:
   - 2.1.0
 
 before_script:
-  - "RAILS_ENV=test bundle exec rake db:setup"
+  - "RAILS_ENV=test bundle exec rake db:create"
+  - "RAILS_ENV=test bundle exec rake db:schema:load"
+script: bundle exec rspec
 
 notifications:
   slack: zeuswpi:xpKSw4tg8JIvQb7Z3svBq0tD

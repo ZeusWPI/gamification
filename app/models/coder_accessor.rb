@@ -1,9 +1,10 @@
 class CoderAccessor
-  attr_accessor :commits
+  attr_accessor :commits, :claimed_bounties
 
   def initialize coder
     @coder = coder
     @commits = coder.commits
+    @claimed_bounties = coder.claimed_bounties
   end
 
   def additions
@@ -14,9 +15,8 @@ class CoderAccessor
     commits.deletions
   end
 
-  # TODO: bounty score
   def total_score
-    10 * commits.count + additions
+    10 * commits.count + additions + claimed_bounties.claimed_value
   end
 
   # Delegate other methods to coder object

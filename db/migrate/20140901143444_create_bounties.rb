@@ -5,6 +5,7 @@ class CreateBounties < ActiveRecord::Migration
       t.references :issue,     null: false, index: true
       t.references :issuer,    null: false, index: true
       t.references :claimant,  index: true
+      t.integer :claimed_value
       t.timestamp :claimed_at, index: true
 
       t.timestamps

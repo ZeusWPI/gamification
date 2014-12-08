@@ -17,40 +17,43 @@ class Bounty < ActiveRecord::Base
   belongs_to :issuer, class_name: 'Coder', foreign_key: 'issuer_id'
   belongs_to :claimant, class_name: 'Coder', foreign_key: 'claimant_id'
 
-  validates_presence_of :issue_id
-  validates_presence_of :coder_id
-  validates_uniqueness_of :issue_id, scope: :coder_id
+  validates_presence_of :issue
+  validates_presence_of :issuer
+  validates_uniqueness_of :issue, scope: :issuer
   validates :value, presence: true, numericality: {
     only_integer: true,
     greater_than_or_equal_to: 0
   }
   after_save :expire_caches
 
+  scope :claimed_value, -> { sum :claimed_value }
+
   def to_s
     value.to_s
   end
 
   def claim time: Time.now
-    assignee = issue.assignee
-    if assignee && assignee != coder
+    if issue.assignee && issue.assignee != issuer
       # Mark bounty
-      self.claimant = assignee
+      self.claimant = issue.assignee
       self.claimed_at = time
+      # calculate value
+      self.claimed_value = absolute_value
       save!
       # Reward assignee
-      assignee.reward bounty: absolute_value
-      assignee.save!
+      claimant.reward bounty: absolute_value
+      claimant.save!
     else
       # refund bounty points
-      coder.bounty_residual += value
-      coder.save!
+      issuer.bounty_residual += value
+      issuer.save!
       # This bounty is of no use; destroy it.
       destroy
     end
   end
 
   def absolute_value
-    BountyPoints::bounty_points_to_abs value
+    claimed_value || BountyPoints::bounty_points_to_abs(value)
   end
 
   private
