@@ -1,7 +1,6 @@
 **.orig
 *.gem
 *.rbc
-.rspec
 /.config
 /InstalledFiles
 /config/secrets.yml
