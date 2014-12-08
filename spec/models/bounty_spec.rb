@@ -15,13 +15,29 @@ describe Bounty do
     expect(@issuer.bounty_residual).to eq(100)
   end
 
-  it 'refunds bounty points when claimant is issuer' do
-    @issue.assignee = @issuer
-    @bounty.claim
-    expect(@issuer.bounty_residual).to eq(100)
+  it 'scales its absolute value with set limit' do
+    limit = Rails.application.config.total_bounty_value
+    @bounty.update value: limit * 2
+    expect(@bounty.absolute_value).to eq(limit)
   end
 
-  context 'when bounty is claimed' do
+  context 'claimed by issuer' do
+
+    before :each do
+      @issue.assignee = @issuer
+      @bounty.claim
+    end
+
+    it 'refunds bounty points' do
+      expect(@issuer.bounty_residual).to eq(100)
+    end
+
+    #it 'deletes itself' do
+      #expect(@bounty.destroyed?).to be_true
+    #end
+  end
+
+  context 'when claimed' do
 
     before :each do
       @claimant = create :coder
