@@ -34,7 +34,7 @@ class Issue < ActiveRecord::Base
   end
 
   def close time: Time.now
-    bounties.each { |b| b.cash_in }
+    bounties.each { |b| b.claim }
     update! closed_at: time
     save!
   end

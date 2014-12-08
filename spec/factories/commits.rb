@@ -1,13 +1,12 @@
 require 'faker'
 
 FactoryGirl.define do
-  factory :commit do |c|
+  factory :commit do
     coder
     repository
-    # close enough
-    c.sha { Faker::Bitcoin.address }
-    c.additions { rand 100 }
-    c.deletions { rand 100 }
-    c.date { Faker::Date.backward 30 }
+    sha { Faker::Lorem.characters 30 }
+    additions { rand 100 }
+    deletions { rand 100 }
+    date { Faker::Date.backward 30 }
   end
 end

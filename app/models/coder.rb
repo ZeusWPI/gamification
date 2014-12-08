@@ -20,8 +20,9 @@ class Coder < ActiveRecord::Base
 
   devise :omniauthable, omniauth_providers: [:github]
 
-  has_many :created_issues, inverse_of: :issuer
-  has_many :assigned_issues, inverse_of: :assignee
+  has_many :created_issues, class_name: 'Issue', foreign_key: 'issuer_id'
+  has_many :assigned_issues, class_name: 'Issue', foreign_key: 'assignee_id'
+  has_many :claimed_bounties, class_name: 'Bounty', foreign_key: 'claimant_id'
   has_many :bounties
   has_many :commits
   after_save :clear_caches
@@ -38,17 +39,17 @@ class Coder < ActiveRecord::Base
     CoderAccessor.new self
   end
 
-  #def additions
-    #commits.additions
-  #end
+  def additions
+    accessor.additions
+  end
 
-  #def deletions
-    #commits.deletions
-  #end
+  def deletions
+    accessor.deletions
+  end
 
-  #def total_score
-    #10 * commits.count + additions + bounty_score + other_score
-  #end
+  def total_score
+    accessor.total_score
+  end
 
   def abs_bounty_residual
     BountyPoints::bounty_points_to_abs bounty_residual

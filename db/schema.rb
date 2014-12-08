@@ -14,10 +14,11 @@
 ActiveRecord::Schema.define(version: 20141203154945) do
 
   create_table "bounties", force: true do |t|
-    t.integer  "value",       null: false
-    t.integer  "issue_id",    null: false
-    t.integer  "issuer_id",   null: false
+    t.integer  "value",         null: false
+    t.integer  "issue_id",      null: false
+    t.integer  "issuer_id",     null: false
     t.integer  "claimant_id"
+    t.integer  "claimed_value"
     t.datetime "claimed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
