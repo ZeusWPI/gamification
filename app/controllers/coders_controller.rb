@@ -2,7 +2,6 @@ class CodersController < ApplicationController
   before_action :set_coder, only: [:show]
 
   def show
-    @coder = current_coder
   end
 
   private
