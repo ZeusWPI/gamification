@@ -22,13 +22,15 @@ class CoderAccessor
   # limit date scope
   def date date
     @commits = commits.where date: date
-    @claimed_bounties = claimed_bounties where claimed_at: date
+    @claimed_bounties = claimed_bounties.where claimed_at: date
+    self
   end
 
   # limit repository scope
   def repository repo
     @commits = commits.where repository: repo
     @claimed_bounties = claimed_bounties where repository: repo
+    self
   end
 
   # Delegate other methods to coder object
