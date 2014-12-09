@@ -32,9 +32,9 @@ describe Bounty do
       expect(@issuer.bounty_residual).to eq(100)
     end
 
-    #it 'deletes itself' do
-      #expect(@bounty.destroyed?).to be_true
-    #end
+    it 'deletes itself' do
+      expect(@bounty.destroyed?).to be_truthy
+    end
   end
 
   context 'when claimed' do

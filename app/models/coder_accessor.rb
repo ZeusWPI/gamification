@@ -19,6 +19,18 @@ class CoderAccessor
     10 * commits.count + additions + claimed_bounties.claimed_value
   end
 
+  # limit date scope
+  def date date
+    @commits = commits.where date: date
+    @claimed_bounties = claimed_bounties where claimed_at: date
+  end
+
+  # limit repository scope
+  def repository repo
+    @commits = commits.where repository: repo
+    @claimed_bounties = claimed_bounties where repository: repo
+  end
+
   # Delegate other methods to coder object
   def method_missing(m, *args, &block)
     @coder.send(m, *args, &block)
