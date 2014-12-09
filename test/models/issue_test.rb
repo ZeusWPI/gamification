@@ -7,6 +7,7 @@
 #  number        :integer          not null
 #  open          :boolean          not null
 #  title         :string(255)      default("Untitled"), not null
+#  body          :text(255)
 #  issuer_id     :integer          not null
 #  repository_id :integer          not null
 #  labels        :text             default("--- []\n"), not null

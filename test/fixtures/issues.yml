@@ -7,6 +7,7 @@
 #  number        :integer          not null
 #  open          :boolean          not null
 #  title         :string(255)      default("Untitled"), not null
+#  body          :text(255)
 #  issuer_id     :integer          not null
 #  repository_id :integer          not null
 #  labels        :text             default("--- []\n"), not null
@@ -18,27 +19,3 @@
 #
 
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  github_url: MyString
-  number: 1
-  repo: MyString
-  open: false
-  title: MyString
-  body: MyString
-  issuer_id: 1
-  labels: MyText
-  assignee_id: 1
-  milestone: MyString
-
-two:
-  github_url: MyString
-  number: 1
-  repo: MyString
-  open: false
-  title: MyString
-  body: MyString
-  issuer_id: 1
-  labels: MyText
-  assignee_id: 1
-  milestone: MyString
