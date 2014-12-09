@@ -6,6 +6,7 @@ class CodersController < ApplicationController
   end
 
   def show
+    @coder = current_coder
   end
 
   private

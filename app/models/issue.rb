@@ -5,7 +5,6 @@
 #  id            :integer          not null, primary key
 #  github_url    :string(255)      not null
 #  number        :integer          not null
-#  open          :boolean          not null
 #  title         :string(255)      default("Untitled"), not null
 #  body          :text(255)
 #  issuer_id     :integer          not null
@@ -14,6 +13,8 @@
 #  body          :text
 #  assignee_id   :integer
 #  milestone     :string(255)
+#  opened_at     :datetime         not null
+#  closed_at     :datetime
 #  created_at    :datetime
 #  updated_at    :datetime
 #
@@ -29,18 +30,13 @@ class Issue < ActiveRecord::Base
 
   serialize :labels
 
-  def find_bounty_by_coder coder
-    bounty = bounties.where(coder: coder).first
-    bounty.present? ? bounty : bounties.build(value: 0)
-  end
-
   def total_bounty_value
     bounties.map {|b| b.absolute_value}.sum
   end
 
-  def close
-    bounties.each { |b| b.cash_in }
-    update! open: false
+  def close time: Time.now
+    bounties.each { |b| b.claim }
+    update! closed_at: time
     save!
   end
 
@@ -49,12 +45,15 @@ class Issue < ActiveRecord::Base
                             repository: repo do |issue|
       issue.github_url = json['html_url']
       issue.number     = json['number']
-      issue.open       = json['state'] == 'open'
       issue.title      = json['title']
       issue.body       = json['body']
       issue.issuer     = Coder.find_or_create_by_github_name(json['user']['login'])
       issue.labels     = (json['labels'] || []).map  { |label| label.name }
       issue.milestone  = json['milestone'].try(:[], :title)
+      issue.opened_at  = DateTime.parse(json['created_at'])
+
+      closed_at = json['closed_at']
+      issue.closed_at  = DateTime.parse(closed_at) if closed_at
 
       unless json['assignee'].blank?
         issue.assignee =

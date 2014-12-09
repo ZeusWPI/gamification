@@ -4,7 +4,7 @@ class BountiesController < ApplicationController
   respond_to :html, :coffee
 
   def index
-    @issues = Issue.where(open: true).sort_by { |issue| [issue.repository.name, issue.title] }
+    @issues = Issue.where(closed_at: nil).sort_by { |issue| [issue.repository.name, issue.title] }
   end
 
   # Todo split this
@@ -22,8 +22,8 @@ class BountiesController < ApplicationController
     new_value = BountyPoints::bounty_points_from_abs new_abs_value.to_i
 
     # Find the bounty for this issue if it already exists
-    @bounty = Bounty.find_or_create_by issue_id: issue_id,
-      coder_id: current_coder.id do |b|
+    @bounty = Bounty.find_or_create_by  issue_id: issue_id,
+                                        issuer: coder.id do |b|
       b.value = 0
     end
 

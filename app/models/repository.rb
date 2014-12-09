@@ -3,8 +3,8 @@
 # Table name: repositories
 #
 #  id         :integer          not null, primary key
-#  user       :string(255)
-#  name       :string(255)
+#  user       :string(255)      not null
+#  name       :string(255)      not null
 #  created_at :datetime
 #  updated_at :datetime
 #
@@ -30,6 +30,7 @@ class Repository < ActiveRecord::Base
   def register_commits
     r_repo = rugged_repo
     walker = Rugged::Walker.new(r_repo)
+    r_repo.branches.each { |b| walker.push b.target_id }
     walker.push(r_repo.last_commit)
     walker.each do |commit|
       Commit.register_rugged self, commit, reward_bounty_points: false

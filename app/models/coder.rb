@@ -4,12 +4,11 @@
 #
 #  id              :integer          not null, primary key
 #  github_name     :string(255)      not null
-#  full_name       :string(255)      not null
+#  full_name       :string(255)      default(""), not null
 #  avatar_url      :string(255)      not null
 #  github_url      :string(255)      not null
 #  reward_residual :integer          default(0), not null
 #  bounty_residual :integer          default(0), not null
-#  bounty_score    :integer          default(0), not null
 #  other_score     :integer          default(0), not null
 #  created_at      :datetime
 #  updated_at      :datetime
@@ -21,31 +20,35 @@ class Coder < ActiveRecord::Base
 
   devise :omniauthable, omniauth_providers: [:github]
 
-  has_many :created_issues, inverse_of: :issuer
-  has_many :assigned_issues, inverse_of: :assignee
+  has_many :created_issues, class_name: 'Issue', foreign_key: 'issuer_id'
+  has_many :assigned_issues, class_name: 'Issue', foreign_key: 'assignee_id'
+  has_many :claimed_bounties, class_name: 'Bounty', foreign_key: 'claimant_id'
   has_many :bounties
   has_many :commits
   after_save :clear_caches
 
   def reward loc: 0, bounty: 0, other: 0, options: {}
     self.other_score += other
-    self.bounty_score += bounty
     self.reward_residual += loc + other + bounty
     if options.fetch(:reward_bounty_points, true)
       self.bounty_residual += loc + bounty 
     end
   end
 
+  def accessor
+    CoderAccessor.new self
+  end
+
   def additions
-    commits.sum(:additions)
+    accessor.additions
   end
 
   def deletions
-    commits.sum(:deletions)
+    accessor.deletions
   end
 
   def total_score
-    10 * commits.count + additions + bounty_score + other_score
+    accessor.total_score
   end
 
   def abs_bounty_residual

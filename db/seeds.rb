@@ -7,7 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 Rails.application.config.repositories.each do |hash|
-  repo = Repository.create user: hash[:user], name: hash[:name]
+  repo = Repository.find_or_create_by user: hash[:user], name: hash[:name]
   repo.clone
   repo.register_commits
   repo.fetch_issues

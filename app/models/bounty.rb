@@ -2,46 +2,58 @@
 #
 # Table name: bounties
 #
-#  id         :integer          not null, primary key
-#  value      :integer          not null
-#  issue_id   :integer          not null
-#  coder_id   :integer          not null
-#  created_at :datetime
-#  updated_at :datetime
+#  id          :integer          not null, primary key
+#  value       :integer          not null
+#  issue_id    :integer          not null
+#  issuer_id   :integer          not null
+#  claimant_id :integer
+#  claimed_at  :datetime
+#  created_at  :datetime
+#  updated_at  :datetime
 #
 
 class Bounty < ActiveRecord::Base
   belongs_to :issue
-  belongs_to :coder
+  belongs_to :issuer, class_name: 'Coder', foreign_key: 'issuer_id'
+  belongs_to :claimant, class_name: 'Coder', foreign_key: 'claimant_id'
 
-  validates_presence_of :issue_id
-  validates_presence_of :coder_id
-  validates_uniqueness_of :issue_id, scope: :coder_id
+  validates_presence_of :issue
+  validates_presence_of :issuer
+  validates_uniqueness_of :issue, scope: :issuer
   validates :value, presence: true, numericality: {
     only_integer: true,
     greater_than_or_equal_to: 0
   }
   after_save :expire_caches
 
+  scope :claimed_value, -> { sum :claimed_value }
+
   def to_s
     value.to_s
   end
 
-  def cash_in
-    assignee = issue.assignee
-    if assignee && assignee != coder
-      assignee.reward bounty: absolute_value
-      assignee.save!
+  def claim time: Time.now
+    if issue.assignee && issue.assignee != issuer
+      # Mark bounty
+      self.claimant = issue.assignee
+      self.claimed_at = time
+      # calculate value
+      self.claimed_value = absolute_value
+      save!
+      # Reward assignee
+      claimant.reward bounty: absolute_value
+      claimant.save!
     else
       # refund bounty points
-      coder.bounty_residual += value
-      coder.save!
+      issuer.bounty_residual += value
+      issuer.save!
+      # This bounty is of no use; destroy it.
+      destroy
     end
-    destroy
   end
 
   def absolute_value
-    BountyPoints::bounty_points_to_abs value
+    claimed_value || BountyPoints::bounty_points_to_abs(value)
   end
 
   private

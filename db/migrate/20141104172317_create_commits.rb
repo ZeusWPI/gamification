@@ -1,12 +1,12 @@
 class CreateCommits < ActiveRecord::Migration
   def change
     create_table :commits do |t|
-      t.references :coder, index: true
+      t.references :coder,      index: true
       t.references :repository, index: true
-      t.string :sha
-      t.integer :additions
-      t.integer :deletions
-      t.datetime :date
+      t.string :sha,            null: false
+      t.integer :additions,     null: false, default: 0
+      t.integer :deletions,     null: false, default: 0
+      t.timestamp :date,        null: false
 
       t.timestamps
     end

@@ -14,26 +14,29 @@
 ActiveRecord::Schema.define(version: 20141203154945) do
 
   create_table "bounties", force: true do |t|
-    t.integer  "value",      null: false
-    t.integer  "issue_id",   null: false
-    t.integer  "coder_id",   null: false
+    t.integer  "value",         null: false
+    t.integer  "issue_id",      null: false
+    t.integer  "issuer_id",     null: false
+    t.integer  "claimant_id"
+    t.integer  "claimed_value"
+    t.datetime "claimed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "bounties", ["coder_id"], name: "index_bounties_on_coder_id"
-  add_index "bounties", ["issue_id", "coder_id"], name: "index_bounties_on_issue_id_and_coder_id", unique: true
+  add_index "bounties", ["claimant_id"], name: "index_bounties_on_claimant_id"
+  add_index "bounties", ["issue_id", "issuer_id"], name: "index_bounties_on_issue_id_and_issuer_id", unique: true
   add_index "bounties", ["issue_id"], name: "index_bounties_on_issue_id"
+  add_index "bounties", ["issuer_id"], name: "index_bounties_on_issuer_id"
 
   create_table "coders", force: true do |t|
-    t.string   "github_name",                 null: false
-    t.string   "full_name",                   null: false
-    t.string   "avatar_url",                  null: false
-    t.string   "github_url",                  null: false
-    t.integer  "reward_residual", default: 0, null: false
-    t.integer  "bounty_residual", default: 0, null: false
-    t.integer  "bounty_score",    default: 0, null: false
-    t.integer  "other_score",     default: 0, null: false
+    t.string   "github_name",                  null: false
+    t.string   "full_name",       default: "", null: false
+    t.string   "avatar_url",                   null: false
+    t.string   "github_url",                   null: false
+    t.integer  "reward_residual", default: 0,  null: false
+    t.integer  "bounty_residual", default: 0,  null: false
+    t.integer  "other_score",     default: 0,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -44,10 +47,10 @@ ActiveRecord::Schema.define(version: 20141203154945) do
   create_table "commits", force: true do |t|
     t.integer  "coder_id"
     t.integer  "repository_id"
-    t.string   "sha"
-    t.integer  "additions"
-    t.integer  "deletions"
-    t.datetime "date"
+    t.string   "sha",                       null: false
+    t.integer  "additions",     default: 0, null: false
+    t.integer  "deletions",     default: 0, null: false
+    t.datetime "date",                      null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -57,8 +60,8 @@ ActiveRecord::Schema.define(version: 20141203154945) do
   add_index "commits", ["repository_id"], name: "index_commits_on_repository_id"
 
   create_table "git_identities", force: true do |t|
-    t.text     "name"
-    t.text     "email"
+    t.text     "name",       null: false
+    t.text     "email",      null: false
     t.integer  "coder_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -70,7 +73,6 @@ ActiveRecord::Schema.define(version: 20141203154945) do
   create_table "issues", force: true do |t|
     t.string   "github_url",                         null: false
     t.integer  "number",                             null: false
-    t.boolean  "open",                               null: false
     t.string   "title",         default: "Untitled", null: false
     t.integer  "issuer_id",                          null: false
     t.integer  "repository_id",                      null: false
@@ -78,6 +80,8 @@ ActiveRecord::Schema.define(version: 20141203154945) do
     t.text     "body"
     t.integer  "assignee_id"
     t.string   "milestone"
+    t.datetime "opened_at",                          null: false
+    t.datetime "closed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -87,8 +91,8 @@ ActiveRecord::Schema.define(version: 20141203154945) do
   add_index "issues", ["repository_id"], name: "index_issues_on_repository_id"
 
   create_table "repositories", force: true do |t|
-    t.string   "user"
-    t.string   "name"
+    t.string   "user",       null: false
+    t.string   "name",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
