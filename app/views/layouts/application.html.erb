@@ -23,7 +23,7 @@
 
         <div class="collapse navbar-collapse navbar-ex1-collapse">
           <ul class="nav navbar-nav side-nav">
-            <li><%= link_to raw('<i class="fa fa-bar-chart-o"></i> Scoreboard'), leaderboard_path %></li>
+            <li><%= link_to raw('<i class="fa fa-bar-chart-o"></i> Scoreboard'), scoreboard_path %></li>
             <% if coder_signed_in? %>
               <li><%= link_to raw('<i class="fa fa-dashboard"></i> Your progress'), current_coder %></li>
               <li><%= link_to raw('<i class="fa fa-money"></i> Put bounty'), bounties_path %></li>

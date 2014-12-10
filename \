@@ -10,10 +10,11 @@
 #
 
 class Repository < ActiveRecord::Base
-  has_many :issues
+  extend FriendlyId
+  friendly_id :format
+
+  has_many :bounties
   has_many :commits
-  has_many :bounties, through: :issues
-  has_many :coders, -> { uniq }, through: :commits
   validates :user, presence: true
   validates :name, presence: true
 
@@ -54,4 +55,9 @@ class Repository < ActiveRecord::Base
   def path
     "#{Rails.root}/repos/#{name}"
   end
+
+  def format
+    "#{user}-#{repo}"
+  end
+
 end

@@ -14,6 +14,7 @@
 
 class Bounty < ActiveRecord::Base
   belongs_to :issue
+  has_one :repository, through: :issue
   belongs_to :issuer, class_name: 'Coder', foreign_key: 'issuer_id'
   belongs_to :claimant, class_name: 'Coder', foreign_key: 'claimant_id'
 

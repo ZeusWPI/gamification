@@ -1,10 +1,11 @@
 Rails.application.routes.draw do
+
   root 'leaderboard#index'
 
-  scope path: 'leaderboard', as: 'leaderboard' do
-    get '' => 'leaderboard#index'
-    get ':year' => 'leaderboard#by_year'
-    get ':year/:month' => 'leaderboard#by_month'
+  scope path: 'scoreboard', as: 'scoreboard' do
+    get ''             => 'scoreboard#index'
+    get ':year'        => 'scoreboard#by_year'
+    get ':year/:month' => 'scoreboard#by_month'
   end
 
   post 'payload', :to => 'webhooks#receive'
@@ -19,4 +20,8 @@ Rails.application.routes.draw do
     get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_session
   end
 
+  controller :repositories do
+    get 'repositories' => :index, as: 'index'
+    get ':user/:repo'  => :show, as: 'show'
+  end
 end
