@@ -22,7 +22,9 @@ class Repository < ActiveRecord::Base
   def clone
     # get url from github
     repo = $github.repos.get(user: user, repo: name)
-    `cd #{Rails.root}/repos && git clone #{repo.clone_url}`
+    token = Rails.application.secrets.github_token
+    url = repo.clone_url.sub 'github.com', "#{token}@github.com"
+    `cd #{Rails.root}/repos && git clone #{url}`
   end
 
   def pull

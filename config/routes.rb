@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  root 'leaderboard#index'
+  root 'scoreboard#index'
 
   scope path: 'scoreboard', as: 'scoreboard' do
     get ''             => 'scoreboard#index'
