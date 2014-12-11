@@ -21,7 +21,9 @@ Rails.application.routes.draw do
   end
 
   scope ':organisation' do
-    get ':repository' => 'repositories#show'
+    controller :repositories do
+      get ':repository' => :show, as: :show
+    end
   end
 
 end

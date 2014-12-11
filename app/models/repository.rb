@@ -3,7 +3,6 @@
 # Table name: repositories
 #
 #  id         :integer          not null, primary key
-#  user       :string(255)      not null
 #  name       :string(255)      not null
 #  created_at :datetime
 #  updated_at :datetime
@@ -40,7 +39,7 @@ class Repository < ActiveRecord::Base
   end
 
   def fetch_issues
-    $github.issues.list(user: user, repo: name, filter: 'all').each do |hash|
+    $github.issues.list(user: organisation.name, repo: name, filter: 'all').each do |hash|
       Issue.find_or_create_from_hash hash, self
     end
   end
@@ -54,7 +53,7 @@ class Repository < ActiveRecord::Base
     "#{organisation.name}/#{name}"
   end
 
-  #private
+  private
   def path
     "#{Rails.root}/repos/#{full_name}"
   end
