@@ -2,7 +2,7 @@ require 'faker'
 
 FactoryGirl.define do
   factory :repository do
-    user { Faker::Internet.user_name }
+    organisation
     name { Faker::Lorem.word }
   end
 end

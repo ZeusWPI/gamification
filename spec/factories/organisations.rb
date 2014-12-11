@@ -1,6 +1,8 @@
+require 'faker'
+
 FactoryGirl.define do
   factory :organisation do
-    name "MyString"
+    name { Faker::Internet.user_name }
   end
 
 end
