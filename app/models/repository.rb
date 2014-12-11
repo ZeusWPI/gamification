@@ -10,6 +10,9 @@
 #
 
 class Repository < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :name, use: :scoped, scope: :organisation
+
   has_many :issues
   has_many :commits
   belongs_to :organisation
