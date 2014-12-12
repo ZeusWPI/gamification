@@ -6,7 +6,7 @@ class CreateIssues < ActiveRecord::Migration
       t.string :title,          null: false, default: 'Untitled'
       t.references :issuer,     null: false
       t.references :repository, null: false, index: true
-      t.text :labels,           null: false, default: [].to_yaml
+      t.text :labels,           null: false
       t.text :body
       t.integer :assignee_id
       t.string :milestone
