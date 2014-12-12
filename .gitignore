@@ -44,3 +44,6 @@ build/
 
 # Ignore repository folder
 repos/*
+
+# Capistrano
+.capistrano
