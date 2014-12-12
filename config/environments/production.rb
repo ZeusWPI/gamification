@@ -82,8 +82,8 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Github accessor
-  $github = Github.new client_id: Rails.application.secrets.client_id,
-                       client_secret: Rails.application.secrets.client_secret,
+  $github = Github.new client_id: Rails.application.secrets.github_client_id,
+                       client_secret: Rails.application.secrets.github_client_secret,
                        auto_pagination: true
 
 end
