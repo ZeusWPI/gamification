@@ -80,10 +80,4 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-
-  # Github accessor
-  $github = Github.new client_id: Rails.application.secrets.github_client_id,
-                       client_secret: Rails.application.secrets.github_client_secret,
-                       auto_pagination: true
-
 end
