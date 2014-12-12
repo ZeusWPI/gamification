@@ -8,8 +8,8 @@
       <small><%= coder.full_name %></small>
     <% end %>
   </td>
-  <td><%= coder.total_score %></td>
-  <td><%= coder.commits.count %></td>
-  <td><%= coder.additions %></td>
-  <td><%= coder.deletions %></td>
+  <td class='score'><%= number_with_delimiter coder.total_score, delimiter: " " %></td>
+  <td class='commits'><%= number_with_delimiter coder.commits.count, delimiter: " " %></td>
+  <td class='additions'><%= number_with_delimiter coder.additions, delimiter: " " %></td>
+  <td class='deletions'><%= number_with_delimiter coder.deletions, delimiter: " " %></td>
 </tr>

@@ -28,4 +28,8 @@
     .username {
         font-weight: bold;
     }
+    .score, .commits, .additions, .deletions {
+        vertical-align: middle;
+        text-align: right;
+    }
 }
