@@ -28,7 +28,7 @@
           <% @issues.each do |issue| %>
             <% repo = issue.repository %>
             <tr id="issue-<%= issue.id %>", issue.repository>
-              <td><%= link_to repo.name, show_path(user: repo.user, repo: repo.name)%></td>
+              <td><%= link_to repo.name, show_path(organisation: repo.organisation.name, repository: repo.name)%></td>
               <td><%= link_to issue.title, issue.github_url %></td>
               <td class="total-bounty"><%= issue.total_bounty_value %></td>
               <td>

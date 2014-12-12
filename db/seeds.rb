@@ -6,9 +6,7 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-Rails.application.config.repositories.each do |hash|
-  repo = Repository.find_or_create_by user: hash[:user], name: hash[:name]
-  repo.clone
-  repo.register_commits
-  repo.fetch_issues
+Rails.application.config.organisations.each do |name|
+  org = Organisation.find_or_create_by name: name
+  org.fetch_repositories
 end

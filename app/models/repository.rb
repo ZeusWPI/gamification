@@ -3,7 +3,6 @@
 # Table name: repositories
 #
 #  id         :integer          not null, primary key
-#  user       :string(255)      not null
 #  name       :string(255)      not null
 #  created_at :datetime
 #  updated_at :datetime
@@ -12,19 +11,16 @@
 class Repository < ActiveRecord::Base
   has_many :issues
   has_many :commits
+  belongs_to :organisation
   has_many :bounties, through: :issues
   has_many :coders, -> { uniq }, through: :commits
-  validates :user, presence: true
+
   validates :name, presence: true
 
   require 'rugged'
 
   def clone
-    # get url from github
-    repo = $github.repos.get(user: user, repo: name)
-    token = Rails.application.secrets.github_token
-    url = repo.clone_url.sub 'github.com', "#{token}@github.com"
-    `cd #{Rails.root}/repos && git clone #{url}`
+    `mkdir -p #{path} && git clone #{clone_url} #{path}`
   end
 
   def pull
@@ -34,15 +30,16 @@ class Repository < ActiveRecord::Base
   def register_commits
     r_repo = rugged_repo
     walker = Rugged::Walker.new(r_repo)
+    # Push all heads
     r_repo.branches.each { |b| walker.push b.target_id }
     walker.push(r_repo.last_commit)
     walker.each do |commit|
-      Commit.register_rugged self, commit, reward_bounty_points: false
+      Commit.register_rugged self, commit, reward: false
     end
   end
 
   def fetch_issues
-    $github.issues.list(user: user, repo: name, filter: 'all').each do |hash|
+    $github.issues.list(user: organisation.name, repo: name, filter: 'all').each do |hash|
       Issue.find_or_create_from_hash hash, self
     end
   end
@@ -52,8 +49,16 @@ class Repository < ActiveRecord::Base
     Rugged::Repository.new(path)
   end
 
+  def full_name
+    "#{organisation.name}/#{name}"
+  end
+
   private
   def path
-    "#{Rails.root}/repos/#{name}"
+    "#{Rails.root}/repos/#{full_name}"
+  end
+
+  def clone_url
+    "https://#{Rails.application.secrets.github_token}@github.com/#{full_name}.git"
   end
 end

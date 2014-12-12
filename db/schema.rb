@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141203154945) do
+ActiveRecord::Schema.define(version: 20141211102907) do
 
   create_table "bounties", force: true do |t|
     t.integer  "value",         null: false
@@ -90,9 +90,15 @@ ActiveRecord::Schema.define(version: 20141203154945) do
   add_index "issues", ["repository_id", "number"], name: "index_issues_on_repository_id_and_number", unique: true
   add_index "issues", ["repository_id"], name: "index_issues_on_repository_id"
 
+  create_table "organisations", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "repositories", force: true do |t|
-    t.string   "user",       null: false
-    t.string   "name",       null: false
+    t.string   "name",            null: false
+    t.integer  "organisation_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

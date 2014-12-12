@@ -20,8 +20,10 @@ Rails.application.routes.draw do
     get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_session
   end
 
-  controller :repositories do
-    get 'repositories' => :index, as: 'index'
-    get ':user/:repo'  => :show, as: 'show'
+  scope ':organisation' do
+    controller :repositories do
+      get ':repository' => :show, as: :show
+    end
   end
+
 end
