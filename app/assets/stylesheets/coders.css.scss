@@ -9,11 +9,17 @@
 }
 
 #scoreboard {
-    .avatar {
-        border-radius: 50%;
+    .rank {
+        font-size: 20pt;
+        text-align: right;
+        width: 45px;
+        height: 45px;
+        vertical-align: middle;
     }
-
-    th, td {
-        text-align: center;
+    .avatar {
+        width: 45px;
+        img {
+            border-radius: 50%;
+        }
     }
 }
