@@ -6,5 +6,6 @@ class CreateRepositories < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_index :repositories, [:organisation_id, :name], unique: true
   end
 end

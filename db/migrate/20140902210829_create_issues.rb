@@ -16,7 +16,7 @@ class CreateIssues < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index(:issues, [:repository_id, :number], unique: true)
-    add_index(:issues, :github_url, unique: true)
+    add_index :issues, [:repository_id, :number], unique: true
+    add_index :issues, :github_url, unique: true
   end
 end

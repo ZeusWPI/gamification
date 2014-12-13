@@ -6,7 +6,7 @@ class CreateCommits < ActiveRecord::Migration
       t.string :sha,            null: false
       t.integer :additions,     null: false, default: 0
       t.integer :deletions,     null: false, default: 0
-      t.timestamp :date,        null: false
+      t.timestamp :date,        null: false, index: true
 
       t.timestamps
     end

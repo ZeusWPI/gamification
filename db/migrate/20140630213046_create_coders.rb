@@ -11,7 +11,7 @@ class CreateCoders < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index(:coders, :github_name, unique: true)
-    add_index(:coders, :github_url, unique: true)
+    add_index :coders, :github_name, unique: true
+    add_index :coders, :github_url, unique: true
   end
 end

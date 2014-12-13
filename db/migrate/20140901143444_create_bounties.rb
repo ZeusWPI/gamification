@@ -10,6 +10,6 @@ class CreateBounties < ActiveRecord::Migration
 
       t.timestamps
     end
-    add_index(:bounties, [:issue_id, :issuer_id], unique: true)
+    add_index :bounties, [:issue_id, :issuer_id], unique: true
   end
 end
