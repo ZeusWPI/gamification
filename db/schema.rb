@@ -60,8 +60,8 @@ ActiveRecord::Schema.define(version: 20141211102907) do
   add_index "commits", ["repository_id"], name: "index_commits_on_repository_id"
 
   create_table "git_identities", force: true do |t|
-    t.text     "name",       null: false
-    t.text     "email",      null: false
+    t.string   "name",       null: false
+    t.string   "email",      null: false
     t.integer  "coder_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 20141211102907) do
     t.string   "title",         default: "Untitled", null: false
     t.integer  "issuer_id",                          null: false
     t.integer  "repository_id",                      null: false
-    t.text     "labels",        default: "--- []\n", null: false
+    t.text     "labels",                             null: false
     t.text     "body"
     t.integer  "assignee_id"
     t.string   "milestone"

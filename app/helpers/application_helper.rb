@@ -8,4 +8,12 @@ module ApplicationHelper
       :notice  => 'alert-info'
     }[flash_type.to_sym] || flash_type.to_s
   end
+
+  def format_score score
+    number_with_delimiter score, delimiter: "&thinsp;".html_safe
+  end
+
+  def format_short_score score
+    number_to_human(score, delimiter: "&thinsp;".html_safe, separator: ".", format: "%n&thinsp;%u".html_safe, units: {thousand: "K", million: "M", billion: "G"})
+  end
 end
