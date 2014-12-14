@@ -10,7 +10,7 @@ module ApplicationHelper
   end
 
   def format_score score
-    number_with_delimiter score, delimiter: "&thinsp;".html_safe
+    number_with_delimiter score, delimiter: "&nbsp;".html_safe
   end
 
   def format_short_score score
