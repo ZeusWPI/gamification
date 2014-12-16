@@ -4,7 +4,9 @@ class BountiesController < ApplicationController
   respond_to :html, :coffee
 
   def index
-    @issues = Issue.where(closed_at: nil).sort_by { |issue| [issue.repository.name, issue.title] }
+    @issues = Issue.where(closed_at: nil).sort_by do |issue|
+      [issue.repository.name, issue.title]
+    end
   end
 
   # Todo split this
@@ -23,9 +25,9 @@ class BountiesController < ApplicationController
 
     # Find the bounty for this issue if it already exists
     @bounty = Bounty.find_or_create_by  issue_id: issue_id,
-                                        issuer: coder.id do |b|
-      b.value = 0
-    end
+                                        issuer: current_coder do |b|
+                                          b.value = 0
+                                        end
 
     # Check whether the user has got enought points to spend
     delta = new_value - @bounty.value
