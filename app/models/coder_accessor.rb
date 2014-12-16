@@ -29,7 +29,8 @@ class CoderAccessor
   # limit repository scope
   def repository repo
     @commits = commits.where repository: repo
-    @claimed_bounties = claimed_bounties.joins(:issue).where issues: { repository_id: repo }
+    @claimed_bounties = claimed_bounties.joins(:issue)
+      .where issues: { repository_id: repo }
     self
   end
 

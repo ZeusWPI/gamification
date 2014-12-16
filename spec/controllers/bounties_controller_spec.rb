@@ -1,10 +1,16 @@
 describe BountiesController, type: :controller do
+  #include Devise::TestHelpers
 
   before :each do
     @issue = create :issue
     @coder = create :coder, bounty_residual: 100
-    @request.env["devise.mapping"] = Devise.mappings[:coder]
     sign_in @coder
+  end
+
+  context 'unauthenticated user' do
+    it 'should not have access' do
+      get :index
+    end
   end
 
   context 'authenticated coder' do
@@ -36,6 +42,7 @@ describe BountiesController, type: :controller do
   end
 
   context 'dumb coder' do
+
     it 'cannot place bounties with insufficient bounty points' do
       put :update_or_create,
         bounty: { issue_id: @issue, absolute_value: 110 },
