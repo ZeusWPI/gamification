@@ -24,10 +24,6 @@
             <li class="list-group-item">Commits <span class="badge"><%= @coder.commits.count %></span></li>
             <li class="list-group-item">Line additions <span class="badge"><%= @coder.additions %></span></li>
             <li class="list-group-item">Line deletions <span class="badge"><%= @coder.deletions %></span></li>
-            <% if @coder == current_coder %>
-              <li class="list-group-item">Bounty residual<span class="badge"><%= @coder.abs_bounty_residual %></span></li>
-              <li class="list-group-item">Reward residual<span class="badge"><%= @coder.reward_residual %></span></li>
-            <%end%>
           </ul>
         </div>
       </div>
