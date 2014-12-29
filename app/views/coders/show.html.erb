@@ -4,8 +4,7 @@
   </div>
 <% else %>
   <div class="container-fluid">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
+    <div class="col-md-9 col-md-offset-1">
       <div class="page-header">
         <h1>
           <%= @coder.github_name %>
@@ -14,20 +13,19 @@
         </h1>
       </div>
 
-      <div class="well container-fluid">
-        <div class="col-md-5">
+      <div class="well row score-table">
+        <div class="col-md-4">
           <%= image_tag @coder.avatar_url, alt: @coder.github_name, id: 'profile_pic', width:184, height: 184 %>
         </div>
-        <div class="col-md-7">
-          <ul class="list-group">
-            <li class="list-group-item list-group-item-info">Score <span class="badge"><%= @coder.total_score %></span></li>
-            <li class="list-group-item">Commits <span class="badge"><%= @coder.commits.count %></span></li>
-            <li class="list-group-item">Line additions <span class="badge"><%= @coder.additions %></span></li>
-            <li class="list-group-item">Line deletions <span class="badge"><%= @coder.deletions %></span></li>
-          </ul>
+        <div class="col-md-8">
+          <span class="metric"><span class="number"><%= format_score @coder.total_score %></span> points</span>
+          <div class="row">
+            <div class="col-md-4" title="<%= @coder.commits.count %> commits"><span class="metric"><span class="number"><%= format_short_score @coder.commits.count %></span><br> commits</span></div>
+            <div class="col-md-4" title="<%= @coder.additions %> commits"><span class="metric"><span class="number"><%= format_short_score @coder.additions %></span><br> additions</span></div>
+            <div class="col-md-4" title="<%= @coder.commits.deletions %> commits"><span class="metric"><span class="number"><%= format_short_score @coder.deletions %></span><br> deletions</span></div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="col-md-2"></div>
   </div>
 <% end %>

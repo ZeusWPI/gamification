@@ -3,11 +3,42 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 #profile_pic {
-    max-width: 100%
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
+}
+.number {
+    font-weight:lighter;
+    font-size: 200%;
+}
+.metric {
+    font-size: 18pt;
+}
+.score-table {
+    text-align: center;
 }
 
 #scoreboard {
-    th, td {
-        text-align: center;
+    .rank {
+        font-size: 20pt;
+        text-align: right;
+        width: 45px;
+        height: 45px;
+        vertical-align: middle;
+    }
+    .avatar {
+        width: 45px;
+        img {
+            border-radius: 50%;
+        }
+    }
+    .name {
+        vertical-align: middle;
+    }
+    .username {
+        font-weight: bold;
+    }
+    .score, .commits, .additions, .deletions {
+        vertical-align: middle;
+        text-align: right;
     }
 }
