@@ -58,6 +58,7 @@ class Repository < ActiveRecord::Base
     if not hook_id
       resp = $github.repos.hooks.create user: organisation.name, repo: name,
         name: 'web', 
+        events: [ 'push', 'issues' ],
         config: { url: Rails.application.config.url + 
                                 Rails.application.routes.url_helpers.payload_path
         }
