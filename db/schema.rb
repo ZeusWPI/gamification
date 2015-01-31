@@ -99,8 +99,11 @@ ActiveRecord::Schema.define(version: 20141211102907) do
   create_table "repositories", force: true do |t|
     t.string   "name",            null: false
     t.integer  "organisation_id", null: false
+    t.integer  "hook_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "repositories", ["organisation_id", "name"], name: "index_repositories_on_organisation_id_and_name", unique: true
 
 end

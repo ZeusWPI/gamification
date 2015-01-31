@@ -22,6 +22,9 @@ module Gamification
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
+    # website url (required for setting webhooks)
+    config.url = 'http://16d1b369.ngrok.com'
+
     # organisations to track
     config.organisations = [
       'ZeusWPI'

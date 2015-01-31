@@ -3,6 +3,7 @@ class CreateRepositories < ActiveRecord::Migration
     create_table :repositories do |t|
       t.string :name, null: false
       t.references :organisation, null: false
+      t.integer :hook_id
 
       t.timestamps
     end

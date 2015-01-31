@@ -19,6 +19,7 @@ class Repository < ActiveRecord::Base
 
   require 'rugged'
 
+  # Git operations
   def clone
     `mkdir -p #{path} && git clone #{clone_url} #{path}`
   end
@@ -51,6 +52,24 @@ class Repository < ActiveRecord::Base
 
   def full_name
     "#{organisation.name}/#{name}"
+  end
+
+  def set_webhook
+    if not hook_id
+      resp = $github.repos.hooks.create user: organisation.name, repo: name,
+        name: 'web', 
+        config: { url: Rails.application.config.url + 
+                                Rails.application.routes.url_helpers.payload_path
+        }
+      update hook_id: resp.id
+    end
+  end
+
+  def delete_webhook
+    if hook_id
+      $github.repos.hooks.delete user: organisation.name, repo: name, id: hook_id
+      update hook_id: nil
+    end
   end
 
   private
