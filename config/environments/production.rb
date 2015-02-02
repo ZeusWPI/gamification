@@ -32,9 +32,6 @@ Rails.application.configure do
   # Generate digests for assets URLs.
   config.assets.digest = true
 
-  # Do not make the asset pipeline refer to root url
-  config.assets.prefix = ENV['RAILS_RELATIVE_URL_ROOT']
-
   # `config.assets.precompile` has moved to config/initializers/assets.rb
 
   # Specifies the header that your server uses for sending files.
