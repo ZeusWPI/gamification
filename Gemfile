@@ -51,8 +51,9 @@ end
 
 # Deployment
 group :deployment do
-  gem 'capistrano', '~> 3.2'
-  gem 'capistrano-rails', '~> 1.1'
+  gem 'capistrano'
+  gem 'capistrano-rails'
+  gem 'capistrano-passenger'
   gem 'capistrano-rvm'
   gem 'capistrano-rails-collection'
 end
