@@ -54,6 +54,7 @@ group :deployment do
   gem 'capistrano', '~> 3.2'
   gem 'capistrano-rails', '~> 1.1'
   gem 'capistrano-rvm'
+  gem 'capistrano-rails-collection'
 end
 
 group :production do
