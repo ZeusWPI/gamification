@@ -1,0 +1,21 @@
+namespace :webhooks do
+
+  desc 'Setup github webhooks'
+  task :setup do
+    on roles(:app) do
+      within current_path do
+        execute :rake, 'webhooks:create RAILS_ENV=production'
+      end
+    end
+  end
+
+  desc 'Clear github webhooks'
+  task :delete do
+    on roles(:app) do
+      within current_path do
+        execute :rake, 'webhooks:delete RAILS_ENV=production'
+      end
+    end
+  end
+
+end

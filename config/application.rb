@@ -23,7 +23,7 @@ module Gamification
     # config.i18n.default_locale = :de
 
     # website url (required for setting webhooks)
-    config.url = 'http://16d1b369.ngrok.com'
+    config.url = 'http://zeus.ugent.be/game'
 
     # organisations to track
     config.organisations = [
