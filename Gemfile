@@ -55,6 +55,7 @@ group :deployment do
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'capistrano-rvm'
+  gem 'capistrano-rails-collection'
 end
 
 group :production do
