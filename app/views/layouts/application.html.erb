@@ -38,7 +38,7 @@
                     <li><%= link_to raw('<i class="fa fa-user"></i> ' + current_coder.github_name), current_coder %></li>
                     <li><%= link_to raw('<i class="fa fa-power-off"></i>'), destroy_session_path, :title => "Log out" %></li>
                 <% else %>
-                <li><%= link_to raw('<i class="fa fa-power-off"></i>'), coder_omniauth_authorize_path(:github), :title => "Log in" %></li>
+                <li><%= link_to raw('<i class="fa fa-key"></i>'), coder_omniauth_authorize_path(:github), :title => "Log in" %></li>
                 <% end %>
             </ul>
           </div>
