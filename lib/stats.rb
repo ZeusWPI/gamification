@@ -7,9 +7,9 @@ module Stats
       instance_eval(&block)
     end
 
-    def get_stats target, stats
+    def get_stats target, stats, filters={}
       target = @targets[target].try do |t|
-        t.fetch @providers, stats
+        t.fetch @providers, stats, filters
       end
     end
 
@@ -55,8 +55,8 @@ module Stats
       @postproc = Proc.new(&block)
     end
 
-    def fetch provider, stats
-      res = provider.fetch_stats stats, &@group_by
+    def fetch provider, stats, filters
+      res = provider.fetch_stats stats, filters, &@group_by
       res = @merge.call(res) if @merge
       res = @postproc.call(res) if @postproc
       res
@@ -79,11 +79,11 @@ module Stats
       @providers = {}
     end
 
-    def fetch_stats stats, &group
+    def fetch_stats stats, filters, &group
       statmap = stats.group_by { |s| @providers[s] }
       statmap.delete nil # Cannot provide these stats
       # Fetch and merge stats
-      statmap.map {|p, ss| p.fetch_stats(ss, &group)}.reduce do |a,b|
+      statmap.map {|p, ss| p.fetch_stats(ss, filters, &group)}.reduce do |a,b|
         (a.keys | b.keys).inject({}) do |hash, key|
           hash.update key => a[key].merge(b[key])
         end
@@ -111,8 +111,8 @@ module Stats
       instance_eval(&block)
     end
 
-    def fetch_stats stats, &group
-      hash = query.group_by(&wrap_proc(&group))
+    def fetch_stats stats, filters, &group
+      hash = (query filters).group_by(&wrap_proc(&group))
       hash.default = get_stats stats, []
       # compute stats
       hash.each do |key, records|
@@ -130,9 +130,17 @@ module Stats
       @statmap[name] = Proc.new(&block)
     end
 
-    def query
+    def query filters
+      # Get required links
       links = @attrmap.values.map(&:link).compact
-      @model.includes(links)
+
+      # Translate attribute names
+      filters = filters.inject({}) do |hash, (attr, value)|
+        pair = @attrmap[attr].try(:get_pair, value) || { attr => value }
+        hash.update pair
+      end
+
+      @model.includes(links).where(filters)
     end
 
     def wrap_proc &block
@@ -159,6 +167,12 @@ module Stats
     def get record
       record = record.send(@link) if @link
       record.send(@target)
+    end
+
+    def get_pair value
+      pair = { @target => value }
+      pair = { @link.to_s.pluralize => pair } if @link
+      pair
     end
   end
 
@@ -200,12 +214,15 @@ module Stats
       end
 
       provider Commit do
+        attribute 'repo_name', 'name', through: :repository
         stat 'commits'    do |cs| cs.count end
         stat 'additions'  do |cs| cs.map(&:additions).sum end
         stat 'deletions'  do |cs| cs.map(&:deletions).sum end
       end
 
       provider Bounty do
+        attribute 'repo_name', 'name', through: :repository
+
         attribute :date, :claimed_at
         attribute :coder_id, :claimant_id
         attribute :repository_id, through: :issue
