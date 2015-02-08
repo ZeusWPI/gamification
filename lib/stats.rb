@@ -112,7 +112,7 @@ module Stats
     end
 
     def fetch_stats stats, &group
-      hash = @model.all.group_by(&wrap_proc(&group))
+      hash = query.group_by(&wrap_proc(&group))
       hash.default = get_stats stats, []
       # compute stats
       hash.each do |key, records|
@@ -122,12 +122,17 @@ module Stats
 
     private
 
-    def attribute name, target
-      @attrmap[name] = target
+    def attribute name, target=name, through: nil
+      @attrmap[name] = Attribute.new name, target, through: through
     end
 
     def stat name, &block
       @statmap[name] = Proc.new(&block)
+    end
+
+    def query
+      links = @attrmap.values.map(&:link).compact
+      @model.includes(links)
     end
 
     def wrap_proc &block
@@ -142,18 +147,34 @@ module Stats
 
   end
 
+  class Attribute
+    attr_reader :name, :link
+
+    def initialize name, target, through: nil
+      @name = name
+      @target = target
+      @link = through
+    end
+
+    def get record
+      record = record.send(@link) if @link
+      record.send(@target)
+    end
+  end
+
   class RecordWrapper
 
     def initialize provider
+      # delegate methods
       provider.model.attribute_names.each do |name|
         define_singleton_method name do
           @object.send(name)
         end
       end
-      # define the attrmap methods
-      provider.attrmap.each do |name, target|
+      # define attrmap methods
+      provider.attrmap.each do |name, attrib|
         define_singleton_method(name) do
-          @object.send(target)
+          attrib.get @object
         end
       end
     end
@@ -173,11 +194,23 @@ module Stats
   def self.test
     Stats::builder do
       target 'coder'
+      target 'repository'
+      target 'month' do
+        group_by { |a| a.date.try(&:month) }
+      end
 
       provider Commit do
         stat 'commits'    do |cs| cs.count end
         stat 'additions'  do |cs| cs.map(&:additions).sum end
-        stat :deletions   do |cs| cs.map(&:deletions).sum end
+        stat 'deletions'  do |cs| cs.map(&:deletions).sum end
+      end
+
+      provider Bounty do
+        attribute :date, :claimed_at
+        attribute :coder_id, :claimant_id
+        attribute :repository_id, through: :issue
+
+        stat 'claimed' do |bs| bs.map(&:claimed_value).sum end
       end
     end
   end
