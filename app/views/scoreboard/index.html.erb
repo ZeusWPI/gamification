@@ -1,0 +1,36 @@
+<div class="container-fluid">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <div class="page-header">
+      <h1>Scoreboard</h1>
+    </div>
+    <div class="table-responsive">
+        <table id="scoreboard" class="table table-striped">
+        <thead>
+            <tr>
+            <th></th>
+            <th></th>
+            <th>Contributor</th>
+            <th class="score">Score</th>
+            <th class="commits">Commits</th>
+            <th class="additions">Additions</th>
+            <th class="deletions">Deletions</th>
+            </tr>
+        </thead>
+        <tbody>
+        <%= render partial: 'coder', collection: @coders %>
+        </tbody>
+        </table>
+    </div>
+</div>
+
+<%#<script type='text/javascript'>%>
+<%#$.post('<%=data_path%>',
+    <%#data_params: {%>
+        <%#target: 'coder',%>
+        <%#stats: ['commits', 'additions', 'deletions']%>
+    <%#}}).success(function(coders) {%>
+        <%#$('#table').html(%>
+            <%#HandlebarsTemplates['codertable']({coders: coders}));%>
+<%#});%>
+<%#</script>%>

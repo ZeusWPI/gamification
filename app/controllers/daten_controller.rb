@@ -1,0 +1,2 @@
+class DatenController < ApplicationController
+end

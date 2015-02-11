@@ -93,3 +93,5 @@ gem 'jquery-turbolinks'
 group :dev do
   gem 'annotate'
 end
+
+gem 'datenfisch', path: '/data/src/datenfisch'

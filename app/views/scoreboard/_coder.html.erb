@@ -1,0 +1,17 @@
+<tr <% if coder_signed_in? && coder['id'] == current_coder.id %>class="info"<% end %>>
+  <td class='rank'><%= coder_counter + 1 %>.</td>
+  <td class='avatar'>
+    <%= image_tag coder['avatar_url'], alt: coder['github_name'], size: '45' %>
+  </td>
+  <td class='name'>
+    <%= link_to coder['github_name'], coder_path(coder['id']), class: "username" %>
+    <br>
+    <% unless coder['full_name'].blank? %>
+      <small><%= coder['full_name'] %></small>
+    <% end %>
+  </td>
+  <td class='score'><%= format_score Coder::score(coder)%></td>
+  <td class='commits'><%= format_score coder['commits'] %></td>
+  <td class='additions'><%= format_score coder['additions'] %></td>
+  <td class='deletions'><%= format_score coder['deletions'] %></td>
+</tr>
