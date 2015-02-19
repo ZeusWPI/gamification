@@ -94,4 +94,4 @@ group :dev do
   gem 'annotate'
 end
 
-gem 'datenfisch', path: '/data/src/datenfisch'
+gem 'datenfisch', git: 'https://github.com/Iasoon/datenfisch.git'

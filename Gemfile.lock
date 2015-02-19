@@ -1,5 +1,6 @@
-PATH
-  remote: /data/src/datenfisch
+GIT
+  remote: https://github.com/Iasoon/datenfisch.git
+  revision: 683741b3ca919b12303d682ac57e6eed0ceac993
   specs:
     datenfisch (0.0.1)
 
@@ -111,11 +112,6 @@ GEM
       multi_json (>= 1.7.5, < 2.0)
       nokogiri (~> 1.6.3)
       oauth2
-    handlebars_assets (0.18)
-      execjs (>= 1.2.9)
-      multi_json
-      sprockets (>= 2.0.3)
-      tilt
     hashie (3.3.2)
     hike (1.2.3)
     i18n (0.6.11)
@@ -271,7 +267,6 @@ DEPENDENCIES
   font-awesome-sass (~> 4.2.0)
   friendly_id
   github_api
-  handlebars_assets
   jbuilder (~> 1.2)
   jquery-rails
   jquery-turbolinks

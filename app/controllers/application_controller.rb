@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  Datavis = Datenfisch::build do
+  Datavis = Datenfisch::collector do
     target 'coder'
     target 'repository'
     target 'month' do
@@ -13,6 +13,8 @@ class ApplicationController < ActionController::Base
     provider Commit do
       attribute 'repo_name', 'name', through: :repository
       stat 'commits'    do |cs| cs.count end
+      #stat 'comimts', count
+      #stat 'deletions', sum(:deletions)
       stat 'additions'  do |cs| cs.map(&:additions).sum end
       stat 'deletions'  do |cs| cs.map(&:deletions).sum end
     end
@@ -26,11 +28,9 @@ class ApplicationController < ActionController::Base
 
       stat 'claimed' do |bs| bs.map(&:claimed_value).sum end
     end
+    stat 'changed', ['additions', 'deletions'] do additions + deletions end
+
+    stat 'score', ['changed', 'commits'] do changed + 10 * commits end
   end
 
-  protect_from_forgery :except => [:serve]
-  def serve
-    p params.require(:data_params).symbolize_keys
-    render json: Builder.get_stats(params.require(:data_params).symbolize_keys)
-  end
 end
