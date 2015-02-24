@@ -4,27 +4,41 @@
     <div class="page-header">
       <h1>Scoreboard</h1>
     </div>
-    <div class="">
-        <table id="scoreboard" class="table table-striped">
-        <thead>
-            <tr>
-            <th></th>
-            <th></th>
-            <th>Contributor</th>
-            <th class="score">Score</th>
-            <th class="commits">Commits</th>
-            <th class="additions">Additions</th>
-            <th class="deletions">Deletions</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-        </table>
+    <div>
+      <select class="form-control" onchange="load_month(this.value)">
+        <option value="1">One month ago</option>
+            <option value="2">Two months ago</option>
+            <option value="3">Three months ago</option>
+            <option value="4">Four months ago</option>
+            <option value="5">Five months ago</option>
+            <option value="24">All time</option>
+      </select>
     </div>
+    <table id="scoreboard" class="table table-striped">
+    <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th>Contributor</th>
+        <th class="score">Score</th>
+        <th class="commits">Commits</th>
+        <th class="additions">Additions</th>
+        <th class="deletions">Deletions</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+      </table>
 </div>
 
 <%= javascript_tag "
-    var today = new Date();
-    var lastMonth = new Date();
-    lastMonth.setMonth(lastMonth.getMonth()-1);
-    test('#{scoreboard_path}', {date: {timeframe_begin: lastMonth, timeframe_end: today}});" %>
+    load_month(1);
+    function load_month(month){
+      var today = new Date();
+      var lastMonth = new Date();
+      lastMonth.setMonth(lastMonth.getMonth()-month);
+      fetch_scoreboard('#{scoreboard_path}', {date: {timeframe_begin: lastMonth, timeframe_end: today}});
+    }
+
+
+"%>

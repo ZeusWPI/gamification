@@ -1,6 +1,6 @@
-@test = (url, filters) ->
+@fetch_scoreboard = (url, filters) ->
   $.post(
     url
     { filters: filters }
-  ).success (rows) -> 
+  ).success (rows) ->
     $('#scoreboard tbody').html(rows)
