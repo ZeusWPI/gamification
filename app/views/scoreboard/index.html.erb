@@ -6,12 +6,12 @@
     </div>
     <div>
       <select class="form-control" onchange="load_month(this.value)">
-        <option value="1">One month ago</option>
-            <option value="2">Two months ago</option>
-            <option value="3">Three months ago</option>
-            <option value="4">Four months ago</option>
-            <option value="5">Five months ago</option>
-            <option value="24">All time</option>
+        <option value="0">Today</option>
+            <option value="1">This week</option>
+            <option value="2">This month</option>
+            <option value="3">Six months ago</option>
+            <option value="4">This year</option>
+            <option value="5">All time</option>
       </select>
     </div>
     <table id="scoreboard" class="table table-striped">
@@ -32,12 +32,15 @@
 </div>
 
 <%= javascript_tag "
-    load_month(1);
-    function load_month(month){
+    load_month(0);
+    function load_month(time){
+      offsets = [[1,0,0],[7,0,0],[0,1,0],[0,6,0],[0,0,1],[0,0,100]];
       var today = new Date();
-      var lastMonth = new Date();
-      lastMonth.setMonth(lastMonth.getMonth()-month);
-      fetch_scoreboard('#{scoreboard_path}', {date: {timeframe_begin: lastMonth, timeframe_end: today}});
+      var lastTime = new Date();
+      lastTime.setDate(lastTime.getDate() - offsets[time][0]);
+      lastTime.setMonth(lastTime.getMonth() - offsets[time][1]);
+      lastTime.setFullYear(lastTime.getFullYear() - offsets[time][2]);
+      fetch_scoreboard('#{scoreboard_path}', {date: {timeframe_begin: lastTime, timeframe_end: today}});
     }
 
 
