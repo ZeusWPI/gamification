@@ -39,6 +39,8 @@ class Issue < ActiveRecord::Base
   end
 
   def self.find_or_create_from_hash json, repo
+    puts "repository:"
+    p repo.inspect
     Issue.find_or_create_by number: json['number'],
                             repository: repo do |issue|
       issue.github_url = json['html_url']

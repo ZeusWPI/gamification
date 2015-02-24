@@ -14,7 +14,9 @@ class WebhooksController < ApplicationController
 
   class Hooker
     def self.push(json)
-      repo = find_repository json
+      org = Organisation.find_by name: json['repository']['owner']['name']
+      repo = Repository.find_by name: json['repository']['name'],
+                                organisation: org
       repo.pull
 
       json['commits'].each do |commit|
@@ -24,7 +26,9 @@ class WebhooksController < ApplicationController
 
     def self.issues(json)
       # get issue
-      repo = find_repository json
+      org = Organisation.find_by name: json['repository']['owner']['login']
+      repo = Repository.find_by name: json['repository']['name'],
+                                organisation: org
       issue = Issue.find_or_create_from_hash json['issue'], repo
 
       case json['action']
@@ -38,14 +42,6 @@ class WebhooksController < ApplicationController
         when 'unassigned'
           issue.update! assignee: nil
       end
-    end
-
-    private
-    def self.find_repository json
-      repo_name  = json['repository']['name']
-      org_name = json['repository']['owner']['name']
-      org = Organisation.find_by name: org_name
-      Repository.find_by name: repo_name, organisation: org
     end
   end
 end
