@@ -20,6 +20,15 @@ class Repository < ActiveRecord::Base
   require 'rugged'
 
   # Git operations
+  def self.register org, name
+    repo = Repository.find_or_create_by organisation: org, name: name do |r|
+      r.clone
+    end
+    repo.pull
+    repo.register_commits
+    repo.fetch_issues
+  end
+
   def clone
     `mkdir -p #{path} && git clone #{clone_url} #{path}`
   end

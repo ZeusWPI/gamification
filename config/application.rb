@@ -23,11 +23,18 @@ module Gamification
     # config.i18n.default_locale = :de
 
     # website url (required for setting webhooks)
-    config.url = 'http://zeus.ugent.be/game'
+    config.url = 'http://7653d57d.ngrok.com/'
 
     # organisations to track
     config.organisations = [
-      'ZeusWPI'
+      # 'name'
+      #'ZeusWPI'
+    ]
+    # individual repositories to track
+
+    config.repositories = [
+      # { name: 'name', org: 'organisation' }
+      { name: 'gamification-test', org: 'ZeusWPI'}
     ]
 
     # Total bounty value
