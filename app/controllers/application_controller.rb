@@ -6,15 +6,13 @@ class ApplicationController < ActionController::Base
   Datavis = Datenfisch::collector do
     target 'coder'
     target 'repository'
-    target 'month' do
-      group_by { |a| a.date.try(&:month) }
-    end
+    #target 'month' do
+      #group_by { |a| a.date.try(&:month) }
+    #end
 
     provider Commit do
       attribute 'repo_name', 'name', through: :repository
       stat 'commits'    do |cs| cs.count end
-      #stat 'comimts', count
-      #stat 'deletions', sum(:deletions)
       stat 'additions'  do |cs| cs.map(&:additions).sum end
       stat 'deletions'  do |cs| cs.map(&:deletions).sum end
     end
@@ -28,6 +26,7 @@ class ApplicationController < ActionController::Base
 
       stat 'claimed' do |bs| bs.map(&:claimed_value).sum end
     end
+
     stat 'changed', ['additions', 'deletions'] do additions + deletions end
 
     stat 'score', ['changed', 'commits'] do changed + 10 * commits end

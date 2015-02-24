@@ -4,7 +4,7 @@
     <div class="page-header">
       <h1>Scoreboard</h1>
     </div>
-    <div class="table-responsive">
+    <div class="">
         <table id="scoreboard" class="table table-striped">
         <thead>
             <tr>
@@ -18,19 +18,13 @@
             </tr>
         </thead>
         <tbody>
-        <%= render partial: 'coder', collection: @coders %>
         </tbody>
         </table>
     </div>
 </div>
 
-<%#<script type='text/javascript'>%>
-<%#$.post('<%=data_path%>',
-    <%#data_params: {%>
-        <%#target: 'coder',%>
-        <%#stats: ['commits', 'additions', 'deletions']%>
-    <%#}}).success(function(coders) {%>
-        <%#$('#table').html(%>
-            <%#HandlebarsTemplates['codertable']({coders: coders}));%>
-<%#});%>
-<%#</script>%>
+<%= javascript_tag "
+    var today = new Date();
+    var lastMonth = new Date();
+    lastMonth.setMonth(lastMonth.getMonth()-1);
+    test('#{scoreboard_path}', {date: {timeframe_begin: lastMonth, timeframe_end: today}});" %>

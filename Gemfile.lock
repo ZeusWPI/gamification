@@ -1,6 +1,5 @@
-GIT
-  remote: https://github.com/Iasoon/datenfisch.git
-  revision: 683741b3ca919b12303d682ac57e6eed0ceac993
+PATH
+  remote: /home/iasoon/src/datenfisch
   specs:
     datenfisch (0.0.1)
 
