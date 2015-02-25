@@ -30,12 +30,6 @@ describe Bounty do
     expect(@issuer.bounty_residual).to eq(100)
   end
 
-  it 'scales its absolute value with set limit' do
-    limit = Rails.application.config.total_bounty_value
-    @bounty.update value: limit * 2
-    expect(@bounty.absolute_value).to eq(limit)
-  end
-
   context 'claimed by issuer' do
 
     before :each do
@@ -78,6 +72,27 @@ describe Bounty do
       @bounty.claim
       expect(@bounty.claimant).to eq(@claimant)
     end
+  end
+
+  context 'with scaled value' do
+
+    before :each do
+      @limit = Rails.application.config.total_bounty_value
+      @bounty.update value: @limit * 2
+      @assignee = create :coder
+      @bounty.issue.assignee = @assignee
+    end
+
+    it 'has a scaled value' do
+      @bounty.update value: @limit * 2
+      expect(@bounty.absolute_value).to eq(@limit)
+    end
+
+    it 'rewards a scaled value' do
+      @bounty.claim
+      expect(@assignee.reward_residual).to eq(@limit)
+    end
+
   end
 
 end

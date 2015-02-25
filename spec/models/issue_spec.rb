@@ -37,10 +37,7 @@ describe Issue do
     end
 
     it 'claims bounties when closed' do
-      p @bounty
       @issue.close
-      p @bounty
-      #@bounty.claim
       @bounty.reload
       expect(@bounty.claimed_at).to be
       expect(@bounty.claimant).to eq(@claimant)
