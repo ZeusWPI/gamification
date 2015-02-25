@@ -5,16 +5,17 @@
 #  id            :integer          not null, primary key
 #  github_url    :string(255)      not null
 #  number        :integer          not null
-#  open          :boolean          not null
 #  title         :string(255)      default("Untitled"), not null
-#  body          :text(255)
 #  issuer_id     :integer          not null
+#  repository_id :integer          not null
 #  labels        :text             not null
+#  body          :text
 #  assignee_id   :integer
 #  milestone     :string(255)
+#  opened_at     :datetime         not null
+#  closed_at     :datetime
 #  created_at    :datetime
 #  updated_at    :datetime
-#  repository_id :integer
 #
 
 describe Issue do
@@ -30,13 +31,19 @@ describe Issue do
   context 'with bounties' do
 
     before :each do
-      create :bounty, issue: @issue
-      @issue.assignee = create :coder
+      @claimant = create :coder
+      @bounty = create :bounty, issue: @issue
+      @issue.assignee = @claimant
     end
 
     it 'claims bounties when closed' do
+      p @bounty
       @issue.close
-      expect(@issue.bounties.map(&:claimant)).to all(be)
+      p @bounty
+      #@bounty.claim
+      @bounty.reload
+      expect(@bounty.claimed_at).to be
+      expect(@bounty.claimant).to eq(@claimant)
     end
   end
 end

@@ -5,16 +5,17 @@
 #  id            :integer          not null, primary key
 #  github_url    :string(255)      not null
 #  number        :integer          not null
-#  open          :boolean          not null
 #  title         :string(255)      default("Untitled"), not null
-#  body          :text(255)
 #  issuer_id     :integer          not null
+#  repository_id :integer          not null
 #  labels        :text             not null
+#  body          :text
 #  assignee_id   :integer
 #  milestone     :string(255)
+#  opened_at     :datetime         not null
+#  closed_at     :datetime
 #  created_at    :datetime
 #  updated_at    :datetime
-#  repository_id :integer
 #
 
 class Issue < ActiveRecord::Base
@@ -33,7 +34,7 @@ class Issue < ActiveRecord::Base
   end
 
   def close time: Time.now
-    bounties.where.not(claimed_at: nil).each { |b| b.claim }
+    bounties.where(claimed_at: nil).each(&:claim)
     update! closed_at: time
     save!
   end

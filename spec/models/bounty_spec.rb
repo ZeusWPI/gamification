@@ -2,12 +2,15 @@
 #
 # Table name: bounties
 #
-#  id         :integer          not null, primary key
-#  value      :integer          not null
-#  issue_id   :integer          not null
-#  coder_id   :integer          not null
-#  created_at :datetime
-#  updated_at :datetime
+#  id            :integer          not null, primary key
+#  value         :integer          not null
+#  issue_id      :integer          not null
+#  issuer_id     :integer          not null
+#  claimant_id   :integer
+#  claimed_value :integer
+#  claimed_at    :datetime
+#  created_at    :datetime
+#  updated_at    :datetime
 #
 
 describe Bounty do
@@ -66,6 +69,13 @@ describe Bounty do
     end
 
     it 'sets claimant' do
+      expect(@bounty.claimant).to eq(@claimant)
+    end
+
+    it 'cannot be claimed again' do
+      contender = create :coder
+      @issue.assignee = contender
+      @bounty.claim
       expect(@bounty.claimant).to eq(@claimant)
     end
   end
