@@ -33,7 +33,7 @@ class Issue < ActiveRecord::Base
   end
 
   def close time: Time.now
-    bounties.each { |b| b.claim }
+    bounties.where.not(claimed_at: nil).each { |b| b.claim }
     update! closed_at: time
     save!
   end

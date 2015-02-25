@@ -32,6 +32,7 @@ class Bounty < ActiveRecord::Base
   end
 
   def claim time: Time.now
+    return if claimed_at # This bounty has already been claimed
     if issue.assignee && issue.assignee != issuer
       # Mark bounty
       self.claimant = issue.assignee
