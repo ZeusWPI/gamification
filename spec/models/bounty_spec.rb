@@ -2,12 +2,15 @@
 #
 # Table name: bounties
 #
-#  id         :integer          not null, primary key
-#  value      :integer          not null
-#  issue_id   :integer          not null
-#  coder_id   :integer          not null
-#  created_at :datetime
-#  updated_at :datetime
+#  id            :integer          not null, primary key
+#  value         :integer          not null
+#  issue_id      :integer          not null
+#  issuer_id     :integer          not null
+#  claimant_id   :integer
+#  claimed_value :integer
+#  claimed_at    :datetime
+#  created_at    :datetime
+#  updated_at    :datetime
 #
 
 describe Bounty do
@@ -25,12 +28,6 @@ describe Bounty do
   it 'refunds bounty points when issue was not claimed' do
     @bounty.claim
     expect(@issuer.bounty_residual).to eq(100)
-  end
-
-  it 'scales its absolute value with set limit' do
-    limit = Rails.application.config.total_bounty_value
-    @bounty.update value: limit * 2
-    expect(@bounty.absolute_value).to eq(limit)
   end
 
   context 'claimed by issuer' do
@@ -68,6 +65,34 @@ describe Bounty do
     it 'sets claimant' do
       expect(@bounty.claimant).to eq(@claimant)
     end
+
+    it 'cannot be claimed again' do
+      contender = create :coder
+      @issue.assignee = contender
+      @bounty.claim
+      expect(@bounty.claimant).to eq(@claimant)
+    end
+  end
+
+  context 'with scaled value' do
+
+    before :each do
+      @limit = Rails.application.config.total_bounty_value
+      @bounty.update value: @limit * 2
+      @assignee = create :coder
+      @bounty.issue.assignee = @assignee
+    end
+
+    it 'has a scaled value' do
+      @bounty.update value: @limit * 2
+      expect(@bounty.absolute_value).to eq(@limit)
+    end
+
+    it 'rewards a scaled value' do
+      @bounty.claim
+      expect(@assignee.reward_residual).to eq(@limit)
+    end
+
   end
 
 end

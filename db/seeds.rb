@@ -10,3 +10,8 @@ Rails.application.config.organisations.each do |name|
   org = Organisation.find_or_create_by name: name
   org.fetch_repositories
 end
+
+Rails.application.config.repositories.each do |repo|
+  org = Organisation.find_or_create_by name: repo[:org]
+  Repository.register org, repo[:name]
+end

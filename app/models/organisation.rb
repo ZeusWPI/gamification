@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: organisations
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#
+
 class Organisation < ActiveRecord::Base
   has_many :repositories
   validates :name, presence: true
@@ -5,13 +15,7 @@ class Organisation < ActiveRecord::Base
   def fetch_repositories
     repos = $github.repos.list user: name
     repos.each do |json|
-      repo = Repository.find_or_create_by organisation: self, name: json.name do |r|
-        # Only clone a new repo
-        r.clone
-      end
-      repo.pull
-      repo.register_commits
-      repo.fetch_issues
+      Repository.register self, json.name
     end
   end
 end
