@@ -5,9 +5,10 @@ class ScoreboardController < ApplicationController
   def rows
     p parse_params(params.require('filters'))
 
-    @coders = Datavis.get_stats :coder,
-      ['commits', 'additions', 'deletions', 'claimed'],
-      parse_params(params.require('filters').to_hash)
+    @coders = Datavis.get_stats target: 'coder',
+      stats: ['commits', 'additions', 'deletions', 'claimed']
+      #filters: parse_params(params.require('filters').to_hash)
+
     @coders.sort_by! {|c| Coder::score(c)}.reverse!
     render partial: 'rows'
   end

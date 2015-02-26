@@ -69,6 +69,10 @@ class Coder < ActiveRecord::Base
     end
   end
 
+  def self.score(stats)
+    10 * stats['commits'] + stats['additions']
+  end
+
   private
     def clear_caches
       BountyPoints::expire_coder_bounty_points

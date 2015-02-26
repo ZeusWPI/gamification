@@ -1,0 +1,51 @@
+<div class="container-fluid">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <div class="page-header">
+      <h1>Scoreboard</h1>
+    </div>
+    <button type="button" class="btn pull-right glyphicon glyphicon-collapse-down" data-toggle="collapse" data-target="#filter" id="toggle-button"></button>
+    <div class="collapse" id="filter">
+      <p>Filters</p>
+      <select class="form-control pull-right" onchange="load_month(this.value)">
+        <option value="0">Today</option>
+        <option value="1">This week</option>
+        <option value="2">This month</option>
+        <option value="3">Six months ago</option>
+        <option value="4">This year</option>
+        <option value="5" selected="selected">All time</option>
+      </select>
+    </div>
+    <table id="scoreboard" class="table table-striped">
+    <thead>
+        <tr>
+        <th></th>
+        <th></th>
+        <th>Contributor</th>
+        <th class="score">Score</th>
+        <th class="commits">Commits</th>
+        <th class="additions">Additions</th>
+        <th class="deletions">Deletions</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+      </table>
+</div>
+
+<%= javascript_tag "
+    $('#toggle-button').click(function(){
+      $('#toggle-button').toggleClass('glyphicon-collapse-down');
+      $('#toggle-button').toggleClass('glyphicon-collapse-up');
+    });
+    load_month(5);
+    function load_month(time){
+      offsets = [[1,0,0],[7,0,0],[0,1,0],[0,6,0],[0,0,1],[0,0,100]];
+      var today = new Date();
+      var lastTime = new Date();
+      lastTime.setDate(lastTime.getDate() - offsets[time][0]);
+      lastTime.setMonth(lastTime.getMonth() - offsets[time][1]);
+      lastTime.setFullYear(lastTime.getFullYear() - offsets[time][2]);
+      fetch_scoreboard('#{scoreboard_path}', {date: {timeframe_begin: lastTime, timeframe_end: today}});
+    }
+"%>
