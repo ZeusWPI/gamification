@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/Iasoon/datenfisch.git
+  revision: 98b01e66aa801f6aead0f2c1fd296eaa5e1192f4
+  specs:
+    datenfisch (0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -254,6 +260,7 @@ DEPENDENCIES
   capistrano-rvm
   coffee-rails (~> 4.0.0)
   coveralls
+  datenfisch!
   devise
   factory_girl_rails
   faker

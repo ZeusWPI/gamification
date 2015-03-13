@@ -55,7 +55,7 @@ describe Coder do
     end
 
     it 'has a correct score' do
-      expect(@coder.total_score).to eq(72)
+      expect(@coder.score).to eq(72)
     end
   end
 
@@ -69,7 +69,7 @@ describe Coder do
     end
 
     it 'has a correct score' do
-      expect(@coder.total_score).to eq(100)
+      expect(@coder.score).to eq(100)
     end
 
     it 'was granted reward points' do

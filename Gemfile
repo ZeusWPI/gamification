@@ -93,3 +93,6 @@ gem 'jquery-turbolinks'
 group :dev do
   gem 'annotate'
 end
+
+# Use datenfisch
+gem 'datenfisch', :git => 'git://github.com/Iasoon/datenfisch.git'

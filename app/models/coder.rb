@@ -16,6 +16,7 @@
 
 class Coder < ActiveRecord::Base
   extend FriendlyId
+  extend Datenfisch::Model
   friendly_id :github_name
 
   devise :omniauthable, omniauth_providers: [:github]
@@ -27,28 +28,20 @@ class Coder < ActiveRecord::Base
   has_many :commits
   after_save :clear_caches
 
+  include Schwarm
+  stat :additions, CommitFisch.additions
+  stat :deletions, CommitFisch.deletions
+  stat :commit_count, CommitFisch.count
+  stat :changes, additions + deletions
+  stat :claimed_value, BountyFisch.claimed_value
+  stat :score, commit_count * 10 + additions + claimed_value
+
   def reward loc: 0, bounty: 0, other: 0, options: {}
     self.other_score += other
     self.reward_residual += loc + other + bounty
     if options.fetch(:reward_bounty_points, true)
       self.bounty_residual += loc + bounty 
     end
-  end
-
-  def accessor
-    CoderAccessor.new self
-  end
-
-  def additions
-    accessor.additions
-  end
-
-  def deletions
-    accessor.deletions
-  end
-
-  def total_score
-    accessor.total_score
   end
 
   def abs_bounty_residual

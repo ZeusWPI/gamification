@@ -3,9 +3,8 @@ Rails.application.routes.draw do
   root 'scoreboard#index'
 
   scope path: 'scoreboard', as: 'scoreboard' do
-    get ''             => 'scoreboard#index'
-    get ':year'        => 'scoreboard#by_year'
-    get ':year/:month' => 'scoreboard#by_month'
+    get '' => 'scoreboard#table'
+    post '' => 'scoreboard#rows'
   end
 
   post 'payload', :to => 'webhooks#receive'

@@ -1,28 +1,45 @@
 class ScoreboardController < ApplicationController
-  def index
-    @coders = Coder.all
-    render_scoreboard 'scoreboard'
+
+  def table
   end
 
-  def by_year
-    datestring = params[:year]
-    year = DateTime.new(datestring.to_i).all_year
-    render_scoreboard_by_date datestring, year
-  end
+  def rows
+    @coders = Coder.with_stats(:additions, :deletions, :commit_count, :score)
 
-  def by_month
-    datestring = params.values_at(:month, :year).join(' ')
-    month = DateTime.parse(datestring).all_month
-    render_scoreboard_by_date datestring, month
+    # TODO: whitelist filters
+    if params[:filters]
+      filters = parse_params params[:filters].to_h
+      @coders = @coders.where(filters)
+    end
+
+    @coders = @coders.to_a.sort_by(&:score).reverse
+    p @coders.inspect
+
+    render partial: 'rows'
   end
 
   private
-  def render_scoreboard_by_date datestring, date
-    @coders = Coder.all.map { |c| c.accessor.date date }
-    render_scoreboard "Scoreboard - #{datestring}"
+  def parse_params hash
+    hash.each do |key, value|
+      if value.is_a? Hash
+        hash[key] = parse_param value
+      end
+    end
   end
 
-  def render_scoreboard title
-    render 'scoreboard', locals: { title: title }
+  def parse_param hash
+    ParamConverters.each do |keys, block|
+      if hash.keys == keys
+        return block.yield(*keys.map {|k| hash[k]})
+      end
+    end
+    hash
   end
+
+  ParamConverters = {
+    ['timeframe_begin', 'timeframe_end'] => proc do |b, e|
+      Range.new DateTime.parse(b), DateTime.parse(e)
+    end
+  }
+
 end

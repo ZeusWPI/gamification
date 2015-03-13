@@ -1,0 +1,14 @@
+module Schwarm
+  CommitFisch = Datenfisch.provider Commit do
+    stat :additions, sum(:additions)
+    stat :deletions, sum(:deletions)
+    stat :count, count
+  end
+
+  BountyFisch = Datenfisch.provider Bounty do
+    stat :claimed_value, sum(:claimed_value)
+
+    attr :coder_id, :claimant_id
+    attr :date,     :claimed_at
+  end
+end
