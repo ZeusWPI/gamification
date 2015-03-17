@@ -95,4 +95,4 @@ group :dev do
 end
 
 # Use datenfisch
-gem 'datenfisch', :git => 'git://github.com/Iasoon/datenfisch.git'
+gem 'datenfisch', git: 'git://github.com/Iasoon/datenfisch.git', branch: 'development'

@@ -5,6 +5,7 @@ class ScoreboardController < ApplicationController
 
   def rows
     @coders = Coder.with_stats(:additions, :deletions, :commit_count, :score)
+                   .order(score: :desc)
 
     # TODO: whitelist filters
     if params[:filters]
@@ -12,9 +13,7 @@ class ScoreboardController < ApplicationController
       @coders = @coders.where(filters)
     end
 
-    @coders = @coders.to_a.sort_by(&:score).reverse
-    p @coders.inspect
-
+    @coders = @coders.to_a
     render partial: 'rows'
   end
 

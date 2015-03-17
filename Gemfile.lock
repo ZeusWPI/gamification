@@ -1,8 +1,9 @@
 GIT
   remote: git://github.com/Iasoon/datenfisch.git
-  revision: 98b01e66aa801f6aead0f2c1fd296eaa5e1192f4
+  revision: b5796736229aabe7b099d3ac33a232f0cd1ab7cb
+  branch: development
   specs:
-    datenfisch (0.1.0)
+    datenfisch (0.0.1)
 
 GEM
   remote: https://rubygems.org/
