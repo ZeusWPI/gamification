@@ -49,7 +49,7 @@ class Issue < ActiveRecord::Base
       issue.title      = json['title']
       issue.body       = json['body']
       issue.issuer     = Coder.find_or_create_by_github_name(json['user']['login'])
-      issue.labels     = (json['labels'] || []).map  { |label| label.name }
+      issue.labels     = (json['labels'] || []).map  { |label| label['name'] }
       issue.milestone  = json['milestone'].try(:[], :title)
       issue.opened_at  = DateTime.parse(json['created_at'])
 
