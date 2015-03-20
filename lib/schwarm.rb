@@ -8,6 +8,7 @@ module Schwarm
   BountyFisch = Datenfisch.provider Bounty do
     stat :claimed_value, sum(:claimed_value)
 
+    attr :repository_id, through: :issue
     attr :coder_id, :claimant_id
     attr :date,     :claimed_at
   end
