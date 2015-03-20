@@ -42,14 +42,29 @@
 
       <div class="row">
         <div class="col-md-4">
+          <h2 class="text-center">New issues</h2>
+          <div class="well top4">
+            <table id="new-issue" class="table table-striped">
+              <tbody>
+                <% for issue in @new_issues %>
+                  <% repo = issue.repository %>
+                  <tr>
+                    <td><%= link_to repo.name, show_path(organisation: repo.organisation.name, repository: repo.name)%></td>
+                    <td><%= link_to issue.title, issue.github_url %></td>
+                    <td><%= issue.total_bounty_value %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <h2 class="text-center">Biggest bounties</h2>
           <div class="well top4">
           </div>
         </div>
         <div class="col-md-4">
-          <div class="well top4">
-          </div>
-        </div>
-        <div class="col-md-4">
+          <h2 class="text-center">Claimed bounties</h2>
           <div class="well top4">
           </div>
         </div>
