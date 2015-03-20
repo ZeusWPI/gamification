@@ -32,7 +32,7 @@ class Coder < ActiveRecord::Base
   stat :additions, CommitFisch.additions
   stat :deletions, CommitFisch.deletions
   stat :commit_count, CommitFisch.count
-  stat :changes, additions + deletions
+  stat :changed_lines, additions + deletions
   stat :claimed_value, BountyFisch.claimed_value
   stat :score, commit_count * 10 + additions + claimed_value
 

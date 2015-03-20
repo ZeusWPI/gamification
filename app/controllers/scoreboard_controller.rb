@@ -5,7 +5,7 @@ class ScoreboardController < ApplicationController
 
   def rows
     @coders = Coder.with_stats(:additions, :deletions, :commit_count, :score)
-                   .order(score: :desc)
+                  .order(:score => :desc)
 
     # TODO: whitelist filters
     if params[:filters]
