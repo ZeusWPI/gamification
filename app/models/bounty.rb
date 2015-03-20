@@ -28,8 +28,6 @@ class Bounty < ActiveRecord::Base
   }
   after_save :expire_caches
 
-  scope :claimed_value, -> { sum :claimed_value }
-
   def to_s
     value.to_s
   end
@@ -42,6 +40,7 @@ class Bounty < ActiveRecord::Base
       self.claimed_at = time
       # calculate value
       self.claimed_value = absolute_value
+      self.value = 0
       save!
       # Reward assignee
       claimant.reward bounty: absolute_value

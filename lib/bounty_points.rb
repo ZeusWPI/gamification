@@ -1,17 +1,17 @@
 module BountyPoints
   def self.bounty_points_from_abs value
-    if total_bounty_points < Rails.application.config.total_bounty_value
-      value
-    else
-      value * total_bounty_points / Rails.application.config.total_bounty_value
-    end
+    value * self.bounty_factor
   end
 
   def self.bounty_points_to_abs value
+    value / self.bounty_factor
+  end
+
+  def self.bounty_factor
     if total_bounty_points < Rails.application.config.total_bounty_value
-      value
+      1
     else
-      value * Rails.application.config.total_bounty_value / total_bounty_points
+      total_bounty_points.to_f / Rails.application.config.total_bounty_value
     end
   end
 

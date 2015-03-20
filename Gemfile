@@ -96,4 +96,4 @@ end
 
 # Use datenfisch
 gem 'datenfisch', git: 'git://github.com/Iasoon/datenfisch.git',
-  ref: '71e0bb2e9feb464280740da6d92ba5ade09c2514'
+  ref: 'e4ab1d5e65ae4bded93dd19296bf13167adbb91e'
