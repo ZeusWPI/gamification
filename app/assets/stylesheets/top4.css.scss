@@ -1,3 +1,56 @@
 // Place all the styles related to the top4 controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+div.top4 {
+    margin: 10px;
+
+    #top-coders {
+        td {
+            vertical-align: middle;
+        }
+
+        .rank {
+            font-size: 20pt;
+            text-align: right;
+            width: 45px;
+            height: 45px;
+        }
+        .avatar {
+            width: 45px;
+            img {
+                border-radius: 50%;
+            }
+        }
+        .username {
+            font-weight: bold;
+        }
+        .score {
+            text-align: right;
+            font-size: 20pt;
+        }
+
+        tr:first-child {
+            width: 90px;
+            height: 90px;
+            .name {
+                font-size: 15pt;
+            }
+            .username {
+                font-size: 23pt;
+            }
+            .avatar {
+                width: 120px;
+                img {
+                    margin-left: -37px;
+                    margin-top: -60px;
+                    border-radius: 50%;
+                }
+            }
+            .score {
+                font-size: 25pt;
+            }
+        }
+
+    }
+}

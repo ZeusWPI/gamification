@@ -1,2 +1,74 @@
-<h1>Top4#show</h1>
-<p>Find me in app/views/top4/show.html.erb</p>
+  <div class="container-fluid">
+    <div class="col-md-9 col-md-offset-1">
+
+      <div class="page-header">
+        <h1>Top4</h1>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="well top4">
+            <table id="top-coders" class="table table-striped">
+              <tbody>
+                <% @coders.each_with_index do |coder, index| %>
+                  <tr>
+                    <td class="rank">
+                      <% if index != 0 %>
+                        <%= index + 1 %>.
+                      <% end %>
+                    </td>
+                    <td class="avatar">
+                      <%= image_tag coder.avatar_url, alt: coder.github_name, size: (index == 0 ? '120' : '45') %>
+                    </td>
+                    <td class="name">
+                      <%= link_to coder.github_name, coder, class: "username" %>
+                      <br>
+                      <% unless coder.full_name.blank? %>
+                        <small><%= coder.full_name %></small>
+                      <% end %>
+                    </td>
+                    <td class="score"><%= format_score coder.score %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="well top4">
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <h2 class="text-center">New issues</h2>
+          <div class="well top4">
+            <table id="new-issue" class="table table-striped">
+              <tbody>
+                <% for issue in @new_issues %>
+                  <% repo = issue.repository %>
+                  <tr>
+                    <td><%= link_to repo.name, show_path(organisation: repo.organisation.name, repository: repo.name)%></td>
+                    <td><%= link_to issue.title, issue.github_url %></td>
+                    <td><%= issue.total_bounty_value %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <h2 class="text-center">Biggest bounties</h2>
+          <div class="well top4">
+          </div>
+        </div>
+        <div class="col-md-4">
+          <h2 class="text-center">Claimed bounties</h2>
+          <div class="well top4">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
