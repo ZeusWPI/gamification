@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'top4/show'
+
   root 'scoreboard#index'
 
   scope path: 'scoreboard', as: 'scoreboard' do
@@ -18,6 +20,8 @@ Rails.application.routes.draw do
   devise_scope :coder do
     get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_session
   end
+
+  resources :repositories, only: [:index, :show]
 
   scope ':organisation' do
     controller :repositories do
