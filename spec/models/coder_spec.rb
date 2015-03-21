@@ -33,7 +33,7 @@ describe Coder do
       create :commit, coder: @coder, additions: 12, deletions: 7
 
       @coder.commits.each do |commit|
-        commit.reward!
+        @coder.reward_commit commit
       end
     end
 
@@ -44,7 +44,6 @@ describe Coder do
     it 'has a correct deletion count' do
       expect(@coder.deletions).to eq(19)
     end
-
 
     it 'was granted reward points' do
       expect(@coder.reward_residual).to eq(42)

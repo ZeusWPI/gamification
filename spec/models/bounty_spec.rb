@@ -72,6 +72,10 @@ describe Bounty do
       @bounty.claim
       expect(@bounty.claimant).to eq(@claimant)
     end
+
+    it 'clears its bounty value' do
+      expect(@bounty.value).to eq(0)
+    end
   end
 
   context 'with scaled value' do
@@ -93,6 +97,10 @@ describe Bounty do
       expect(@assignee.reward_residual).to eq(@limit)
     end
 
+    it 'rewards a scaled amount of bounty points' do
+      @bounty.claim
+      expect(@assignee.bounty_residual).to eq(@limit * 2)
+    end
   end
 
 end

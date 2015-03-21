@@ -37,15 +37,9 @@ class Bounty < ActiveRecord::Base
   def claim time: Time.now
     return if claimed_at # This bounty has already been claimed
     if issue.assignee && issue.assignee != issuer
-      # Mark bounty
-      self.claimant = issue.assignee
-      self.claimed_at = time
-      # calculate value
-      self.claimed_value = absolute_value
-      save!
       # Reward assignee
-      claimant.reward bounty: absolute_value
-      claimant.save!
+      issue.assignee.reward_bounty self, time: time
+      issue.assignee.save!
     else
       # refund bounty points
       issuer.bounty_residual += value
@@ -57,6 +51,14 @@ class Bounty < ActiveRecord::Base
 
   def absolute_value
     claimed_value || BountyPoints::bounty_points_to_abs(value)
+  end
+
+  def pinpoint_value coder: nil, time: Time.current
+    self.claimant = coder
+    self.claimed_at = time
+    self.claimed_value = absolute_value
+    self.value = 0
+    save!
   end
 
   private

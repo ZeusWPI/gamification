@@ -27,12 +27,16 @@ class Coder < ActiveRecord::Base
   has_many :commits
   after_save :clear_caches
 
-  def reward loc: 0, bounty: 0, other: 0, options: {}
-    self.other_score += other
-    self.reward_residual += loc + other + bounty
-    if options.fetch(:reward_bounty_points, true)
-      self.bounty_residual += loc + bounty 
-    end
+  # Bounty points should not be rescaled yet.
+  def reward_bounty bounty, time: Time.current
+    self.bounty_residual += bounty.value
+    bounty.pinpoint_value coder: self, time: time
+    self.reward_residual += bounty.claimed_value
+  end
+
+  def reward_commit commit
+    self.reward_residual += commit.additions
+    self.bounty_residual += commit.additions
   end
 
   def accessor

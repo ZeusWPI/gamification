@@ -22,17 +22,16 @@ class Commit < ActiveRecord::Base
   scope :additions, -> { sum :additions }
   scope :deletions, -> { sum :deletions }
 
-  def reward! options = {}
-    coder.reward loc: additions, options: options
-    coder.save!
+  def reward **opts
+    coder.reward self, **opts
   end
 
-  def self.register_from_sha repo, sha, options = {}
+  def self.register_from_sha repo, sha, **opts
     r_commit = repo.rugged_repo.lookup sha
-    register_rugged repo, r_commit, options
+    register_rugged repo, r_commit, **opts
   end
 
-  def self.register_rugged repo, r_commit, options = {}
+  def self.register_rugged repo, r_commit, reward: true
     # if committer can't be determined, fuck this shit
     committer = get_committer repo, r_commit
     return nil if not committer
@@ -41,7 +40,7 @@ class Commit < ActiveRecord::Base
                               coder: committer do |commit|
       commit.date = r_commit.time
       commit.set_stats r_commit
-      commit.reward! options if options.fetch(:reward, true)
+      commit.reward options if reward
     end
   end
 
