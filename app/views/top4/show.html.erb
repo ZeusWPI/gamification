@@ -18,7 +18,8 @@
                       <% end %>
                     </td>
                     <td class="avatar">
-                      <%= image_tag coder.avatar_url, alt: coder.github_name, size: (index == 0 ? '120' : '45') %>
+                      <%= image_tag coder.avatar_url, alt: coder.github_name,
+                          size: (index == 0 ? '120' : '45') %>
                     </td>
                     <td class="name">
                       <%= link_to coder.github_name, coder, class: "username" %>
@@ -46,25 +47,28 @@
           <div class="well top4">
             <table id="new-issue" class="table table-striped">
               <tbody>
-                <% for issue in @new_issues %>
-                  <% repo = issue.repository %>
-                  <tr>
-                    <td><%= link_to repo.name, show_path(organisation: repo.organisation.name, repository: repo.name)%></td>
-                    <td><%= link_to issue.title, issue.github_url %></td>
-                    <td><%= issue.total_bounty_value %></td>
-                  </tr>
-                <% end %>
+                <%= render partial: 'issue', collection: @new_issues %>
               </tbody>
             </table>
           </div>
         </div>
         <div class="col-md-4">
-          <h2 class="text-center">Biggest bounties</h2>
+          <h2 class="text-center">Largest bounties</h2>
+            <table id="new-issue" class="table table-striped">
+              <tbody>
+                <%= render partial: 'issue', collection: @top_issues %>
+              </tbody>
+            </table>
           <div class="well top4">
           </div>
         </div>
         <div class="col-md-4">
-          <h2 class="text-center">Claimed bounties</h2>
+          <h2 class="text-center">Recently closed</h2>
+            <table id="new-issue" class="table table-striped">
+              <tbody>
+                <%= render partial: 'issue', collection: @closed_issues %>
+              </tbody>
+            </table>
           <div class="well top4">
           </div>
         </div>
