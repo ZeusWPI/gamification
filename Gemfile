@@ -94,6 +94,9 @@ group :dev do
   gem 'annotate'
 end
 
-# Use datenfisch
+# Use datenfisch (https://github.com/Iasoon/datenfisch.git)
 gem 'datenfisch', git: 'git://github.com/Iasoon/datenfisch.git',
   ref: 'e4ab1d5e65ae4bded93dd19296bf13167adbb91e'
+
+# Use jQuery plugin tablesorter (https://github.com/Mottie/tablesorter)
+gem 'jquery-tablesorter'

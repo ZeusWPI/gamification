@@ -4,3 +4,5 @@
     { filters: filters }
   ).success (rows) ->
     $('#scoreboard tbody').html(rows)
+    resort = true
+    $('#scoreboard').trigger('update', [resort]);
