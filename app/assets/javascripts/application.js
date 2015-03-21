@@ -16,8 +16,24 @@
 //= require turbolinks
 
 //= require bootstrap-sprockets
-//= require tablesorter/jquery.tablesorter
-//= require tablesorter/tables.js
+//= require jquery-tablesorter
 
 //= require_self
 //= require_tree .
+
+
+$(document).ready(function() {
+    $.tablesorter.addParser({
+        id: "digit",
+        is: function (s, table) {
+            var c = table.config;
+            return $.tablesorter.isDigit(s, c);
+        },
+        format: function (s) {
+            return $.tablesorter.formatFloat(s.replace(/\s+/g, ''));
+        },
+        type: "numeric",
+    });
+
+    $('table.tablesorter').tablesorter();
+});
