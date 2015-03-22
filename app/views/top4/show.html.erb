@@ -1,78 +1,135 @@
-  <div class="container-fluid">
-    <div class="col-md-9 col-md-offset-1">
+<div class="container-fluid">
+<div class="col-md-9 col-md-offset-1">
 
-      <div class="page-header">
-        <h1>Top4</h1>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
-          <div class="well top4">
-            <table id="top-coders" class="table table-striped">
-              <tbody>
-                <% @coders.each_with_index do |coder, index| %>
-                  <tr>
-                    <td class="rank">
-                      <% if index != 0 %>
-                        <%= index + 1 %>.
-                      <% end %>
-                    </td>
-                    <td class="avatar">
-                      <%= image_tag coder.avatar_url, alt: coder.github_name,
-                          size: (index == 0 ? '120' : '45') %>
-                    </td>
-                    <td class="name">
-                      <%= link_to coder.github_name, coder, class: "username" %>
-                      <br>
-                      <% unless coder.full_name.blank? %>
-                        <small><%= coder.full_name %></small>
-                      <% end %>
-                    </td>
-                    <td class="score"><%= format_score coder.score %></td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="well top4">
-          </div>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-4">
-          <h2 class="text-center">New issues</h2>
-          <div class="well top4">
-            <table id="new-issue" class="table table-striped">
-              <tbody>
-                <%= render partial: 'issue', collection: @new_issues %>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <h2 class="text-center">Largest bounties</h2>
-            <table id="new-issue" class="table table-striped">
-              <tbody>
-                <%= render partial: 'issue', collection: @top_issues %>
-              </tbody>
-            </table>
-          <div class="well top4">
-          </div>
-        </div>
-        <div class="col-md-4">
-          <h2 class="text-center">Recently closed</h2>
-            <table id="new-issue" class="table table-striped">
-              <tbody>
-                <%= render partial: 'issue', collection: @closed_issues %>
-              </tbody>
-            </table>
-          <div class="well top4">
-          </div>
-        </div>
-      </div>
-
+    <div class="page-header">
+    <h1>Top4</h1>
     </div>
-  </div>
+
+    <div class="row">
+    <div class="col-md-6">
+        <div class="well top4">
+        <table id="top-coders" class="table table-striped">
+            <tbody>
+            <% @coders.each_with_index do |coder, index| %>
+                <tr>
+                <td class="rank">
+                    <% if index != 0 %>
+                    <%= index + 1 %>.
+                    <% end %>
+                </td>
+                <td class="avatar">
+                    <%= image_tag coder.avatar_url, alt: coder.github_name,
+                        size: (index == 0 ? '120' : '45') %>
+                </td>
+                <td class="name">
+                    <%= link_to coder.github_name, coder, class: "username" %>
+                    <br>
+                    <% unless coder.full_name.blank? %>
+                    <small><%= coder.full_name %></small>
+                    <% end %>
+                </td>
+                <td class="score"><%= format_score coder.score %></td>
+                </tr>
+            <% end %>
+            </tbody>
+        </table>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="well top4">
+            <svg id="top-repos"></svg>
+        </div>
+    </div>
+    </div>
+
+    <div class="row">
+    <div class="col-md-4">
+        <h2 class="text-center">New issues</h2>
+        <div class="well top4">
+        <table id="new-issue" class="table table-striped">
+            <tbody>
+            <%= render partial: 'issue', collection: @new_issues %>
+            </tbody>
+        </table>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h2 class="text-center">Top bounties</h2>
+        <div class="well top4">
+        <table id="top-issue" class="table table-striped">
+            <tbody>
+            <%= render partial: 'issue', collection: @top_issues %>
+            </tbody>
+        </table>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h2 class="text-center">Recently closed</h2>
+        <div class="well top4">
+        <table id="closed-issue" class="table table-striped">
+            <tbody>
+            <%= render partial: 'issue', collection: @closed_issues %>
+            </tbody>
+        </table>
+        </div>
+    </div>
+    </div>
+
+</div>
+</div>
+
+<script>
+var data = [
+{name: 'A', value: 10},
+{name: 'B', value: 30},
+{name: 'C', value: 10},
+{name: 'D', value: 20},
+]
+
+var width = 400;
+var height = 300;
+var margin = { top: 20, right: 20, bottom: 20, left: 20 };
+
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1)
+    .domain( data.map(function(d) { return d.name; }) );
+
+var y = d3.scale.linear()
+    .range([height, 0])
+    .domain([0, d3.max(data, function(d) { return d.value; })]);
+
+
+var chart = d3.select("#top-repos")
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var bar = chart.selectAll("g")
+    .data(data)
+  .enter().append("g")
+    .attr("transform", function(d) { return "translate(" + x(d.name) + ",0)";});
+
+bar.append("rect")
+    .attr("y", function(d) { return y(d.value); })
+    .attr("height", function(d) { return height - y(d.value); })
+    .attr("width", x.rangeBand());
+
+bar.append("text")
+.attr("x", x.rangeBand()/2)
+.attr("y", function(d) { return y(d.value); })
+.attr("dy", "1.25em")
+.text(function(d) { return d.value; });
+
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+chart.append("g")
+.attr("class", "axis xaxis")
+.attr("transform", "translate(0," + height + ")")
+.call(xAxis);
+
+</script>

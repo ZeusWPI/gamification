@@ -79,6 +79,8 @@ GEM
       simplecov (>= 0.7)
       term-ansicolor
       thor
+    d3-rails (3.5.5)
+      railties (>= 3.1)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     devise (3.4.1)
@@ -263,6 +265,7 @@ DEPENDENCIES
   capistrano-rvm
   coffee-rails (~> 4.0.0)
   coveralls
+  d3-rails
   datenfisch!
   devise
   factory_girl_rails

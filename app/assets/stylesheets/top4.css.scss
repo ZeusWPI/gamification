@@ -53,4 +53,27 @@ div.top4 {
         }
 
     }
+
 }
+#top-repos {
+    display: block;
+    margin: auto;
+    text-anchor: middle;
+
+    rect {
+        fill: steelblue;
+    }
+
+    text {
+        font: 16px sans-serif;
+        fill: white;
+    }
+
+    .axis {
+        text {
+            font: 16px sans-serif;
+            fill: black;
+        }
+    }
+}
+

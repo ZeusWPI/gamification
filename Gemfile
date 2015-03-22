@@ -100,3 +100,6 @@ gem 'datenfisch', git: 'git://github.com/Iasoon/datenfisch.git',
 
 # Use jQuery plugin tablesorter (https://github.com/Mottie/tablesorter)
 gem 'jquery-tablesorter'
+
+# Use d3 for fancy visualisations
+gem "d3-rails"

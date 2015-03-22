@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
 
+
+  root 'top4#show'
   get 'top4/show'
 
-  root 'scoreboard#index'
-
   scope path: 'scoreboard', as: 'scoreboard' do
-    get '' => 'scoreboard#table'
+    get '' => 'scoreboard#index'
     post '' => 'scoreboard#rows'
   end
 

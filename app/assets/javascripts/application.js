@@ -17,6 +17,7 @@
 
 //= require bootstrap-sprockets
 //= require jquery-tablesorter
+//= require d3
 
 //= require_self
 //= require_tree .
