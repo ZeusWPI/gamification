@@ -42,40 +42,40 @@
     </div>
     </div>
 
-    <div class="row">
-    <div class="col-md-4">
-        <h2 class="text-center">New issues</h2>
-        <div class="well top4">
-        <table id="new-issue" class="table table-striped">
-            <tbody>
-            <%= render partial: 'issue', collection: @new_issues %>
-            </tbody>
-        </table>
+      <div class="row">
+        <div class="col-md-4">
+          <h2 class="text-center">New issues</h2>
+          <div class="well top4">
+            <table id="new-issue" class="table table-striped">
+              <tbody>
+                <%= render partial: 'issue', collection: @new_issues %>
+              </tbody>
+            </table>
+          </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <h2 class="text-center">Top bounties</h2>
-        <div class="well top4">
-        <table id="top-issue" class="table table-striped">
-            <tbody>
-            <%= render partial: 'issue', collection: @top_issues %>
-            </tbody>
-        </table>
+        <div class="col-md-4">
+          <h2 class="text-center">Largest bounties</h2>
+          <div class="well top4">
+            <table id="top-issue" class="table table-striped">
+              <tbody>
+                <%= render partial: 'issue', collection: @top_issues %>
+              </tbody>
+            </table>
+          </div>
         </div>
-    </div>
-    <div class="col-md-4">
-        <h2 class="text-center">Recently closed</h2>
-        <div class="well top4">
-        <table id="closed-issue" class="table table-striped">
-            <tbody>
-            <%= render partial: 'issue', collection: @closed_issues %>
-            </tbody>
-        </table>
+        <div class="col-md-4">
+          <h2 class="text-center">Recently closed</h2>
+          <div class="well top4">
+            <table id="closed-issue" class="table table-striped">
+              <tbody>
+                <%= render partial: 'issue', collection: @closed_issues %>
+              </tbody>
+            </table>
+          </div>
         </div>
-    </div>
-    </div>
+      </div>
 
-</div>
+  </div>
 </div>
 
 <script>
