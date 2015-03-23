@@ -22,7 +22,7 @@
                         size: (index == 0 ? '120' : '45') %>
                 </td>
                 <td class="name">
-                    <%= link_to coder.github_name, coder, class: "username" %>
+                    <%= link_to coder.github_name, coder_path(coder), class: "username" %>
                     <br>
                     <% unless coder.full_name.blank? %>
                     <small><%= coder.full_name %></small>
@@ -79,16 +79,13 @@
 </div>
 
 <script>
-var data = [
-{name: 'A', value: 10},
-{name: 'B', value: 30},
-{name: 'C', value: 10},
-{name: 'D', value: 20},
-]
+var data = <%=raw @top_repos.to_json %>;
 
 var width = 400;
-var height = 300;
-var margin = { top: 20, right: 20, bottom: 20, left: 20 };
+var height = 225;
+var margin = { top: 20, right: 20, bottom: 25, left: 20 };
+
+var value = function(d) { return d.score; };
 
 
 var x = d3.scale.ordinal()
@@ -97,7 +94,7 @@ var x = d3.scale.ordinal()
 
 var y = d3.scale.linear()
     .range([height, 0])
-    .domain([0, d3.max(data, function(d) { return d.value; })]);
+    .domain([0, d3.max(data, value)]);
 
 
 var chart = d3.select("#top-repos")
@@ -112,15 +109,15 @@ var bar = chart.selectAll("g")
     .attr("transform", function(d) { return "translate(" + x(d.name) + ",0)";});
 
 bar.append("rect")
-    .attr("y", function(d) { return y(d.value); })
-    .attr("height", function(d) { return height - y(d.value); })
+    .attr("y", function(d) { return y(value(d)); })
+    .attr("height", function(d) { return height - y(value(d)); })
     .attr("width", x.rangeBand());
 
 bar.append("text")
 .attr("x", x.rangeBand()/2)
-.attr("y", function(d) { return y(d.value); })
+.attr("y", function(d) { return y(value(d)); })
 .attr("dy", "1.25em")
-.text(function(d) { return d.value; });
+.text(function(d) { return value(d); });
 
 
 var xAxis = d3.svg.axis()
