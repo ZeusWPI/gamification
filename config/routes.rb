@@ -21,12 +21,4 @@ Rails.application.routes.draw do
     get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_session
   end
 
-  resources :repositories, only: [:index, :show]
-
-  scope ':organisation' do
-    controller :repositories do
-      get ':repository' => :show, as: :show
-    end
-  end
-
 end
