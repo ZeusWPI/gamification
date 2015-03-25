@@ -30,18 +30,22 @@ class Coder < ActiveRecord::Base
 
   include Schwarm
   stat :additions, CommitFisch.additions
-  stat :ln_additions, CommitFisch.ln_additions
   stat :deletions, CommitFisch.deletions
   stat :commit_count, CommitFisch.count
   stat :changed_lines, additions + deletions
   stat :claimed_value, BountyFisch.claimed_value
-  stat :score, commit_count + ln_additions + claimed_value
+
+  stat :addition_score, CommitFisch.ln_additions * 
+    Rails.application.config.addition_score_factor
+  stat :score, commit_count + addition_score + claimed_value
 
   def reward loc: 0, bounty: 0, other: 0, options: {}
+    locscore = Math::log(loc+1).floor *
+      Rails.application.config.addition_score_factor
     self.other_score += other
-    self.reward_residual += loc + other + bounty
+    self.reward_residual += locscore + other + bounty
     if options.fetch(:reward_bounty_points, true)
-      self.bounty_residual += loc + bounty 
+      self.bounty_residual += locscore + bounty 
     end
   end
 

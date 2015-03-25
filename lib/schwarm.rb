@@ -6,7 +6,7 @@ module Schwarm
     stat :count, count
 
     stat :ln_additions,
-      Arel::Nodes::SqlLiteral.new("CAST( SUM(LN(additions)) AS INTEGER)")
+      Arel::Nodes::SqlLiteral.new("CAST(SUM(LN(additions+1)) AS INT)")
   end
 
   BountyFisch = Datenfisch.provider Bounty do

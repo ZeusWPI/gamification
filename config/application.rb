@@ -39,6 +39,9 @@ module Gamification
     # Total bounty value
     config.total_bounty_value = 5000
 
+    # commit score = 
+    config.addition_score_factor = 10
+
     config.generators do |g|
       g.test_framework :rspec,
         fixtures: true,
