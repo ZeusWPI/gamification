@@ -30,11 +30,12 @@ class Coder < ActiveRecord::Base
 
   include Schwarm
   stat :additions, CommitFisch.additions
+  stat :ln_additions, CommitFisch.ln_additions
   stat :deletions, CommitFisch.deletions
   stat :commit_count, CommitFisch.count
   stat :changed_lines, additions + deletions
   stat :claimed_value, BountyFisch.claimed_value
-  stat :score, commit_count * 10 + additions + claimed_value
+  stat :score, commit_count + ln_additions + claimed_value
 
   def reward loc: 0, bounty: 0, other: 0, options: {}
     self.other_score += other

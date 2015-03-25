@@ -1,8 +1,12 @@
 module Schwarm
+
   CommitFisch = Datenfisch.provider Commit do
     stat :additions, sum(:additions)
     stat :deletions, sum(:deletions)
     stat :count, count
+
+    stat :ln_additions,
+      Arel::Nodes::SqlLiteral.new("CAST( SUM(LN(additions)) AS INTEGER)")
   end
 
   BountyFisch = Datenfisch.provider Bounty do

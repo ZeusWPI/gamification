@@ -33,6 +33,7 @@ module Gamification
 
     config.repositories = [
       # { name: 'name', org: 'organisation' }
+      {name: 'gamification', org: 'ZeusWPI'}
     ]
 
     # Total bounty value

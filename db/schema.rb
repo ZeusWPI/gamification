@@ -24,10 +24,10 @@ ActiveRecord::Schema.define(version: 20141211102907) do
     t.datetime "updated_at"
   end
 
-  add_index "bounties", ["claimant_id"], name: "index_bounties_on_claimant_id"
-  add_index "bounties", ["issue_id", "issuer_id"], name: "index_bounties_on_issue_id_and_issuer_id", unique: true
-  add_index "bounties", ["issue_id"], name: "index_bounties_on_issue_id"
-  add_index "bounties", ["issuer_id"], name: "index_bounties_on_issuer_id"
+  add_index "bounties", ["claimant_id"], name: "index_bounties_on_claimant_id", using: :btree
+  add_index "bounties", ["issue_id", "issuer_id"], name: "index_bounties_on_issue_id_and_issuer_id", unique: true, using: :btree
+  add_index "bounties", ["issue_id"], name: "index_bounties_on_issue_id", using: :btree
+  add_index "bounties", ["issuer_id"], name: "index_bounties_on_issuer_id", using: :btree
 
   create_table "coders", force: true do |t|
     t.string   "github_name",                  null: false
@@ -41,8 +41,8 @@ ActiveRecord::Schema.define(version: 20141211102907) do
     t.datetime "updated_at"
   end
 
-  add_index "coders", ["github_name"], name: "index_coders_on_github_name", unique: true
-  add_index "coders", ["github_url"], name: "index_coders_on_github_url", unique: true
+  add_index "coders", ["github_name"], name: "index_coders_on_github_name", unique: true, using: :btree
+  add_index "coders", ["github_url"], name: "index_coders_on_github_url", unique: true, using: :btree
 
   create_table "commits", force: true do |t|
     t.integer  "coder_id"
@@ -55,9 +55,9 @@ ActiveRecord::Schema.define(version: 20141211102907) do
     t.datetime "updated_at"
   end
 
-  add_index "commits", ["coder_id"], name: "index_commits_on_coder_id"
-  add_index "commits", ["repository_id", "sha"], name: "index_commits_on_repository_id_and_sha", unique: true
-  add_index "commits", ["repository_id"], name: "index_commits_on_repository_id"
+  add_index "commits", ["coder_id"], name: "index_commits_on_coder_id", using: :btree
+  add_index "commits", ["repository_id", "sha"], name: "index_commits_on_repository_id_and_sha", unique: true, using: :btree
+  add_index "commits", ["repository_id"], name: "index_commits_on_repository_id", using: :btree
 
   create_table "git_identities", force: true do |t|
     t.string   "name",       null: false
@@ -67,8 +67,8 @@ ActiveRecord::Schema.define(version: 20141211102907) do
     t.datetime "updated_at"
   end
 
-  add_index "git_identities", ["coder_id"], name: "index_git_identities_on_coder_id"
-  add_index "git_identities", ["name", "email"], name: "index_git_identities_on_name_and_email", unique: true
+  add_index "git_identities", ["coder_id"], name: "index_git_identities_on_coder_id", using: :btree
+  add_index "git_identities", ["name", "email"], name: "index_git_identities_on_name_and_email", unique: true, using: :btree
 
   create_table "issues", force: true do |t|
     t.string   "github_url",                         null: false
@@ -86,9 +86,9 @@ ActiveRecord::Schema.define(version: 20141211102907) do
     t.datetime "updated_at"
   end
 
-  add_index "issues", ["github_url"], name: "index_issues_on_github_url", unique: true
-  add_index "issues", ["repository_id", "number"], name: "index_issues_on_repository_id_and_number", unique: true
-  add_index "issues", ["repository_id"], name: "index_issues_on_repository_id"
+  add_index "issues", ["github_url"], name: "index_issues_on_github_url", unique: true, using: :btree
+  add_index "issues", ["repository_id", "number"], name: "index_issues_on_repository_id_and_number", unique: true, using: :btree
+  add_index "issues", ["repository_id"], name: "index_issues_on_repository_id", using: :btree
 
   create_table "organisations", force: true do |t|
     t.string   "name"
@@ -104,6 +104,6 @@ ActiveRecord::Schema.define(version: 20141211102907) do
     t.datetime "updated_at"
   end
 
-  add_index "repositories", ["organisation_id", "name"], name: "index_repositories_on_organisation_id_and_name", unique: true
+  add_index "repositories", ["organisation_id", "name"], name: "index_repositories_on_organisation_id_and_name", unique: true, using: :btree
 
 end
