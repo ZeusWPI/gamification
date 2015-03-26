@@ -1,5 +1,5 @@
 <div class="container-fluid">
-<div class="col-md-9 col-md-offset-1">
+<div class="col-md-10 col-md-offset-1">
 
     <div class="page-header">
     <h1>Top4</h1>
@@ -37,7 +37,7 @@
     </div>
     <div class="col-md-6">
         <div class="well top4">
-            <svg id="top-repos"></svg>
+            <svg id="top-repos" ViewBox="0 0 400 400"></svg>
         </div>
     </div>
     </div>
@@ -81,9 +81,9 @@
 <script>
 var data = <%=raw @top_repos.to_json %>;
 
-var width = 400;
-var height = 225;
 var margin = { top: 20, right: 20, bottom: 25, left: 20 };
+var width = 400 - margin.right - margin.left;
+var height = 400 - margin.top - margin.bottom;
 
 var value = function(d) { return d.score; };
 
@@ -98,8 +98,8 @@ var y = d3.scale.linear()
 
 
 var chart = d3.select("#top-repos")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
+  <%#.attr("width", width + margin.left + margin.right)%>
+  <%#.attr("height", height + margin.top + margin.bottom)%>
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 

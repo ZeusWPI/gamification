@@ -41,7 +41,7 @@ class Coder < ActiveRecord::Base
 
   def reward loc: 0, bounty: 0, other: 0, options: {}
     locscore = (Math::log(loc+1) *
-                Rails.application.config.addition_score_factor).floor
+                Rails.application.config.addition_score_factor).round
     self.other_score += other
     self.reward_residual += locscore + other + bounty
     if options.fetch(:reward_bounty_points, true)

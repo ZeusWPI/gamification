@@ -5,9 +5,9 @@ module Schwarm
     stat :deletions, sum(:deletions)
     stat :count, count
 
-    stat :ln_additions, cast(
-      sum( ln( a(:additions)+1) ),
-      "INT")
+    stat :ln_additions, sum( 
+      cast( ln( a(:additions)+1), "INT" )
+    )
 
   end
 

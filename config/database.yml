@@ -17,7 +17,7 @@ development:
 test:
   adapter: mysql2
   username: gamification
-  database: gamification-test
+  database: gamification_test
   password: hallo
   host: 127.0.0.1
   port: 3306
