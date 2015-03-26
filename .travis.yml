@@ -5,6 +5,7 @@ rvm:
 before_script:
   - "RAILS_ENV=test bundle exec rake db:create"
   - "RAILS_ENV=test bundle exec rake db:schema:load"
+  - mysql -e 'create database gamification_test;'
 
 script: bundle exec rspec
 
