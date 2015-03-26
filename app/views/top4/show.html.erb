@@ -2,7 +2,7 @@
 <div class="col-md-10 col-md-offset-1">
 
     <div class="page-header">
-    <h1>Top4</h1>
+    <h1>This week in code</h1>
     </div>
 
     <div class="row">
@@ -37,7 +37,7 @@
     </div>
     <div class="col-md-6">
         <div class="well top4">
-            <svg id="top-repos" ViewBox="0 0 400 400"></svg>
+            <svg id="top-repos" ViewBox="0 0 600 300"></svg>
         </div>
     </div>
     </div>
@@ -82,8 +82,8 @@
 var data = <%=raw @top_repos.to_json %>;
 
 var margin = { top: 20, right: 20, bottom: 25, left: 20 };
-var width = 400 - margin.right - margin.left;
-var height = 400 - margin.top - margin.bottom;
+var width = 600 - margin.right - margin.left;
+var height = 300 - margin.top - margin.bottom;
 
 var value = function(d) { return d.score; };
 
@@ -114,10 +114,10 @@ bar.append("rect")
     .attr("width", x.rangeBand());
 
 bar.append("text")
-.attr("x", x.rangeBand()/2)
-.attr("y", function(d) { return y(value(d)); })
-.attr("dy", "1.25em")
-.text(function(d) { return value(d); });
+    .attr("x", x.rangeBand()/2)
+    .attr("y", function(d) { return y(value(d)); })
+    .attr("dy", "1.25em")
+    .text(function(d) { return value(d); });
 
 
 var xAxis = d3.svg.axis()
@@ -125,8 +125,12 @@ var xAxis = d3.svg.axis()
     .orient("bottom");
 
 chart.append("g")
-.attr("class", "axis xaxis")
-.attr("transform", "translate(0," + height + ")")
-.call(xAxis);
+    .attr("class", "axis xaxis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis)
+    .selectAll("text")
+        .attr("dy", "1em");
+
+
 
 </script>
