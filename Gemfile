@@ -43,6 +43,7 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+  gem 'rack-test'
 group :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
@@ -96,7 +97,7 @@ end
 
 # Use datenfisch (https://github.com/Iasoon/datenfisch.git)
 gem 'datenfisch', git: 'git://github.com/Iasoon/datenfisch.git',
-  ref: '084403aa3c54979d8e2bcb31ea61a373566ae1fa'
+  ref: '2c9061f0ad0edfaecd7acbeb62ef79af78adedc2'
 
 # Use jQuery plugin tablesorter (https://github.com/Mottie/tablesorter)
 gem 'jquery-tablesorter'

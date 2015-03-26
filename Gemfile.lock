@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/Iasoon/datenfisch.git
-  revision: 084403aa3c54979d8e2bcb31ea61a373566ae1fa
-  ref: 084403aa3c54979d8e2bcb31ea61a373566ae1fa
+  revision: 2c9061f0ad0edfaecd7acbeb62ef79af78adedc2
+  ref: 2c9061f0ad0edfaecd7acbeb62ef79af78adedc2
   specs:
     datenfisch (0.0.1)
 
@@ -280,6 +280,7 @@ DEPENDENCIES
   mysql2
   omniauth
   omniauth-github
+  rack-test
   rails (~> 4.1)
   rspec-rails
   rugged
