@@ -6,7 +6,7 @@ module Schwarm
     stat :count, count
 
     stat :ln_additions, sum( 
-      cast( ln( a(:additions)+1), "INT" )
+      cast( ln( a(:additions)+1), "INTEGER" )
     )
 
   end
