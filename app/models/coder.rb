@@ -37,11 +37,11 @@ class Coder < ActiveRecord::Base
 
   stat :addition_score, CommitFisch.ln_additions * 
     Rails.application.config.addition_score_factor
-  stat :score, commit_count + addition_score + claimed_value
+  stat :score, addition_score + claimed_value
 
   def reward loc: 0, bounty: 0, other: 0, options: {}
-    locscore = Math::log(loc+1).floor *
-      Rails.application.config.addition_score_factor
+    locscore = (Math::log(loc+1) *
+                Rails.application.config.addition_score_factor).floor
     self.other_score += other
     self.reward_residual += locscore + other + bounty
     if options.fetch(:reward_bounty_points, true)
