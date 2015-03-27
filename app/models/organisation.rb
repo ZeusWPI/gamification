@@ -13,7 +13,7 @@ class Organisation < ActiveRecord::Base
   validates :name, presence: true
 
   def fetch_repositories
-    repos = $github.repos.list user: name
+    repos = $github.repos.list :all, org: name
     repos.each do |json|
       Repository.register self, json.name
     end
