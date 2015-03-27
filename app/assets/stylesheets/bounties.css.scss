@@ -23,4 +23,19 @@
             min-width: 4em;
         }
     }
+    td {
+        overflow: hidden;
+    }
+
+    .input-group {
+        float: left;
+    }
+}
+
+.dataTables_filter {
+    float: right;
+
+    input {
+        margin-left: 10px;
+    }
 }
