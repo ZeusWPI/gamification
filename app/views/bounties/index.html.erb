@@ -13,44 +13,49 @@
       <h1>Bounties</h1>
     </div>
 
-    <div class="table-responsive">
-      <table id="bounties-table" class="table table-striped tablesorter">
-        <thead>
-          <tr>
-            <th>Repo</th>
-            <th>Issue</th>
-            <th data-sort-initial-order="desc">Total bounty</th>
-            <th data-sort-initial-order="desc">My bounty</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <% @issues.each do |issue| %>
-            <% repo = issue.repository %>
-            <tr id="issue-<%= issue.id %>", issue.repository>
-              <td><%= repo.name %>
-              <td><%= link_to issue.title, issue.github_url %></td>
-              <td class="total-bounty"><%= issue.total_bounty_value %></td>
-              <td>
-                <div class="input-group">
-                  <%= form_for find_bounty(issue, current_coder),
-                               url: {action: 'update_or_create'},
-                               method: :post,
-                               remote: true do |f| %>
-                    <%= f.hidden_field :issue_id %>
-                    <%= f.text_field :absolute_value, class: 'form-control text-right' %>
-                    <span class='input-group-btn'>
-                      <%= f.submit(value: 'Put', data: {disable_with: 'Saving'},
-                                   class: 'btn btn-default') %>
-                    </span>
-                  <% end %>
-                </div>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
+    <table id="bounties-table" class="table table-striped table-responsive">
+    <thead>
+        <tr>
+        <th>Repo</th>
+        <th>Issue</th>
+        <th data-sort-initial-order="desc">Total bounty</th>
+        <th data-sort-initial-order="desc">My bounty</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @issues.each do |issue| %>
+        <% repo = issue.repository %>
+        <tr id="issue-<%= issue.id %>", issue.repository>
+            <td><%= repo.name %> </td>
+            <td><%= link_to issue.title, issue.github_url %></td>
+            <td class="total-bounty"><%= issue.total_bounty_value %></td>
+            <td>
+            <div class="input-group">
+                <%= form_for find_bounty(issue, current_coder),
+                            url: {action: 'update_or_create'},
+                            method: :post,
+                            remote: true do |f| %>
+                <%= f.hidden_field :issue_id %>
+                <%= f.text_field :absolute_value, class: 'form-control text-right' %>
+                <span class='input-group-btn'>
+                    <%= f.submit(value: 'Put', data: {disable_with: 'Saving'},
+                                class: 'btn btn-default') %>
+                </span>
+                <% end %>
+            </div>
+            </td>
+        </tr>
+        <% end %>
+    </tbody>
+    </table>
   </div>
   <div class="col-md-2"></div>
 </div>
+
+<script>
+var table = $('#bounties-table').DataTable({
+    paging: false,
+    autoWidth: false
+});
+<%#table.columns().search('gamification');%>
+</script>
