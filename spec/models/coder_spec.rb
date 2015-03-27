@@ -68,9 +68,13 @@ describe Coder do
   context 'with claimed bounties' do
 
     before :each do
-      issue = create :issue, assignee: @coder
-      bounty = create :bounty, issue: issue, value: 100
-      bounty.claim
+      @issue = create :issue, assignee: @coder
+      @bounty = create :bounty, issue: @issue, value: 100
+      @bounty.claim
+    end
+
+    it 'has a corrent claimed_value stat' do
+      expect(@coder.claimed_value).to eq(100)
     end
 
     it 'has a correct score' do

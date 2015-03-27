@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20141211102907) do
   end
 
   add_index "bounties", ["claimant_id"], name: "index_bounties_on_claimant_id", using: :btree
-  add_index "bounties", ["issue_id", "issuer_id"], name: "index_bounties_on_issue_id_and_issuer_id", unique: true, using: :btree
+  add_index "bounties", ["issue_id", "issuer_id"], name: "index_bounties_on_issue_id_and_issuer_id", using: :btree
   add_index "bounties", ["issue_id"], name: "index_bounties_on_issue_id", using: :btree
   add_index "bounties", ["issuer_id"], name: "index_bounties_on_issuer_id", using: :btree
 

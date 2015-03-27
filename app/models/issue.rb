@@ -30,7 +30,7 @@ class Issue < ActiveRecord::Base
   serialize :labels
 
   def total_bounty_value
-    bounties.map {|b| b.absolute_value}.sum
+    bounties.where(claimed_at: nil).map {|b| b.absolute_value}.sum
   end
 
   def close time: Time.now
