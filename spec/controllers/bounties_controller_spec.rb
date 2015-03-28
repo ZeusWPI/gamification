@@ -7,7 +7,11 @@ describe BountiesController, type: :controller do
     sign_in @coder
   end
 
-  context 'authenticated coder' do
+  it 'correctly sets current user' do
+    expect(subject.current_coder).to eq(@coder)
+  end
+
+  context 'bounty' do
     before :each do
       # Place a bounty
       put :update_or_create,
@@ -15,22 +19,25 @@ describe BountiesController, type: :controller do
         format: :coffee
     end
 
-    it 'correctly sets current user' do
-      expect(subject.current_coder).to eq(@coder)
-    end
-
-    it 'can place bounties' do
+    it 'is placed' do
       expect(@issue.bounties.count).to eq(1)
     end
 
-    it 'sets correct bounty value' do
+    it 'has correct bounty value' do
       expect(@issue.total_bounty_value).to eq(10)
     end
 
-    it 'pays for the bounty' do
+    it 'was paid for by issuer' do
       @coder.reload
       expect(@issue.total_bounty_value).to eq(10)
       expect(@coder.bounty_residual).to eq(90)
+    end
+
+    it 'updates its value on update' do
+      put :update_or_create,
+        bounty: { issue_id: @issue, absolute_value: 20 },
+        format: :coffee
+      expect(@issue.total_bounty_value).to eq(20)
     end
 
   end

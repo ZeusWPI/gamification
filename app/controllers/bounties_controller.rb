@@ -24,14 +24,11 @@ class BountiesController < ApplicationController
     new_value = BountyPoints::bounty_points_from_abs new_abs_value.to_i
 
     # Find the bounty for this issue if it already exists
-    #@bounty = Bounty.find_or_create_by  issue: @issue,
-                                        #issuer: current_coder,
-                                        #claimed_at: nil do |b|
-                                          #b.value = 0
-                                        #end
-    @bounty = Bounty.create issue: @issue,
-                            issuer: current_coder,
-                            value: 0
+    @bounty = Bounty.find_or_create_by  issue: @issue,
+                                        issuer: current_coder,
+                                        claimed_at: nil do |b|
+                                          b.value = 0
+                                        end
 
     # Check whether the user has got enought points to spend
     delta = new_value - @bounty.value
