@@ -4,7 +4,9 @@ class WebhooksController < ApplicationController
   def receive
     event = request.headers['X-Github-Event']
     if Hooker.methods(false).include?(event.to_sym) # whitelist methods
-      json = JSON.parse request.request_parameters['payload']
+      payload = request.request_parameters['payload']
+      return head :bad_request unless payload
+      json = JSON.parse payload
       Hooker.send(event, json)
       head :created
     else
@@ -13,7 +15,7 @@ class WebhooksController < ApplicationController
   end
 
   class Hooker
-    def self.push(json)
+    def self.push json
       org = Organisation.find_by name: json['repository']['owner']['name']
       repo = Repository.find_by name: json['repository']['name'],
                                 organisation: org
@@ -24,7 +26,7 @@ class WebhooksController < ApplicationController
       end
     end
 
-    def self.issues(json)
+    def self.issues json
       # get issue
       org = Organisation.find_by name: json['repository']['owner']['login']
       repo = Repository.find_by name: json['repository']['name'],
@@ -41,6 +43,16 @@ class WebhooksController < ApplicationController
           issue.update! assignee: assignee
         when 'unassigned'
           issue.update! assignee: nil
+      end
+    end
+
+    def self.repository json
+      org = Organisation.find_by name: json['repository']['owner']['login']
+      return unless org
+
+      case json['action']
+      when 'created'
+        Repository.create name: json['repository']['name'], organisation: org
       end
     end
   end

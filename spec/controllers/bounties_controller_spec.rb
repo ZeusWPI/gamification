@@ -33,11 +33,20 @@ describe BountiesController, type: :controller do
       expect(@coder.bounty_residual).to eq(90)
     end
 
-    it 'updates its value on update' do
-      put :update_or_create,
-        bounty: { issue_id: @issue, absolute_value: 20 },
-        format: :coffee
-      expect(@issue.total_bounty_value).to eq(20)
+    context 'when updated' do
+      before :each do
+        put :update_or_create,
+          bounty: { issue_id: @issue, absolute_value: 20 },
+          format: :coffee
+      end
+
+      it 'does not create a new bounty' do
+        expect(@issue.bounties.count).to eq(1)
+      end
+
+      it 'updates value' do
+        expect(@issue.total_bounty_value).to eq(20)
+      end
     end
 
   end
