@@ -22,24 +22,19 @@ module Gamification
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
 
-    # website url (required for setting webhooks)
-    config.url = ''
+    # Organisation to track
+    config.organisation = 'ZeusWPI'
 
-    # organisations to track
-    config.organisations = [
-      # 'name'
-    ]
-    # individual repositories to track
-
-    config.repositories = [
-      # { name: 'name', org: 'organisation' }
-      {name: 'gamification', org: 'ZeusWPI'}
-    ]
+    config.repository_filters = {
+      # only: [ 'gamification' ]
+      # except: [ 'Foodbot' ]
+      # private: false
+    }
 
     # Total bounty value
     config.total_bounty_value = 5000
 
-    # commit score = 
+    # Addition score factor
     config.addition_score_factor = 10
 
     config.generators do |g|
