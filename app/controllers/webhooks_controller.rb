@@ -20,12 +20,11 @@ class WebhooksController < ApplicationController
 
   private
   def push json
-    org = Organisation.find_by name: json['repository']['owner']['name']
-    repo = Repository.find_by name: json['repository']['name'],
-                              organisation: org
-    return head :ok unless org and repo
-    repo.pull
+    @owner = json['repository']['owner']['name']
+    repo = Repository.find_by name: json['repository']['name']
+    return head :ok unless repo and valid_owner?
 
+    repo.pull
     json['commits'].each do |commit|
       Commit.register_from_sha repo, commit['id']
     end
@@ -33,12 +32,11 @@ class WebhooksController < ApplicationController
   end
 
   def issues json
-    # get issue
-    org = Organisation.find_by name: json['repository']['owner']['login']
-    repo = Repository.find_by name: json['repository']['name'],
-                              organisation: org
-    return head :ok unless org and repo
+    @owner = json['repository']['owner']['login']
+    repo = Repository.find_by name: json['repository']['name']
+    return head :ok unless repo and valid_owner?
 
+    # get issue
     issue = Issue.find_or_create_from_hash json['issue'], repo
 
     case json['action']
@@ -58,15 +56,20 @@ class WebhooksController < ApplicationController
   end
 
   def repository json
-    org = Organisation.find_by name: json['repository']['owner']['login']
-    return head :ok unless org
+    repo = json['repository']
+    @owner = repo['owner']['login']
+    return head :ok unless RepoFilters::track? repo and valid_owner?
 
     case json['action']
       when 'created'
-        Repository.create name: json['repository']['name'], organisation: org
+        Repository.create name: repo['name']
       else
         return head :ok
     end
     head :created
+  end
+
+  def valid_owner?
+    @owner == Rails.application.config.organisation
   end
 end

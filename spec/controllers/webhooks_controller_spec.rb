@@ -1,10 +1,12 @@
 RSpec.describe WebhooksController, :type => :controller do
-  context 'repository' do
-    before :each do
-      Organisation.create name: 'ZeusWPI'
+
+  context 'with tracked repository' do
+    before :all do
+      Rails.application.config.organisation = 'ZeusWPI'
+      Rails.application.config.repository_filters = {}
     end
 
-    context 'received webhook' do
+    context 'received created-repo webhook' do
       before :each do
         json = File.read("spec/github_jsons/repo_create.json")
         request.headers['X-Github-Event'] = 'repository'
@@ -20,19 +22,14 @@ RSpec.describe WebhooksController, :type => :controller do
       end
     end
 
-  end
 
-  # Commits require lots of spoofing to test.
-  # They have been manually verified.
+    # Commits require lots of spoofing to test.
+    # They have been manually verified.
 
-  context 'issue' do
-    before :each do
-      @zeus = Organisation.create name: 'ZeusWPI'
-      @god = Repository.create name: 'glowing-octo-dubstep', organisation: @zeus
-    end
 
-    context 'received webhook' do
+    context 'received issue webhook' do
       before :each do
+        @god = Repository.create name: 'glowing-octo-dubstep'
         json = File.read("spec/github_jsons/issue_open.json")
         request.headers['X-Github-Event'] = 'issues'
         post :receive, payload: json
@@ -52,6 +49,24 @@ RSpec.describe WebhooksController, :type => :controller do
         it 'closes the issue' do
           expect(@god.issues.where.not(closed_at: nil).count).to eq(1)
         end
+      end
+    end
+  end
+
+  context 'with untracked repository' do
+    before :all do
+      Rails.application.config.organisation = 'Derps Inc'
+    end
+
+    context 'received created-repo webhook' do
+      before :each do
+        json = File.read("spec/github_jsons/repo_create.json")
+        request.headers['X-Github-Event'] = 'repository'
+        post :receive, payload: json
+      end
+
+      it 'did not create a repository' do
+        expect(Repository.count).to eq(0)
       end
     end
   end

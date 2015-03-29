@@ -1,8 +1,6 @@
 <% issue = issue_closed %>
 <% repo = issue.repository %>
 <tr>
-  <%#<td><%= link_to repo.name, show_path(organisation: repo.organisation.name,%>
-                                        <%#repository: repo.name)</td>%>
   <td><%= repo.name %></td>
   <td><%= link_to issue.title, issue.github_url %></td>
   <td>
