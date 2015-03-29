@@ -4,9 +4,9 @@ Rails.application.routes.draw do
   root 'top4#show'
   get 'top4/show'
 
+
   scope path: 'scoreboard', as: 'scoreboard' do
     get '' => 'scoreboard#index'
-    post '' => 'scoreboard#rows'
   end
 
   post 'payload', :to => 'webhooks#receive'
