@@ -97,7 +97,7 @@ end
 
 # Use datenfisch (https://github.com/Iasoon/datenfisch.git)
 gem 'datenfisch', git: 'git://github.com/Iasoon/datenfisch.git',
-  ref: '86296a377b7beb380259782fcb47b73cf77999dc'
+  ref: '08cef80506b4e2d82ce2305c5d14d1390dcda622'
 
 # Use jQuery plugin tablesorter (https://github.com/Mottie/tablesorter)
 gem 'jquery-tablesorter'
