@@ -48,7 +48,7 @@ class Repository < ActiveRecord::Base
   end
 
   def fetch_issues
-    $github.issues.list(org: Rails.application.config.organisation,
+    $github.issues.list(user: Rails.application.config.organisation,
                         repo: name, filter: 'all').each do |hash|
       Issue.find_or_create_from_hash hash, self
     end
