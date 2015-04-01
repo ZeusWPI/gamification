@@ -4,9 +4,9 @@ class BountiesController < ApplicationController
   respond_to :html, :coffee
 
   def index
-    @issues = Issue.where(closed_at: nil).sort_by do |issue|
-      [issue.repository.name, issue.title]
-    end
+    @issues = Issue.statted.where(closed_at: nil)
+      .with_stats(:total_bounty_value)
+      .includes(:repository, :unclaimed_bounties).run
   end
 
   # Todo split this

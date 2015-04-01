@@ -27,6 +27,8 @@ class Issue < ActiveRecord::Base
                         class_name: 'Coder'
   belongs_to :repository
   has_many :bounties
+  has_many :unclaimed_bounties, ->{ where claimed_at: nil },
+    class_name: 'Bounty'
 
   serialize :labels
   include Schwarm
