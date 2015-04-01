@@ -5,7 +5,7 @@ module Schwarm
     stat :deletions, sum(:deletions)
     stat :count, count
 
-    stat :ln_additions, sum( 
+    stat :ln_additions, sum(
       cast( ln( a(:additions)+1), "UNSIGNED" )
     )
 

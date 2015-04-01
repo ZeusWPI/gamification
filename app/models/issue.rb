@@ -19,6 +19,7 @@
 #
 
 class Issue < ActiveRecord::Base
+  extend Datenfisch::Model
   belongs_to :issuer,   class_name: :Coder,
                         inverse_of: :created_issues,
                         foreign_key: 'issuer_id'
@@ -28,10 +29,9 @@ class Issue < ActiveRecord::Base
   has_many :bounties
 
   serialize :labels
-
-  def total_bounty_value
-    bounties.where(claimed_at: nil).map {|b| b.absolute_value}.sum
-  end
+  include Schwarm
+  stat :total_bounty_value, (BountyFisch.bounty_value *
+    Datenfisch.volatile { BountyPoints.bounty_factor })
 
   def close time: Time.now
     bounties.where(claimed_at: nil).each(&:claim)
