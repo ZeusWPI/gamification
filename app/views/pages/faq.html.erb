@@ -1,14 +1,20 @@
 <div class="col-md-6 col-md-offset-3">
   <h2>What is gamification?</h2>
-  <p>Gamification is a wepapp that will reward you for contributing to
+  <p>Gamification is a webapp that will reward you for contributing to
   <%=Rails.application.config.organisation%>'s projects.</p>
+
+  <h2>How do I get points?</h2>
+  <p>When you push your commits to GitHub, Gamification will process 
+  your commits and reward you based on how many lines you added.
+  You can also close issues in order to claim the associated bounty.</p>
 
   <h2>How do these points work?</h2>
   <p>We have two kinds of points: reward points and bounty points.
-  When you commit or claim a bounty, you get rewarded in both types of points.</p>
+  When you commit or claim a bounty, you get rewarded equally
+  in both types of points.</p>
   <div>
     <h3>Reward points</h3>
-    <p>These points can be traded for goodies.</p>
+    <p>These points can be traded in for goodies.</p>
 
     <h3>Bounty points</h3>
     <p>These points can be used to put bounties on issues you want to see fixed.</p>
@@ -22,6 +28,4 @@
   <p>This is because there is a global limit of 
   <%=Rails.application.config.total_bounty_value%> bounty points.
   When this limit is exceeded, all amounts of bounty points are rescaled.</p>
-  
-
 </div>
