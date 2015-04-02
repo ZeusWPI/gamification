@@ -1,5 +1,5 @@
 class BountiesController < ApplicationController
-  before_action :authenticate_coder!
+  before_action :authenticate_coder!, only: [:update_or_create]
 
   respond_to :html, :coffee
 

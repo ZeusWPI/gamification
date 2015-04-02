@@ -2,14 +2,16 @@
   <div class="col-md-2"></div>
   <div class="col-md-8">
     <div class="page-header">
-      <ul class="pull-right list-group">
-        <li class="list-group-item">
-          Remaining points&nbsp;&nbsp;&nbsp;&nbsp;
-          <span id="remaining-points" class="badge">
-            <%= current_coder.abs_bounty_residual %>
-          </span>
-        </li>
-      </ul>
+      <% if current_coder %>
+        <ul class="pull-right list-group">
+          <li class="list-group-item">
+            Remaining points&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="remaining-points" class="badge">
+              <%= current_coder.abs_bounty_residual %>
+            </span>
+          </li>
+        </ul>
+      <%end%>
       <h1>Bounties</h1>
     </div>
 
