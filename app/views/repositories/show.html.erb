@@ -1,0 +1,18 @@
+<% if @repository.blank? %>
+  <div class="alert alert-danger fade in">
+    This repository does not exist.
+  </div>
+<% else %>
+  <div class="container-fluid">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="page-header">
+        <h1>
+          <%= @repository.name%>
+          <%= link_to image_tag('github.png'), @repository.github_url,
+            title: 'View on GitHub' %>
+        </h1>
+      </div>
+      <%= render partial: 'scoreboard/scoreboard'%>
+    </div>
+  </div>
+<%end%>

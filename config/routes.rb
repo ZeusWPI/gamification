@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-
   root 'top4#show'
   get 'top4/show'
 
@@ -11,7 +10,8 @@ Rails.application.routes.draw do
 
   post 'payload', :to => 'webhooks#receive'
 
-  resources :coders, only: [:index, :show]
+  resources :coders, only: [:show]
+  resources :repositories, only: [:index, :show]
   resources :bounties, only: [:index] do
     post 'update_or_create', on: :collection
   end
