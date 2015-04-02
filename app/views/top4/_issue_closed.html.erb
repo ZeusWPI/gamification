@@ -1,11 +1,11 @@
 <% issue = issue_closed %>
 <% repo = issue.repository %>
 <tr>
-  <td><%= repo.name %></td>
+  <td><%= link_to repo.name, repo %></td>
   <td><%= link_to issue.title, issue.github_url %></td>
   <td>
-      <% if issue.assignee %>
-          <%= link_to issue.assignee.github_name, issue.assignee %>
-      <%end%>
+    <% if issue.assignee %>
+        <%= link_to issue.assignee.github_name, issue.assignee %>
+    <%end%>
   </td>
 </tr>

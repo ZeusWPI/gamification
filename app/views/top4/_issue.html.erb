@@ -1,6 +1,6 @@
 <% repo = issue.repository %>
 <tr>
-  <td><%= repo.name %></td>
+  <td><%= link_to repo.name, repo %></td>
   <td><%= link_to issue.title, issue.github_url %></td>
   <td><%= issue.total_bounty_value %></td>
 </tr>

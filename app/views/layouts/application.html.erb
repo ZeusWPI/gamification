@@ -25,10 +25,11 @@
           <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
                 <li><%= link_to fa_icon('bar-chart', text: 'Scoreboard'), scoreboard_path %></li>
+                <li><%= link_to fa_icon('code', text: 'Repos'), repositories_path %></li>
                 <% if coder_signed_in? %>
                 <li><%= link_to fa_icon('money', text: 'Bounties'), bounties_path%></li>
-                <li><%= link_to fa_icon('question', text: 'faq'), page_path('FAQ')%></li>
                 <% end %>
+                <li><%= link_to fa_icon('question', text: 'faq'), page_path('FAQ')%></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right navbar-user">
