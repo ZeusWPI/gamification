@@ -92,6 +92,8 @@ ActiveRecord::Schema.define(version: 20141203154945) do
 
   create_table "repositories", force: true do |t|
     t.string   "name",       null: false
+    t.string   "github_url", null: false
+    t.string   "clone_url",  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

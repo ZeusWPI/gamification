@@ -9,6 +9,9 @@
 #
 
 class Repository < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :name
+
   has_many :issues
   has_many :commits
   has_many :bounties, through: :issues
@@ -19,17 +22,8 @@ class Repository < ActiveRecord::Base
   require 'rugged'
 
   # Git operations
-  def self.register name
-    repo = Repository.find_or_create_by name: name do |r|
-      r.clone
-    end
-    repo.pull
-    repo.register_commits
-    repo.fetch_issues
-  end
-
   def clone
-    `mkdir -p #{path} && git clone #{clone_url} #{path}`
+    `mkdir -p #{path} && git clone #{authenticated_clone_url} #{path}`
   end
 
   def pull
@@ -68,7 +62,7 @@ class Repository < ActiveRecord::Base
     "#{Rails.root}/repos/#{name}"
   end
 
-  def clone_url
-    "https://#{Rails.application.secrets.github_token}@github.com/#{full_name}.git"
+  def authenticated_clone_url
+    clone_url.sub('https://') { $& + Rails.application.secrets.github_token + '@' }
   end
 end
