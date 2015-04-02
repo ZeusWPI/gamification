@@ -29,7 +29,7 @@ RSpec.describe WebhooksController, :type => :controller do
 
     context 'received issue webhook' do
       before :each do
-        @god = Repository.create name: 'glowing-octo-dubstep'
+        @god = create :repository, name: 'glowing-octo-dubstep'
         json = File.read("spec/github_jsons/issue_open.json")
         request.headers['X-Github-Event'] = 'issues'
         post :receive, payload: json

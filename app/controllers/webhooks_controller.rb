@@ -62,7 +62,9 @@ class WebhooksController < ApplicationController
 
     case json['action']
       when 'created'
-        Repository.create name: repo['name']
+        Repository.create name: repo['name'],
+          github_url: repo['html_url'],
+          clone_url: repo['clone_url']
       else
         return head :ok
     end

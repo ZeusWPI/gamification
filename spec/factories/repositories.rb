@@ -12,7 +12,9 @@ require 'faker'
 
 FactoryGirl.define do
   factory :repository do
-    name { Faker::Lorem.word }
+    name       { Faker::Lorem.word }
+    github_url { "example.com/#{name}" }
+    clone_url  { "https://example.com/#{name}.git" }
   end
 end
 

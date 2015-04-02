@@ -11,7 +11,8 @@ RSpec.describe RepositoriesController, :type => :controller do
 
   describe "GET show" do
     it "returns http success" do
-      get :show
+      @repo = create :repository
+      get :show, id: @repo
       expect(response).to have_http_status(:success)
     end
   end
