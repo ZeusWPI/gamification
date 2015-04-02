@@ -13,7 +13,7 @@ gem 'sass-rails', '~> 4.0.0'
 gem 'bootstrap-sass', '~> 3.3.1'
 
 # Use Font Awesome for icons
-gem 'font-awesome-sass', '~> 4.2.0'
+gem "font-awesome-rails"
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -107,3 +107,6 @@ gem 'jquery-datatables-rails'
 
 # Use d3 for fancy visualisations
 gem "d3-rails"
+
+# High voltage static pages
+gem 'high_voltage'

@@ -24,12 +24,10 @@
 
           <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
-                <li><%= link_to raw('<i class="fa fa-bar-chart-o"></i> Scoreboard'), scoreboard_path %></li>
+                <li><%= link_to fa_icon('bar-chart', text: 'Scoreboard'), scoreboard_path %></li>
                 <% if coder_signed_in? %>
-                <%#<li><%= link_to raw('<i class="fa fa-dashboard"></i> Your progress'), current_coder </li>%>
-                <li><%= link_to raw('<i class="fa fa-money"></i> Bounties'), bounties_path %></li>
-                <%#<li class="disabled"><a href="#"><i class="fa fa-code-fork"></i> Tech tree shizzle</a></li>%>
-                <%#<li class="disabled"><a href="#"><i class="fa fa-star"></i> Claim reward</a></li>%>
+                <li><%= link_to fa_icon('money', text: 'Bounties'), bounties_path%></li>
+                <li><%= link_to fa_icon('question', text: 'faq'), page_path('FAQ')%></li>
                 <% end %>
             </ul>
 
