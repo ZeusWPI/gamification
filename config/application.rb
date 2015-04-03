@@ -26,8 +26,19 @@ module Gamification
     config.organisation = 'ZeusWPI'
 
     config.repository_filters = {
-      # only: [ 'gamification' ]
-      # except: [ 'Foodbot' ]
+      # only: [ 'gamification', 'Haldis' ]
+      except: [ 
+        'glowing-octo-dubstep',
+        'VPW-voorbereiding-2015',
+        'VPW-voorbereiding-2014',
+        'contests',
+        'Bestuurstaakjes',
+        'SumoRoboComp',
+        'kaggle-rta',
+        'manage-user',
+        'website-manage',
+        'errbit'
+    ]
       # private: false
     }
 
