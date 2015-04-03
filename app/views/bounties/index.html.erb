@@ -35,7 +35,8 @@
                             method: :post,
                             remote: true do |f| %>
                 <%= f.hidden_field :issue_id %>
-                <%= f.text_field :absolute_value, class: 'form-control text-right' %>
+                <%= f.text_field :absolute_value,
+                  autocomplete: 'off', class: 'form-control text-right'%>
                 <span class='input-group-btn'>
                     <%= f.submit(value: 'Put', data: {disable_with: 'Saving'},
                                 class: 'btn btn-default') %>
