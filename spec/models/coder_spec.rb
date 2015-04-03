@@ -32,6 +32,11 @@ describe Coder do
       create :commit, coder: @coder, additions: 20, deletions: 8
       create :commit, coder: @coder, additions: 12, deletions: 7
 
+      @addition_score = [ 10, 20, 12 ].map do |n| 
+        Rails.application.config.addition_score_factor *
+          Math::log(n + 1)
+      end.map(&:round).sum
+
       @coder.commits.each do |commit|
         @coder.reward_commit commit
       end
@@ -46,15 +51,15 @@ describe Coder do
     end
 
     it 'was granted reward points' do
-      expect(@coder.reward_residual).to eq(42)
+      expect(@coder.reward_residual).to eq(@addition_score)
     end
 
     it 'was granted bounty points' do
-      expect(@coder.bounty_residual).to eq(42)
+      expect(@coder.bounty_residual).to eq(@addition_score)
     end
 
     it 'has a correct score' do
-      expect(@coder.total_score).to eq(72)
+      expect(@coder.score).to eq(@addition_score)
     end
   end
 
@@ -62,13 +67,17 @@ describe Coder do
   context 'with claimed bounties' do
 
     before :each do
-      issue = create :issue, assignee: @coder
-      bounty = create :bounty, issue: issue, value: 100
-      bounty.claim
+      @issue = create :issue, assignee: @coder
+      @bounty = create :bounty, issue: @issue, value: 100
+      @bounty.claim
+    end
+
+    it 'has a corrent claimed_value stat' do
+      expect(@coder.claimed_value).to eq(100)
     end
 
     it 'has a correct score' do
-      expect(@coder.total_score).to eq(100)
+      expect(@coder.score).to eq(100)
     end
 
     it 'was granted reward points' do

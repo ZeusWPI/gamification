@@ -10,12 +10,17 @@
  *
  *= require_self
  *= require_tree .
+ *= require jquery-tablesorter/theme.bootstrap
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";
-@import "font-awesome-sprockets";
+/*@import "font-awesome-sprockets";*/
 @import "font-awesome";
 
 #page-wrapper {
     margin-top: 50px;
+}
+
+.table:last-child {
+    margin-bottom: 0px;
 }

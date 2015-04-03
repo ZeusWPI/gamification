@@ -6,12 +6,16 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-Rails.application.config.organisations.each do |name|
-  org = Organisation.find_or_create_by name: name
-  org.fetch_repositories
-end
+# Fetch organisation repositories
+repos = $github.repos.list :all, org: Rails.application.config.organisation
 
-Rails.application.config.repositories.each do |repo|
-  org = Organisation.find_or_create_by name: repo[:org]
-  Repository.register org, repo[:name]
+repos.select {|r| RepoFilters.track? r}.each do |hash|
+  repo = Repository.find_or_create_by name: hash['name'] do |r|
+    r.github_url = hash['html_url']
+    r.clone_url = hash['clone_url']
+    r.clone
+  end
+  repo.pull
+  repo.register_commits
+  repo.fetch_issues
 end

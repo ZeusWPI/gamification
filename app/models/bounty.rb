@@ -21,14 +21,11 @@ class Bounty < ActiveRecord::Base
 
   validates_presence_of :issue
   validates_presence_of :issuer
-  validates_uniqueness_of :issue, scope: :issuer
   validates :value, presence: true, numericality: {
     only_integer: true,
     greater_than_or_equal_to: 0
   }
   after_save :expire_caches
-
-  scope :claimed_value, -> { sum :claimed_value }
 
   def to_s
     value.to_s

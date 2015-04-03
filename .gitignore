@@ -4,6 +4,7 @@
 /.config
 /InstalledFiles
 /config/secrets.yml
+/config/application.rb
 /coverage/
 /db/*.sqlite3
 /log

@@ -1,12 +1,12 @@
 class BountiesController < ApplicationController
-  before_action :authenticate_coder!
+  before_action :authenticate_coder!, only: [:update_or_create]
 
   respond_to :html, :coffee
 
   def index
-    @issues = Issue.where(closed_at: nil).sort_by do |issue|
-      [issue.repository.name, issue.title]
-    end
+    @issues = Issue.statted.where(closed_at: nil)
+      .with_stats(:total_bounty_value)
+      .includes(:repository, :unclaimed_bounties).run
   end
 
   # Todo split this
@@ -24,8 +24,9 @@ class BountiesController < ApplicationController
     new_value = BountyPoints::bounty_points_from_abs new_abs_value.to_i
 
     # Find the bounty for this issue if it already exists
-    @bounty = Bounty.find_or_create_by  issue_id: issue_id,
-                                        issuer: current_coder do |b|
+    @bounty = Bounty.find_or_create_by  issue: @issue,
+                                        issuer: current_coder,
+                                        claimed_at: nil do |b|
                                           b.value = 0
                                         end
 

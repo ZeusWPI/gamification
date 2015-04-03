@@ -2,18 +2,18 @@
 #
 # Table name: repositories
 #
-#  id              :integer          not null, primary key
-#  name            :string(255)      not null
-#  organisation_id :integer          not null
-#  hook_id         :integer
-#  created_at      :datetime
-#  updated_at      :datetime
+#  id         :integer          not null, primary key
+#  name       :string(255)      not null
+#  created_at :datetime
+#  updated_at :datetime
 #
 
 class Repository < ActiveRecord::Base
+  extend FriendlyId
+  friendly_id :name
+
   has_many :issues
   has_many :commits
-  belongs_to :organisation
   has_many :bounties, through: :issues
   has_many :coders, -> { uniq }, through: :commits
 
@@ -22,17 +22,8 @@ class Repository < ActiveRecord::Base
   require 'rugged'
 
   # Git operations
-  def self.register org, name
-    repo = Repository.find_or_create_by organisation: org, name: name do |r|
-      r.clone
-    end
-    repo.pull
-    repo.register_commits
-    repo.fetch_issues
-  end
-
   def clone
-    `mkdir -p #{path} && git clone #{clone_url} #{path}`
+    `mkdir -p #{path} && git clone #{authenticated_clone_url} #{path}`
   end
 
   def pull
@@ -51,7 +42,8 @@ class Repository < ActiveRecord::Base
   end
 
   def fetch_issues
-    $github.issues.list(user: organisation.name, repo: name, filter: 'all').each do |hash|
+    $github.issues.list(user: Rails.application.config.organisation,
+                        repo: name, filter: 'all').each do |hash|
       Issue.find_or_create_from_hash hash, self
     end
   end
@@ -62,34 +54,15 @@ class Repository < ActiveRecord::Base
   end
 
   def full_name
-    "#{organisation.name}/#{name}"
-  end
-
-  def set_webhook
-    if not hook_id
-      resp = $github.repos.hooks.create user: organisation.name, repo: name,
-        name: 'web', 
-        events: [ 'push', 'issues' ],
-        config: { url: Rails.application.config.url + 
-                                Rails.application.routes.url_helpers.payload_path
-        }
-      update hook_id: resp.id
-    end
-  end
-
-  def delete_webhook
-    if hook_id
-      $github.repos.hooks.delete user: organisation.name, repo: name, id: hook_id
-      update hook_id: nil
-    end
+    "#{Rails.application.config.organisation}/#{name}"
   end
 
   private
   def path
-    "#{Rails.root}/repos/#{full_name}"
+    "#{Rails.root}/repos/#{name}"
   end
 
-  def clone_url
-    "https://#{Rails.application.secrets.github_token}@github.com/#{full_name}.git"
+  def authenticated_clone_url
+    clone_url.sub('https://') { $& + Rails.application.secrets.github_token + '@' }
   end
 end

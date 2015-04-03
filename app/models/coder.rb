@@ -16,6 +16,7 @@
 
 class Coder < ActiveRecord::Base
   extend FriendlyId
+  extend Datenfisch::Model
   friendly_id :github_name
 
   devise :omniauthable, omniauth_providers: [:github]
@@ -27,6 +28,17 @@ class Coder < ActiveRecord::Base
   has_many :commits
   after_save :clear_caches
 
+  include Schwarm
+  stat :additions, CommitFisch.additions
+  stat :deletions, CommitFisch.deletions
+  stat :commit_count, CommitFisch.count
+  stat :changed_lines, additions + deletions
+  stat :claimed_value, BountyFisch.claimed_value
+
+  stat :addition_score, CommitFisch.ln_additions * 
+    ->{ Rails.application.config.addition_score_factor }
+  stat :score, addition_score + claimed_value
+
   # Bounty points should not be rescaled yet.
   def reward_bounty bounty, time: Time.current
     self.bounty_residual += bounty.value
@@ -35,24 +47,10 @@ class Coder < ActiveRecord::Base
   end
 
   def reward_commit commit
-    self.reward_residual += commit.additions
-    self.bounty_residual += commit.additions
-  end
-
-  def accessor
-    CoderAccessor.new self
-  end
-
-  def additions
-    accessor.additions
-  end
-
-  def deletions
-    accessor.deletions
-  end
-
-  def total_score
-    accessor.total_score
+    addition_score = (Math::log(commit.additions + 1) *
+      Rails.application.config.addition_score_factor).round
+    self.reward_residual += addition_score
+    self.bounty_residual += addition_score
   end
 
   def abs_bounty_residual

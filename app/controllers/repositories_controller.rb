@@ -1,17 +1,11 @@
 class RepositoriesController < ApplicationController
-  before_action :set_repository, only: [:show]
-
   def index
+    @repositories = Repository.all.order(:name)
   end
 
   def show
-    @coders = @repository.coders.map { |c| c.accessor.repository @repository }
-  end
-
-  private
-  def set_repository
-    @repository = Repository.joins(:organisation)
-      .find_by  organisations:  { name: params[:organisation] },
-                repositories:   { name: params[:repository] }
+    @repository = Repository.friendly.find params[:id]
+    @coders = Coder.only_with_stats(:score, :commit_count, :additions, :deletions)
+      .where(repository: @repository).order(score: :desc).run
   end
 end

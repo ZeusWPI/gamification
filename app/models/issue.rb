@@ -19,6 +19,7 @@
 #
 
 class Issue < ActiveRecord::Base
+  extend Datenfisch::Model
   belongs_to :issuer,   class_name: :Coder,
                         inverse_of: :created_issues,
                         foreign_key: 'issuer_id'
@@ -26,12 +27,13 @@ class Issue < ActiveRecord::Base
                         class_name: 'Coder'
   belongs_to :repository
   has_many :bounties
+  has_many :unclaimed_bounties, ->{ where claimed_at: nil },
+    class_name: 'Bounty'
 
   serialize :labels
-
-  def total_bounty_value
-    bounties.map {|b| b.absolute_value}.sum
-  end
+  include Schwarm
+  stat :total_bounty_value, 
+    (BountyFisch.bounty_value * ->{ BountyPoints.bounty_factor }).round
 
   def close time: Time.now
     bounties.where(claimed_at: nil).each(&:claim)
@@ -40,8 +42,6 @@ class Issue < ActiveRecord::Base
   end
 
   def self.find_or_create_from_hash json, repo
-    puts "repository:"
-    p repo.inspect
     Issue.find_or_create_by number: json['number'],
                             repository: repo do |issue|
       issue.github_url = json['html_url']
