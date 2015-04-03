@@ -3,16 +3,15 @@ class WebhooksController < ApplicationController
 
   def receive
     event = request.headers['X-Github-Event']
-    json = JSON.parse request.request_parameters['payload']
-    return head :bad_request unless event and json
+    return head :bad_request unless event
 
     case event
       when 'push'
-        push json
+        push request.request_parameters
       when 'issues'
-        issues json
+        issues request.request_parameters
       when 'repository'
-        repository json
+        repository request.request_parameters
       else
         head :ok
     end

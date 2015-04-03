@@ -1,4 +1,16 @@
-RSpec.describe WebhooksController, :type => :controller do
+RSpec.describe 'Webhooks', :type => :request do
+
+  def post_payload json, type
+    post '/payload', json, {
+      'Content-Type' => 'application/json',
+      'X-Github-Event' => type
+    }
+  end
+
+  it 'should respond to ping' do
+    json = File.read("spec/github_jsons/ping.json")
+    post_payload json, 'ping'
+  end
 
   context 'with tracked repository' do
     before :all do
@@ -9,8 +21,7 @@ RSpec.describe WebhooksController, :type => :controller do
     context 'received created-repo webhook' do
       before :each do
         json = File.read("spec/github_jsons/repo_create.json")
-        request.headers['X-Github-Event'] = 'repository'
-        post :receive, payload: json
+        post_payload json, 'repository'
       end
 
       it 'creates a repository' do
@@ -31,8 +42,7 @@ RSpec.describe WebhooksController, :type => :controller do
       before :each do
         @god = create :repository, name: 'glowing-octo-dubstep'
         json = File.read("spec/github_jsons/issue_open.json")
-        request.headers['X-Github-Event'] = 'issues'
-        post :receive, payload: json
+        post_payload json, 'issues'
       end
 
       it 'creates a new issue' do
@@ -42,8 +52,7 @@ RSpec.describe WebhooksController, :type => :controller do
       context 'closed' do
         before :each do
           json = File.read("spec/github_jsons/issue_close.json")
-          request.headers['X-Github-Event'] = 'issues'
-          post :receive, payload: json
+          post_payload json, 'issues'
         end
 
         it 'closes the issue' do
@@ -61,8 +70,7 @@ RSpec.describe WebhooksController, :type => :controller do
     context 'received created-repo webhook' do
       before :each do
         json = File.read("spec/github_jsons/repo_create.json")
-        request.headers['X-Github-Event'] = 'repository'
-        post :receive, payload: json
+        post_payload json, 'repository'
       end
 
       it 'did not create a repository' do
