@@ -62,13 +62,14 @@ div.top4 {
     max-width: 100%;
     text-anchor: middle;
 
-    rect {
-        fill: steelblue;
+    .bar {
+        fill: #337AB7;
     }
 
-    text {
+    .label {
         font: 16px sans-serif;
-        fill: white;
+        fill: black;
+        opacity: 0;
     }
 
     .axis {

@@ -103,22 +103,36 @@ var chart = d3.select("#top-repos")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var bar = chart.selectAll("g")
+var gs = chart.selectAll("g")
     .data(data)
   .enter().append("g")
     .attr("transform", function(d) { return "translate(" + x(d.name) + ",0)";});
 
-bar.append("rect")
+var rects = gs.append("rect").attr("class", "bar")
+    .attr("width", x.rangeBand())
+    .attr("height", 0)
+    .attr("y", height)
+    .transition().duration(1000)
     .attr("y", function(d) { return y(value(d)); })
     .attr("height", function(d) { return height - y(value(d)); })
-    .attr("width", x.rangeBand());
+    .each("end", function() {
+        gs.on("mouseover", function(d) {
+              var t = d3.select(this).transition().duration(300)
+              t.select("text").style("opacity", 1);
+              t.select("rect").style("fill", d3.rgb("#e91e63"))
+          })
+            .on("mouseout", function(d) {
+              var t = d3.select(this).transition().duration(300)
+              t.select("text").style("opacity", 0);
+              t.select("rect").style("fill", d3.rgb("#337AB7"));
+          });
+    });
 
-bar.append("text")
+gs.append("text").attr("class", "label")
     .attr("x", x.rangeBand()/2)
     .attr("y", function(d) { return y(value(d)); })
-    .attr("dy", "1.25em")
+    .attr("dy", "-.25em")
     .text(function(d) { return value(d); });
-
 
 var xAxis = d3.svg.axis()
     .scale(x)
