@@ -4,7 +4,7 @@
     <%= image_tag coder.avatar_url, alt: coder.github_name, size: '45' %>
   </td>
   <td class='name'>
-    <%= link_to coder.github_name, coder_path(coder.id), class: "username" %>
+    <%= link_to coder.github_name, coder, class: "username" %>
     <br>
     <% unless coder.full_name.blank? %>
       <small><%= coder.full_name %></small>

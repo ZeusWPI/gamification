@@ -32,8 +32,8 @@ class Issue < ActiveRecord::Base
 
   serialize :labels
   include Schwarm
-  stat :total_bounty_value, (BountyFisch.bounty_value *
-    Datenfisch.volatile { BountyPoints.bounty_factor })
+  stat :total_bounty_value, 
+    (BountyFisch.bounty_value * ->{ BountyPoints.bounty_factor }).round
 
   def close time: Time.now
     bounties.where(claimed_at: nil).each(&:claim)
