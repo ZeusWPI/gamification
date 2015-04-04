@@ -33,10 +33,56 @@ RSpec.describe 'Webhooks', :type => :request do
       end
     end
 
+    # Fake rugged implementation
+    class FakeRepo
+      def lookup sha
+        FakeCommit.new sha
+      end
+    end
 
-    # Commits require lots of spoofing to test.
-    # They have been manually verified.
+    class FakeCommit
+      attr_reader :oid, :time, :parents
 
+      def initialize sha
+        @oid = sha
+        @parents = ['lol']
+        @time = Time.now
+      end
+
+      def diff arg=nil
+        FakeDiff.new
+      end
+    end
+
+    class FakeDiff
+      def stat
+        [0, 10, 20]
+      end
+    end
+
+    context 'received push webhook' do
+      before :each do
+        @god = create :repository, name: 'glowing-octo-dubstep'
+        @iasoon = create :coder, github_name: 'Iasoon'
+        @sha = 'be981ec9e53ef639361ffebbf88845c711fb07bd' # From json
+
+        RSpec::Mocks.with_temporary_scope do
+          allow(Commit).to receive(:get_committer) { @iasoon }
+          allow_any_instance_of(Repository).to receive(:rugged_repo) { FakeRepo.new }
+          allow_any_instance_of(Repository).to receive(:pull)
+          json = File.read("spec/github_jsons/push.json")
+          post_payload json, 'push'
+        end
+      end
+
+      it 'registers the commit' do
+        expect(Commit.find_by repository: @god, sha: @sha).to be
+      end
+
+      it 'rewarded the commit' do
+        expect(@iasoon.reward_residual).to be > 0
+      end
+    end
 
     context 'received issue webhook' do
       before :each do
