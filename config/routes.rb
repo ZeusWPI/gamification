@@ -21,4 +21,6 @@ Rails.application.routes.draw do
     get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_session
   end
 
+  get '/faq' => 'high_voltage/pages#show', :id => 'faq'
+
 end
