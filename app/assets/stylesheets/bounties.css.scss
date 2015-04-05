@@ -15,7 +15,8 @@
     // My bounty cell
     td:nth-child(4), th:nth-child(4) {
         text-align: center;
-        width: 9em;
+        min-width: 9em;
+        padding-left: 0;
         input {
             max-width: 4em;
         }
