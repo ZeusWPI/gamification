@@ -3,8 +3,6 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 div.top4 {
-    /*margin: 10px;*/
-
     #top-coders {
         td {
             vertical-align: middle;
@@ -59,7 +57,7 @@ div.top4 {
 #top-repos {
     display: block;
     margin: auto;
-    /*height: 280px;*/
+    height: 100%;
     max-width: 100%;
     text-anchor: middle;
 
@@ -85,4 +83,13 @@ div.top4 {
     display: flex;
     flex-direction: row;
     align-items: stretch;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+
+    .top4 {
+        flex: 1;
+    }
 }
