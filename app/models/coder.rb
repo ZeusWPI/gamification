@@ -44,6 +44,7 @@ class Coder < ActiveRecord::Base
     self.bounty_residual += bounty.value
     bounty.pinpoint_value coder: self, time: time
     self.reward_residual += bounty.claimed_value
+    save!
   end
 
   def reward_commit commit
@@ -51,6 +52,7 @@ class Coder < ActiveRecord::Base
       Rails.application.config.addition_score_factor).round
     self.reward_residual += addition_score
     self.bounty_residual += addition_score
+    save!
   end
 
   def abs_bounty_residual

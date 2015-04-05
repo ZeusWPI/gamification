@@ -27,8 +27,12 @@
         overflow: hidden;
     }
 
-    .input-group {
-        float: left;
+}
+
+#bounties-table_wrapper {
+    // Fuck off, random div
+    .col-xs-6:nth-child(1){
+        display: none;
     }
 }
 
