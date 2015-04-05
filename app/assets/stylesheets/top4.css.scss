@@ -3,7 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 div.top4 {
-    margin: 10px;
+    /*margin: 10px;*/
 
     #top-coders {
         td {
@@ -45,6 +45,7 @@ div.top4 {
                     margin-left: -37px;
                     margin-top: -60px;
                     border-radius: 50%;
+                    box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
                 }
             }
             .score {
@@ -58,7 +59,7 @@ div.top4 {
 #top-repos {
     display: block;
     margin: auto;
-    height: 280px;
+    /*height: 280px;*/
     max-width: 100%;
     text-anchor: middle;
 
@@ -80,3 +81,8 @@ div.top4 {
     }
 }
 
+.equal-height {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+}

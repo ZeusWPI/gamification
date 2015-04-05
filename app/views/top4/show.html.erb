@@ -7,36 +7,36 @@
 
     <div class="row">
     <div class="col-md-6">
-        <div class="well top4">
+      <div class="top4 panel panel-default">
         <table id="top-coders" class="table table-striped">
-            <tbody>
+          <tbody>
             <% @coders.each_with_index do |coder, index| %>
-                <tr>
-                <td class="rank">
-                    <% if index != 0 %>
-                    <%= index + 1 %>.
-                    <% end %>
-                </td>
-                <td class="avatar">
-                    <%= image_tag coder.avatar_url, alt: coder.github_name,
-                        size: (index == 0 ? '120' : '45') %>
-                </td>
-                <td class="name">
-                    <%= link_to coder.github_name, coder_path(coder), class: "username" %>
-                    <br>
-                    <% unless coder.full_name.blank? %>
-                    <small><%= coder.full_name %></small>
-                    <% end %>
-                </td>
-                <td class="score"><%= format_score coder.score %></td>
-                </tr>
+              <tr>
+              <td class="rank">
+                <% if index != 0 %>
+                <%= index + 1 %>.
+                <% end %>
+              </td>
+              <td class="avatar">
+                <%= image_tag coder.avatar_url, alt: coder.github_name,
+                    size: (index == 0 ? '120' : '45') %>
+              </td>
+              <td class="name">
+                <%= link_to coder.github_name, coder_path(coder), class: "username" %>
+                <br>
+                <% unless coder.full_name.blank? %>
+                <small><%= coder.full_name %></small>
+                <% end %>
+              </td>
+              <td class="score"><%= format_score coder.score %></td>
+              </tr>
             <% end %>
-            </tbody>
+          </tbody>
         </table>
-        </div>
+      </div>
     </div>
     <div class="col-md-6">
-        <div class="well top4">
+        <div class="top4 panel panel-default">
             <svg id="top-repos" ViewBox="0 0 600 300"></svg>
         </div>
     </div>
@@ -45,7 +45,7 @@
       <div class="row">
         <div class="col-md-4">
           <h2 class="text-center">New issues</h2>
-          <div class="well top4">
+          <div class="top4 panel panel-default">
             <table id="new-issue" class="table table-striped">
               <tbody>
                 <%= render partial: 'issue', collection: @new_issues %>
@@ -55,7 +55,7 @@
         </div>
         <div class="col-md-4">
           <h2 class="text-center">Largest bounties</h2>
-          <div class="well top4">
+          <div class="top4 panel panel-default">
             <table id="top-issue" class="table table-striped">
               <tbody>
                 <%= render partial: 'issue', collection: @top_issues %>
@@ -65,7 +65,7 @@
         </div>
         <div class="col-md-4">
           <h2 class="text-center">Recently closed</h2>
-          <div class="well top4">
+          <div class="top4 panel panel-default">
             <table id="closed-issue" class="table table-striped">
               <tbody>
                 <%= render partial: 'issue_closed', collection: @closed_issues %>
