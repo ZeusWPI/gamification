@@ -80,6 +80,7 @@ RSpec.describe 'Webhooks', :type => :request do
       end
 
       it 'rewarded the commit' do
+        @iasoon.reload
         expect(@iasoon.reward_residual).to be > 0
       end
     end
