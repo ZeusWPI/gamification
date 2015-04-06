@@ -2,7 +2,16 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+.top4.toprow {
+    height: 300px;
+}
+
 div.top4 {
+    margin: auto;
+    .panel {
+        height: 100%;
+    }
+
     #top-coders {
         td {
             vertical-align: middle;
@@ -53,43 +62,30 @@ div.top4 {
 
     }
 
-}
-#top-repos {
-    display: block;
-    margin: auto;
-    height: 100%;
-    max-width: 100%;
-    text-anchor: middle;
+    #top-repos {
+        width: 100%;
+        max-height: 100%;
+        display: block;
+        margin: auto;
+        padding: 10px;
+        /*text-anchor: middle;*/
+        vertical-align: bottom;
 
-    .bar {
-        fill: #337AB7;
-    }
+        .bar {
+            fill: #337AB7;
+        }
 
-    .label {
-        font: 16px sans-serif;
-        fill: black;
-        opacity: 0;
-    }
-
-    .axis {
-        text {
+        .label {
             font: 16px sans-serif;
             fill: black;
+            opacity: 0;
         }
-    }
-}
 
-.equal-height {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-}
-
-.flex-col {
-    display: flex;
-    flex-direction: column;
-
-    .top4 {
-        flex: 1;
+        .axis {
+            text {
+                font: 16px sans-serif;
+                fill: black;
+            }
+        }
     }
 }
