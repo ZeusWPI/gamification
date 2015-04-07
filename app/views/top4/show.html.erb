@@ -115,19 +115,38 @@ var chart = d3.select("#top-repos")
 var repo_groups = chart.selectAll("g")
   .data(repos)
   .enter().append("g")
-  .attr("transform", function(d) { return "translate(" + x(d.name) + ",0)"; });
+  .attr("transform", function(d) {
+    return "translate(" + x(d.name) + "," + (height - y(d.score)) + ")";
+  });
 
-var repo_rects = repo_groups.append("rect")
+repo_groups.append("rect")
   .attr("class", "repo-bar")
-  .attr("y",function(d) {return height - y(d.score); })
+  .attr("y", function(d) { return y(d.score); })
+  .attr("height", 0)
+  .attr("width", x.rangeBand())
+  .transition().duration(1000)
+  .attr("y", 0)
   .attr("height", function(d) { return y(d.score); })
-  .attr("width", x.rangeBand());
+
+repo_groups.append("text")
+  .attr("class", "repo-label")
+  .attr("x", x.rangeBand()/2)
+  .attr("y", ".5em")
+  .attr("opacity", 0)
+  .text(function(d) {return d.score;});
 
 var contributor_groups = repo_groups.selectAll(".contributor")
   .data(function(d) { return d.contributors; })
   .enter().append("g")
   .attr("class", "contributor")
   .attr("transform", "translate(0,"+height+")");
+
+//collapse groups
+repo_groups.each(function(d) {
+  var h = d.score;
+  d3.select(this).selectAll(".contributor")
+    .attr("transform", "translate(0,"+y(h)+")");
+});
 
 contributor_groups
   .append("rect")
@@ -146,19 +165,30 @@ contributor_groups
 repo_groups
   .on("mouseenter", function(d) {
     var t = d3.select(this).transition().duration(1000);
+    // breakdown
     t.selectAll(".contributor")
       .attr("transform", function(d) {
-        return "translate(0,"+(height - y(d.y0 + d.score))+")";
+        return "translate(0,"+(y(d.y0))+")";
       });
     t.selectAll(".contributor-bar")
       .attr("height", function(d) { return y(d.score); });
+    // label
+    t.select(".repo-label")
+      .attr("y", "-.25em")
+      .attr("opacity", 1);
   })
   .on("mouseleave", function(d) {
     var t = d3.select(this).transition().duration(1000);
+    var h = d.score;
+    // breakdown
     t.selectAll(".contributor")
-      .attr("transform", "translate(0,"+height+")");
+      .attr("transform", "translate(0,"+y(h)+")");
     t.selectAll(".contributor-bar")
       .attr("height", 0);
+    // label
+    t.select(".repo-label")
+      .attr("y", ".5em")
+      .attr("opacity", 0);
   });
 
 var xAxis = d3.svg.axis()

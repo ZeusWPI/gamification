@@ -77,15 +77,15 @@ div.top4 {
             fill: #337AB7;
         }
 
+        .repo-label {
+            text-anchor: middle;
+            font: 16px sans-serif;
+            fill: black;
+        }
+
         .contributor-name {
             text-anchor: middle;
             fill: white;
-        }
-
-        .label {
-            font: 16px sans-serif;
-            fill: black;
-            opacity: 0;
         }
 
         .axis {
