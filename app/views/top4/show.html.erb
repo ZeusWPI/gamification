@@ -117,13 +117,13 @@ var repo_groups = chart.selectAll("g")
   .enter().append("g")
   .attr("transform", function(d) { return "translate(" + x(d.name) + ",0)"; });
 
-var repo_rects = groups.append("rect")
+var repo_rects = repo_groups.append("rect")
   .attr("class", "repo-bar")
   .attr("y",function(d) {return height - y(d.score); })
   .attr("height", function(d) { return y(d.score); })
   .attr("width", x.rangeBand());
 
-var contributor_groups = groups.selectAll(".contributor")
+var contributor_groups = repo_groups.selectAll(".contributor")
   .data(function(d) { return d.contributors; })
   .enter().append("g")
   .attr("class", "contributor")
@@ -144,7 +144,7 @@ contributor_groups
   .text(function(d) { return d.github_name; });
 
 repo_groups
-  .on("mouseover", function(d) {
+  .on("mouseenter", function(d) {
     var t = d3.select(this).transition().duration(1000);
     t.selectAll(".contributor")
       .attr("transform", function(d) {
@@ -153,7 +153,7 @@ repo_groups
     t.selectAll(".contributor-bar")
       .attr("height", function(d) { return y(d.score); });
   })
-  .on("mouseout", function(d) {
+  .on("mouseleave", function(d) {
     var t = d3.select(this).transition().duration(1000);
     t.selectAll(".contributor")
       .attr("transform", "translate(0,"+height+")");
