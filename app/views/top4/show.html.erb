@@ -36,9 +36,9 @@
       </div>
     </div>
     <div class="top4 col-md-6 toprow">
-        <div class="panel panel-default">
-            <svg id="top-repos" ViewBox="0 0 600 300"></svg>
-        </div>
+      <div class="panel panel-default">
+        <svg id="top-repos" ViewBox="0 0 600 300"></svg>
+      </div>
     </div>
     </div>
 
@@ -79,60 +79,97 @@
 </div>
 
 <script>
-var data = <%=raw @top_repos.to_json %>;
+var repos = <%=raw @top_repos.to_json %>;
+var contributors = <%=raw @repo_contributors.to_json %>
+
+for (var i = 0; i < repos.length; i++) {
+  var sum = 0;
+  for (var j = 0; j < contributors[i].length; j++) {
+    contributors[i][j].y0 = sum;
+    sum += contributors[i][j].score;
+  }
+  repos[i].contributors = contributors[i]
+}
 
 var margin = { top: 20, right: 0, bottom: 30, left: 0 };
 var width = 600 - margin.right - margin.left;
 var height = 300 - margin.top - margin.bottom;
 
-var value = function(d) { return d.score; };
-
-
 var x = d3.scale.ordinal()
     .rangeRoundBands([0, width], .1)
-    .domain( data.map(function(d) { return d.name; }) );
+    .domain( repos.map(function(d) { return d.name; }) );
 
 var y = d3.scale.linear()
-    .range([height, 0])
-    .domain([0, d3.max(data, value)]);
+    .range([0, height])
+    .domain([0, d3.max(repos, function(d) { return d.score; })]);
 
+var allcoders = [].concat.apply([], contributors);
+
+var colors = d3.scale.category20()
+  .domain(allcoders.map(function(d) { return d.github_name; }));
 
 var chart = d3.select("#top-repos")
-  <%#.attr("width", width + margin.left + margin.right)%>
-  <%#.attr("height", height + margin.top + margin.bottom)%>
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var gs = chart.selectAll("g")
-    .data(data)
+var groups = chart.selectAll("g")
+  .data(repos)
   .enter().append("g")
-    .attr("transform", function(d) { return "translate(" + x(d.name) + ",0)";});
+  .attr("transform", function(d) { return "translate(" + x(d.name) + ",0)"; });
 
-var rects = gs.append("rect").attr("class", "bar")
-    .attr("width", x.rangeBand())
-    .attr("height", 0)
-    .attr("y", height)
-    .transition().duration(1000)
-    .attr("y", function(d) { return y(value(d)); })
-    .attr("height", function(d) { return height - y(value(d)); })
-    .each("end", function() {
-        gs.on("mouseover", function(d) {
-              var t = d3.select(this).transition().duration(300)
-              t.select("text").style("opacity", 1);
-              t.select("rect").style("fill", d3.rgb("#e91e63"))
-          })
-            .on("mouseout", function(d) {
-              var t = d3.select(this).transition().duration(300)
-              t.select("text").style("opacity", 0);
-              t.select("rect").style("fill", d3.rgb("#337AB7"));
-          });
-    });
 
-gs.append("text").attr("class", "label")
-    .attr("x", x.rangeBand()/2)
-    .attr("y", function(d) { return y(value(d)); })
-    .attr("dy", "-.25em")
-    .text(function(d) { return value(d); });
+var repo_rects = groups.append("rect")
+  .attr("y",function(d) {return height - y(d.score); })
+  .attr("height", function(d) { return y(d.score); })
+  .attr("width", x.rangeBand());
+
+var contributor_rects = groups.selectAll(".contributor-bar")
+  .data(function(d) { return d.contributors; }).enter().append("rect")
+  .attr("class", "contributor-bar")
+  .attr("y", height)
+  .attr("height", 0)
+  .attr("width", x.rangeBand())
+  .style("fill", function(d) { return colors(d.github_name); });
+
+groups
+  .on("mouseover", function(d) {
+    d3.select(this).selectAll(".contributor-bar")
+    .transition().duration(500)
+    .attr("y", function(d) { return height - y(d.y0 + d.score); })
+    .attr("height", function(d) { return y(d.score); })
+  })
+  .on("mouseout", function(d) {
+    d3.select(this).selectAll(".contributor-bar")
+    .transition().duration(500)
+    .attr("y", height )
+    .attr("height", 0 )
+  });
+
+<%#var rects = groups.append("rect").attr("class", "bar")%>
+    <%#.attr("width", x.rangeBand())%>
+    <%#.attr("height", 0)%>
+    <%#.attr("y", height)%>
+    <%#.transition().duration(1000)%>
+    <%#.attr("y", function(d) { return y(value(d)); })%>
+    <%#.attr("height", function(d) { return height - y(value(d)); });%>
+    <%#.each("end", function() {%>
+        <%#gs.on("mouseover", function(d) {%>
+              <%#var t = d3.select(this).transition().duration(300)%>
+              <%#t.select("text").style("opacity", 1);%>
+              <%#t.select("rect").style("fill", d3.rgb("#e91e63"))%>
+          <%#})%>
+            <%#.on("mouseout", function(d) {%>
+              <%#var t = d3.select(this).transition().duration(300)%>
+              <%#t.select("text").style("opacity", 0);%>
+              <%#t.select("rect").style("fill", d3.rgb("#337AB7"));%>
+          <%#});%>
+    <%#});%>
+
+<%#gs.append("text").attr("class", "label")%>
+    <%#.attr("x", x.rangeBand()/2)%>
+    <%#.attr("y", function(d) { return y(value(d)); })%>
+    <%#.attr("dy", "-.25em")%>
+    <%#.text(function(d) { return value(d); });%>
 
 var xAxis = d3.svg.axis()
     .scale(x)

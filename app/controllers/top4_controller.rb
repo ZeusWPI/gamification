@@ -8,6 +8,12 @@ class Top4Controller < ApplicationController
       .where(date: 1.week.ago..Time.current).model(Repository)
       .order(score: :desc).take(4)
 
+    @repo_contributors = @top_repos.map do |repo|
+      Coder.only_with_stats(:score)
+        .where(repository: repo, date: 1.week.ago..Time.current)
+        .order(score: :desc).run
+    end
+
     @new_issues = Issue.with_stats(:total_bounty_value).includes(:repository)
       .order(opened_at: :desc).take(4)
 
