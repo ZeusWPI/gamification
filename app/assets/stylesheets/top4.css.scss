@@ -70,9 +70,16 @@ div.top4 {
         /*padding: 10px;*/
         /*text-anchor: middle;*/
         vertical-align: bottom;
+        shape-rendering: crisp-edges;
+        image-rendering: crisp-edges;
 
-        .bar {
+        .repo-bar {
             fill: #337AB7;
+        }
+
+        .contributor-name {
+            text-anchor: middle;
+            fill: white;
         }
 
         .label {
