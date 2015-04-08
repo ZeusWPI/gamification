@@ -3,7 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .top4.toprow {
-    min-height: 300px;
+    height: 300px;
 }
 
 div.top4 {
@@ -66,9 +66,9 @@ div.top4 {
         width: 100%;
         max-height: 100%;
         display: block;
-        /*margin: auto;*/
-        /*padding: 10px;*/
-        /*text-anchor: middle;*/
+        margin: auto;
+        padding: 10px;
+
         vertical-align: bottom;
         shape-rendering: crisp-edges;
         image-rendering: crisp-edges;
