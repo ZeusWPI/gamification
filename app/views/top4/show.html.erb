@@ -83,12 +83,19 @@ var repos = <%=raw @top_repos.to_json %>;
 var contributors = <%=raw @repo_contributors.to_json %>
 
 for (var i = 0; i < repos.length; i++) {
-  var sum = 0;
-  for (var j = 0; j < contributors[i].length; j++) {
-    contributors[i][j].y0 = sum;
-    sum += contributors[i][j].score;
+  repos[i].contributors = contributors[i].slice(0,3);
+  if (contributors[i].length > 3) {
+    repos[i].contributors.push({
+      github_name: 'other',
+      score: d3.sum(contributors[i].slice(3), function(d) { return d.score; })
+    });
   }
-  repos[i].contributors = contributors[i]
+
+  var sum = 0;
+  for (var j = repos[i].contributors.length-1; j >= 0; j--) {
+    repos[i].contributors[j].y0 = sum;
+    sum += repos[i].contributors[j].score;
+  }
 }
 
 var margin = { top: 20, right: 0, bottom: 30, left: 0 };
@@ -103,8 +110,10 @@ var y = d3.scale.linear()
     .range([0, height])
     .domain([0, d3.max(repos, function(d) { return d.score; })]);
 
-var colors = d3.scale.category20c()
-  .domain([1, d3.max(repos, function(d) { return d.length; })]);
+var colors = d3.scale.ordinal()
+  <%#.range(['#689f38','#8bc34a', '#aed581', '#dcedc8'])%>
+  .range(['#1976d2','#2196f3', '#64b5f6','#bbdefb'])
+  .domain([0,1,2,3]);
 
 var chart = d3.select("#top-repos")
   .append("g")

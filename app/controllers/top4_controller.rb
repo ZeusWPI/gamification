@@ -10,8 +10,8 @@ class Top4Controller < ApplicationController
 
     @repo_contributors = @top_repos.map do |repo|
       Coder.only_with_stats(:score)
-        .where(repository: repo, date: 1.week.ago..Time.current)
-        .order(:score).run
+        .where(repository: repo, date: 1.weeks.ago..Time.current)
+        .order(score: :desc).run
     end
 
     @new_issues = Issue.with_stats(:total_bounty_value).includes(:repository)
