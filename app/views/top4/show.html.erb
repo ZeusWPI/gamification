@@ -111,7 +111,6 @@ var y = d3.scale.linear()
     .domain([0, d3.max(repos, function(d) { return d.score; })]);
 
 var colors = d3.scale.ordinal()
-  <%#.range(['#689f38','#8bc34a', '#aed581', '#dcedc8'])%>
   .range(['#1976d2','#2196f3', '#64b5f6','#bbdefb'])
   .domain([0,1,2,3]);
 

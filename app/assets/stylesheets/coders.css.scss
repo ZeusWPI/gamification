@@ -17,7 +17,7 @@
     text-align: center;
 }
 
-#scoreboard {
+.scoreboard {
     .rank {
         font-size: 20pt;
         text-align: right;
@@ -40,5 +40,13 @@
     .score, .commits, .additions, .deletions {
         vertical-align: middle;
         text-align: right;
+    }
+}
+
+#top-repos {
+    margin-top: 50px;
+    .name {
+        font-weight: bold;
+        padding-left: 60px;
     }
 }

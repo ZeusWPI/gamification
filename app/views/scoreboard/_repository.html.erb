@@ -1,0 +1,8 @@
+<tr>
+  <td class='rank'><%= repository_counter + 1 %>.</td>
+  <td class='name'> <%= link_to repository.name, repository %></td>
+  <td class='score'><%= format_score repository.score%></td>
+  <td class='commits'><%= format_score repository.commit_count %></td>
+  <td class='additions'><%= format_score repository.additions %></td>
+  <td class='deletions'><%= format_score repository.deletions %></td>
+</tr>
