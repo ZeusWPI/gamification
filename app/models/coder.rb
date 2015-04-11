@@ -34,9 +34,7 @@ class Coder < ActiveRecord::Base
   stat :commit_count, CommitFisch.count
   stat :changed_lines, additions + deletions
   stat :claimed_value, BountyFisch.claimed_value
-
-  stat :addition_score, CommitFisch.ln_additions * 
-    ->{ Rails.application.config.addition_score_factor }
+  stat :addition_score, CommitFisch.addition_score
   stat :score, addition_score + claimed_value
 
   # Bounty points should not be rescaled yet.

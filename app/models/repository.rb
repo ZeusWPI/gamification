@@ -10,6 +10,7 @@
 
 class Repository < ActiveRecord::Base
   extend FriendlyId
+  extend Datenfisch::Model
   friendly_id :name
 
   has_many :issues
@@ -18,6 +19,13 @@ class Repository < ActiveRecord::Base
   has_many :coders, -> { uniq }, through: :commits
 
   validates :name, presence: true
+
+  include Schwarm
+  stat :additions, CommitFisch.additions
+  stat :deletions, CommitFisch.deletions
+  stat :commit_count, CommitFisch.count
+  stat :changed_lines, additions + deletions
+  stat :score, CommitFisch.addition_score
 
   require 'rugged'
 

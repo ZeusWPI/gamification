@@ -4,7 +4,10 @@ module Schwarm
     stat :additions, col(:additions).sum
     stat :deletions, col(:deletions).sum
     stat :count,     count
-    stat :ln_additions, ln(col(:additions)+1).round.sum
+    stat :addition_score, (
+      ln(col(:additions)+1) *
+      ->{ Rails.application.config.addition_score_factor }
+    ).round.sum
   end
 
   BountyFisch = Datenfisch.provider Bounty do

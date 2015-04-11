@@ -4,8 +4,8 @@ class Top4Controller < ApplicationController
     @coders = Coder.with_stats(:score)
       .where(date: 1.week.ago..Time.current).order(score: :desc).take(4)
 
-    @top_repos = Datenfisch.query.select(Coder.score)
-      .where(date: 1.week.ago..Time.current).model(Repository)
+    @top_repos = Repository.with_stats(:score)
+      .where(date: 1.week.ago..Time.current)
       .order(score: :desc).take(4)
 
     @repo_contributors = @top_repos.map do |repo|
