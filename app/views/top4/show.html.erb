@@ -18,8 +18,7 @@
                 <% end %>
               </td>
               <td class="avatar">
-                <%= image_tag coder.avatar_url, alt: coder.github_name,
-                    size: (index == 0 ? '120' : '45') %>
+                <%= avatar coder, size: (index == 0 ? '120' : '45') %>
               </td>
               <td class="name">
                 <%= link_to coder.github_name, coder_path(coder), class: "username" %>

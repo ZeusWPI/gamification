@@ -15,7 +15,7 @@
 
       <div class="well row score-table">
         <div class="col-md-4">
-          <%= image_tag @coder.avatar_url, alt: @coder.github_name, id: 'profile_pic', width:184, height: 184 %>
+          <%= avatar @coder, size: 184 %>
         </div>
         <div class="col-md-8">
           <span class="metric"><span class="number"><%= format_score @coder.score %></span> points</span>
