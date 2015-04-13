@@ -1,0 +1,17 @@
+<table id="scoreboard" class="scoreboard table table-striped
+                              table-responsive tablesorter">
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th>Contributor</th>
+      <th class="score" data-sort-initial-order="desc">Score</th>
+      <th class="commits" data-sort-initial-order="desc">Commits</th>
+      <th class="additions" data-sort-initial-order="desc">Additions</th>
+      <th class="deletions" data-sort-initial-order="desc">Deletions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render partial: 'coders/coder', collection: @coders %>
+  </tbody>
+</table>

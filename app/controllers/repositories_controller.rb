@@ -1,6 +1,8 @@
 class RepositoriesController < ApplicationController
   def index
-    @repositories = Repository.all.order(:name)
+    @repositories = Repository
+      .with_stats(:score, :commit_count, :additions, :deletions)
+      .order(score: :desc).run
   end
 
   def show

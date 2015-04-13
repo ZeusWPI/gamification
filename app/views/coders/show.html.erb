@@ -29,22 +29,7 @@
     </div>
 
     <div class="col-md-8 col-md-offset-2">
-      <table id="top-repos" class="scoreboard table table-striped
-                                   table-responsive tablesorter">
-        <thead>
-          <tr>
-            <th></th>
-            <th class="name">repository</th>
-            <th class="score" data-sort-initial-order="desc">Score</th>
-            <th class="commits" data-sort-initial-order="desc">Commits</th>
-            <th class="additions" data-sort-initial-order="desc">Additions</th>
-            <th class="deletions" data-sort-initial-order="desc">Deletions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <%= render partial: 'scoreboard/repository', collection: @repositories%>
-        </tbody>
-      </table>
+      <%= render partial: 'repositories/scoreboard' %>
     </div>
   </div>
 <% end %>

@@ -1,10 +1,9 @@
-<table id="scoreboard" class="scoreboard table table-striped
+<table id="top-repos" class="scoreboard table table-striped
                               table-responsive tablesorter">
   <thead>
     <tr>
       <th></th>
-      <th></th>
-      <th>Contributor</th>
+      <th class="name">repository</th>
       <th class="score" data-sort-initial-order="desc">Score</th>
       <th class="commits" data-sort-initial-order="desc">Commits</th>
       <th class="additions" data-sort-initial-order="desc">Additions</th>
@@ -12,6 +11,6 @@
     </tr>
   </thead>
   <tbody>
-    <%= render partial: 'scoreboard/coder', collection: @coders %>
+    <%= render partial: 'repositories/repository', collection: @repositories%>
   </tbody>
 </table>
