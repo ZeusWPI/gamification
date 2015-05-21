@@ -6,8 +6,8 @@
     </div>
 
     <div class="row">
-    <div class="top4 col-md-6 toprow">
-      <div class="panel panel-default">
+    <div class="top4 col-md-6">
+      <div class="panel panel-default table-responsive scoreboard">
         <table id="top-coders" class="table table-striped">
           <tbody>
             <% @coders.each_with_index do |coder, index| %>
@@ -34,7 +34,7 @@
         </table>
       </div>
     </div>
-    <div class="top4 col-md-6 toprow">
+    <div class="top4 col-md-6">
       <div class="panel panel-default">
         <svg id="top-repos" ViewBox="0 0 600 300"></svg>
       </div>
