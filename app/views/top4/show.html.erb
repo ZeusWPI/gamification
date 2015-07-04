@@ -213,7 +213,8 @@ var xAxis = d3.svg.axis()
         d3.select(this).on("click",function(){
           // on click, redirect
           window.location.href = urls_map[d];
-        });
+        })
+        .classed("hyperlink",true);
         return d;
       }
     );
