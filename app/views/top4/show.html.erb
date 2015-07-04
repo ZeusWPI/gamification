@@ -4,7 +4,6 @@
     <div class="page-header text-center">
     <h1>Weekly Overview</h1>
     </div>
-
     <div class="row">
     <div class="top4 col-md-6">
       <div class="panel panel-default table-responsive scoreboard">
@@ -78,8 +77,15 @@
 </div>
 
 <script>
+<%
+  repo_urls = {}
+  @top_repos.each do |repo|
+    repo_urls[repo.name] = url_for( repo )
+  end
+%>
 var repos = <%=raw @top_repos.to_json %>;
-var contributors = <%=raw @repo_contributors.to_json %>
+var contributors = <%=raw @repo_contributors.to_json %>;
+var urls_map = <%=raw repo_urls.to_json %>;
 
 for (var i = 0; i < repos.length; i++) {
   repos[i].contributors = contributors[i].slice(0,3);
@@ -110,101 +116,113 @@ var y = d3.scale.linear()
     .domain([0, d3.max(repos, function(d) { return d.score; })]);
 
 var colors = d3.scale.ordinal()
-  .range(['#1976d2','#2196f3', '#64b5f6','#bbdefb'])
-  .domain([0,1,2,3]);
+    .range(['#1976d2','#2196f3', '#64b5f6','#bbdefb'])
+    .domain([0,1,2,3]);
 
 var chart = d3.select("#top-repos")
-  .append("g")
+    .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var repo_groups = chart.selectAll("g")
-  .data(repos)
-  .enter().append("g")
-  .attr("transform", function(d) {
-    return "translate(" + x(d.name) + "," + (height - y(d.score)) + ")";
-  });
+    .data(repos)
+    .enter().append("g")
+    .attr("transform", function(d) {
+      return "translate(" + x(d.name) + "," + (height - y(d.score)) + ")";
+    });
 
 repo_groups.append("rect")
-  .attr("class", "repo-bar")
-  .attr("y", function(d) { return y(d.score); })
-  .attr("height", 0)
-  .attr("width", x.rangeBand())
-  .transition().duration(1000)
-  .attr("y", 0)
-  .attr("height", function(d) { return y(d.score); })
+    .attr("class", "repo-bar")
+    .attr("y", function(d) { return y(d.score); })
+    .attr("height", 0)
+    .attr("width", x.rangeBand())
+    .transition().duration(1000)
+    .attr("y", 0)
+    .attr("height", function(d) { return y(d.score); });
 
 repo_groups.append("text")
-  .attr("class", "repo-label")
-  .attr("x", x.rangeBand()/2)
-  .attr("y", ".5em")
-  .attr("opacity", 0)
-  .text(function(d) {return d.score;});
+    .attr("class", "repo-label")
+    .attr("x", x.rangeBand()/2)
+    .attr("y", ".5em")
+    .attr("opacity", 0)
+    .text(function(d) {return d.score;});
 
 var contributor_groups = repo_groups.selectAll(".contributor")
-  .data(function(d) { return d.contributors; })
-  .enter().append("g")
-  .attr("class", "contributor")
-  .attr("transform", "translate(0,"+height+")");
+    .data(function(d) { return d.contributors; })
+    .enter().append("g")
+    .attr("class", "contributor")
+    .attr("transform", "translate(0,"+height+")");
 
 //collapse groups
 repo_groups.each(function(d) {
   var h = d.score;
   d3.select(this).selectAll(".contributor")
-    .attr("transform", "translate(0,"+y(h)+")");
+      .attr("transform", "translate(0,"+y(h)+")");
 });
 
 contributor_groups
-  .append("rect")
-  .attr("class", "contributor-bar")
-  .attr("height", 0)
-  .attr("width", x.rangeBand())
-  .style("fill", function(d, i) { return colors(i); });
+    .append("rect")
+    .attr("class", "contributor-bar")
+    .attr("height", 0)
+    .attr("width", x.rangeBand())
+    .style("fill", function(d, i) { return colors(i); });
 
 contributor_groups
-  .append("text")
-  .attr("class", "contributor-name")
-  .attr("x", x.rangeBand()/2)
-  .attr("y", "1em")
-  .text(function(d) { return d.github_name; });
+    .append("text")
+    .attr("class", "contributor-name")
+    .attr("x", x.rangeBand()/2)
+    .attr("y", "1em")
+    .text(function(d) { return d.github_name; });
 
 repo_groups
-  .on("mouseenter", function(d) {
-    var t = d3.select(this).transition().duration(500);
-    // breakdown
-    t.selectAll(".contributor")
-      .attr("transform", function(d) {
-        return "translate(0,"+(y(d.y0))+")";
-      });
-    t.selectAll(".contributor-bar")
-      .attr("height", function(d) { return y(d.score); });
-    // label
-    t.select(".repo-label")
-      .attr("y", "-.25em")
-      .attr("opacity", 1);
-  })
-  .on("mouseleave", function(d) {
-    var t = d3.select(this).transition().duration(500);
-    var h = d.score;
-    // breakdown
-    t.selectAll(".contributor")
-      .attr("transform", "translate(0,"+y(h)+")");
-    t.selectAll(".contributor-bar")
-      .attr("height", 0);
-    // label
-    t.select(".repo-label")
-      .attr("y", ".5em")
-      .attr("opacity", 0);
-  });
+    .on("mouseenter", function(d) {
+      var t = d3.select(this).transition().duration(500);
+      // breakdown
+      t.selectAll(".contributor")
+        .attr("transform", function(d) {
+          return "translate(0,"+(y(d.y0))+")";
+        });
+      t.selectAll(".contributor-bar")
+        .attr("height", function(d) { return y(d.score); });
+      // label
+      t.select(".repo-label")
+        .attr("y", "-.25em")
+        .attr("opacity", 1);
+    })
+    .on("mouseleave", function(d) {
+      var t = d3.select(this).transition().duration(500);
+      var h = d.score;
+      // breakdown
+      t.selectAll(".contributor")
+        .attr("transform", "translate(0,"+y(h)+")");
+      t.selectAll(".contributor-bar")
+        .attr("height", 0);
+      // label
+      t.select(".repo-label")
+        .attr("y", ".5em")
+        .attr("opacity", 0);
+    })
+    .on("click", function(d){
+          window.location.href = urls_map[d.name];
+    });
 
 var xAxis = d3.svg.axis()
+    .orient("bottom")
     .scale(x)
-    .orient("bottom");
+    .tickFormat(
+      function(d){
+        d3.select(this).on("click",function(){
+          // on click, redirect
+          window.location.href = urls_map[d];
+        });
+        return d;
+      }
+    );
 
 chart.append("g")
     .attr("class", "axis xaxis")
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis)
     .selectAll("text")
-        .attr("dy", "1em");
+    .attr("dy", "1em");
 
 </script>
