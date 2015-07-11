@@ -47,12 +47,12 @@ group :test do
   gem 'faker'
 end
 
-# Deployment
-group :deployment do
+group :development do
   gem 'capistrano'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
   gem 'capistrano-rvm'
+  gem 'capistrano-rbenv'
   gem 'capistrano-rails-collection'
 end
 
