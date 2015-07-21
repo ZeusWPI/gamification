@@ -40,8 +40,8 @@ group :doc do
   gem 'sdoc', require: false
 end
 
-  gem 'rack-test'
 group :test do
+  gem 'rack-test'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'faker'
