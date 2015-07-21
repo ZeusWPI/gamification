@@ -65,6 +65,17 @@ class Repository < ActiveRecord::Base
     "#{Rails.application.config.organisation}/#{name}"
   end
 
+  def self.create_or_update repo_hash
+    repo = Repository.find_or_create_by name: repo_hash['name'] do |r|
+      r.github_url = repo_hash['html_url']
+      r.clone_url = repo_hash['clone_url']
+      r.clone
+    end
+    repo.pull
+    repo.register_commits
+    repo.fetch_issues
+  end
+
   private
   def path
     "#{Rails.root}/repos/#{name}"

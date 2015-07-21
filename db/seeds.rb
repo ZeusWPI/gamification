@@ -10,12 +10,5 @@
 repos = $github.repos.list :all, org: Rails.application.config.organisation
 
 repos.select {|r| RepoFilters.track? r}.each do |hash|
-  repo = Repository.find_or_create_by name: hash['name'] do |r|
-    r.github_url = hash['html_url']
-    r.clone_url = hash['clone_url']
-    r.clone
-  end
-  repo.pull
-  repo.register_commits
-  repo.fetch_issues
+  Repository.create_or_update hash
 end

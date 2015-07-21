@@ -61,13 +61,11 @@ class WebhooksController < ApplicationController
 
     case json['action']
       when 'created'
-        Repository.create name: repo['name'],
-          github_url: repo['html_url'],
-          clone_url: repo['clone_url']
-      else
-        return head :ok
+        Repository.create_or_update repo
+        return head :created
     end
-    head :created
+
+    return head :ok
   end
 
   def valid_owner?
