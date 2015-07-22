@@ -10,7 +10,7 @@ gem 'sass-rails', '~> 4.0.0'
 gem 'bootstrap-sass', '~> 3.3.1'
 
 # Use Font Awesome for icons
-gem "font-awesome-rails"
+gem 'font-awesome-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -54,6 +54,10 @@ group :development do
   gem 'capistrano-rvm'
   gem 'capistrano-rbenv'
   gem 'capistrano-rails-collection'
+
+  gem 'annotate'
+
+  gem 'rubocop', github: 'bbatsov/rubocop'
 end
 
 group :production do
@@ -88,13 +92,10 @@ gem 'friendly_id'
 
 # Use Turbolinks in a sane way (https://github.com/kossnocorp/jquery.turbolinks)
 gem 'jquery-turbolinks'
-group :dev do
-  gem 'annotate'
-end
 
 # Use datenfisch (https://github.com/Iasoon/datenfisch.git)
 gem 'datenfisch', git: 'git://github.com/Iasoon/datenfisch.git',
-  ref: '4f39bb3686b5facfb2552fe186d568ce3d259993'
+                  ref: '4f39bb3686b5facfb2552fe186d568ce3d259993'
 
 # Use jQuery plugin tablesorter (https://github.com/Mottie/tablesorter)
 gem 'jquery-tablesorter'
@@ -103,7 +104,7 @@ gem 'jquery-tablesorter'
 gem 'jquery-datatables-rails'
 
 # Use d3 for fancy visualisations
-gem "d3-rails"
+gem 'd3-rails'
 
 # High voltage static pages
 gem 'high_voltage'

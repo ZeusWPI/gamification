@@ -5,8 +5,8 @@ class BountiesController < ApplicationController
 
   def index
     @issues = Issue.statted.where(closed_at: nil)
-      .with_stats(:total_bounty_value)
-      .includes(:repository, :unclaimed_bounties).run
+              .with_stats(:total_bounty_value)
+              .includes(:repository, :unclaimed_bounties).run
   end
 
   # Todo split this
@@ -21,14 +21,14 @@ class BountiesController < ApplicationController
       return
     end
 
-    new_value = BountyPoints::bounty_points_from_abs new_abs_value.to_i
+    new_value = BountyPoints.bounty_points_from_abs new_abs_value.to_i
 
     # Find the bounty for this issue if it already exists
-    @bounty = Bounty.find_or_create_by  issue: @issue,
-                                        issuer: current_coder,
-                                        claimed_at: nil do |b|
-                                          b.value = 0
-                                        end
+    @bounty = Bounty.find_or_create_by issue: @issue,
+                                       issuer: current_coder,
+                                       claimed_at: nil do |b|
+      b.value = 0
+    end
 
     # Check whether the user has got enought points to spend
     delta = new_value - @bounty.value
@@ -47,13 +47,14 @@ class BountiesController < ApplicationController
       current_coder.bounty_residual -= delta
       current_coder.save!
     else
-      flash.now[:error] = "There occured an error while trying to save your"\
+      flash.now[:error] = 'There occured an error while trying to save your'\
                           " bounty (#{@bounty.errors.full_messages})"
     end
   end
 
   private
-    def bounty_params
-      params.require(:bounty).permit(:issue_id, :absolute_value)
-    end
+
+  def bounty_params
+    params.require(:bounty).permit(:issue_id, :absolute_value)
+  end
 end

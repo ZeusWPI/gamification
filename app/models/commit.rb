@@ -22,22 +22,22 @@ class Commit < ActiveRecord::Base
   scope :additions, -> { sum :additions }
   scope :deletions, -> { sum :deletions }
 
-  def reward **opts
+  def reward(**_opts)
     coder.reward_commit self
   end
 
-  def self.register_from_sha repo, sha, **opts
+  def self.register_from_sha(repo, sha, **opts)
     r_commit = repo.rugged_repo.lookup sha
     register_rugged repo, r_commit, **opts
   end
 
-  def self.register_rugged repo, r_commit, reward: true
+  def self.register_rugged(repo, r_commit, reward: true)
     # if committer can't be determined, fuck this shit
     committer = get_committer repo, r_commit
-    return nil if not committer
-    Commit.find_or_create_by  repository: repo,
-                              sha: r_commit.oid,
-                              coder: committer do |commit|
+    return nil unless committer
+    Commit.find_or_create_by repository: repo,
+                             sha: r_commit.oid,
+                             coder: committer do |commit|
       commit.date = r_commit.time
       commit.set_stats r_commit
       commit.reward if reward
@@ -45,7 +45,7 @@ class Commit < ActiveRecord::Base
   end
 
   # should be private
-  def set_stats r_commit
+  def set_stats(r_commit)
     if r_commit.parents.size >= 2
       # Do not reward merges
       self.additions = self.deletions = 0
@@ -61,13 +61,12 @@ class Commit < ActiveRecord::Base
     end
   end
 
-  private
-  def self.get_committer repo, r_commit
-    identity = GitIdentity.find_by  name: r_commit.committer[:name],
-                                    email: r_commit.committer[:email]
-    if not identity
+  def self.get_committer(repo, r_commit)
+    identity = GitIdentity.find_by name: r_commit.committer[:name],
+                                   email: r_commit.committer[:email]
+    unless identity
       coder = get_committer_from_github repo, r_commit
-      return nil if not coder
+      return nil unless coder
       identity = GitIdentity.create name:  r_commit.committer[:name],
                                     email: r_commit.committer[:email],
                                     coder: coder
@@ -75,13 +74,11 @@ class Commit < ActiveRecord::Base
     identity.coder
   end
 
-  def self.get_committer_from_github repo, r_commit
+  def self.get_committer_from_github(repo, r_commit)
     commit = $github.repos.commits.get Rails.application.config.organisation,
-      repo.name, r_commit.oid
+                                       repo.name, r_commit.oid
     if commit.committer
       Coder.find_or_create_by_github_name commit.committer.login
-    else
-      nil
     end
   end
 end

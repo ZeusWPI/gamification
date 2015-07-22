@@ -1,14 +1,11 @@
-RSpec.describe 'Webhooks', :type => :request do
-
-  def post_payload json, type
-    post '/payload', json, {
-      'Content-Type' => 'application/json',
-      'X-Github-Event' => type
-    }
+RSpec.describe 'Webhooks', type: :request do
+  def post_payload(json, type)
+    post '/payload', json,       'Content-Type' => 'application/json',
+                                 'X-Github-Event' => type
   end
 
   it 'should respond to ping' do
-    json = File.read("spec/github_jsons/ping.json")
+    json = File.read('spec/github_jsons/ping.json')
     post_payload json, 'ping'
   end
 
@@ -20,7 +17,7 @@ RSpec.describe 'Webhooks', :type => :request do
 
     context 'received created-repo webhook' do
       before :each do
-        json = File.read("spec/github_jsons/repo_create.json")
+        json = File.read('spec/github_jsons/repo_create.json')
         post_payload json, 'repository'
       end
 
@@ -35,7 +32,7 @@ RSpec.describe 'Webhooks', :type => :request do
 
     # Fake rugged implementation
     class FakeRepo
-      def lookup sha
+      def lookup(sha)
         FakeCommit.new sha
       end
     end
@@ -43,13 +40,13 @@ RSpec.describe 'Webhooks', :type => :request do
     class FakeCommit
       attr_reader :oid, :time, :parents
 
-      def initialize sha
+      def initialize(sha)
         @oid = sha
         @parents = ['lol']
-        @time = Time.now
+        @time = Time.zone.now
       end
 
-      def diff arg=nil
+      def diff(_arg = nil)
         FakeDiff.new
       end
     end
@@ -70,7 +67,7 @@ RSpec.describe 'Webhooks', :type => :request do
           allow(Commit).to receive(:get_committer) { @iasoon }
           allow_any_instance_of(Repository).to receive(:rugged_repo) { FakeRepo.new }
           allow_any_instance_of(Repository).to receive(:pull_or_clone)
-          json = File.read("spec/github_jsons/push.json")
+          json = File.read('spec/github_jsons/push.json')
           post_payload json, 'push'
         end
       end
@@ -88,7 +85,7 @@ RSpec.describe 'Webhooks', :type => :request do
     context 'received issue webhook' do
       before :each do
         @god = create :repository, name: 'glowing-octo-dubstep'
-        json = File.read("spec/github_jsons/issue_open.json")
+        json = File.read('spec/github_jsons/issue_open.json')
         post_payload json, 'issues'
       end
 
@@ -98,7 +95,7 @@ RSpec.describe 'Webhooks', :type => :request do
 
       context 'closed' do
         before :each do
-          json = File.read("spec/github_jsons/issue_close.json")
+          json = File.read('spec/github_jsons/issue_close.json')
           post_payload json, 'issues'
         end
 
@@ -116,7 +113,7 @@ RSpec.describe 'Webhooks', :type => :request do
 
     context 'received created-repo webhook' do
       before :each do
-        json = File.read("spec/github_jsons/repo_create.json")
+        json = File.read('spec/github_jsons/repo_create.json')
         post_payload json, 'repository'
       end
 
