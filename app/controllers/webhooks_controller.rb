@@ -23,7 +23,7 @@ class WebhooksController < ApplicationController
     repo = Repository.find_by name: json['repository']['name']
     return head :ok unless repo and valid_owner?
 
-    repo.pull
+    repo.pull_or_clone
     json['commits'].each do |commit|
       Commit.register_from_sha repo, commit['id']
     end

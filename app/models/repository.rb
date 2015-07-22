@@ -29,13 +29,12 @@ class Repository < ActiveRecord::Base
 
   require 'rugged'
 
-  # Git operations
-  def clone
-    `mkdir -p #{path} && git clone #{authenticated_clone_url} #{path}`
-  end
-
-  def pull
-    `cd #{path} && git pull`
+  def pull_or_clone
+    if Dir.exists? path
+      `cd #{path} && git fetch && git reset --hard origin/master`
+    else
+      `mkdir -p #{path} && git clone #{authenticated_clone_url} #{path}`
+    end
   end
 
   def register_commits
@@ -69,9 +68,8 @@ class Repository < ActiveRecord::Base
     repo = Repository.find_or_create_by name: repo_hash['name'] do |r|
       r.github_url = repo_hash['html_url']
       r.clone_url = repo_hash['clone_url']
-      r.clone
     end
-    repo.pull
+    repo.pull_or_clone
     repo.register_commits
     repo.fetch_issues
   end
