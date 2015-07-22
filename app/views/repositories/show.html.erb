@@ -19,12 +19,14 @@
       </ul>
 
       <div class="tab-content">
+        <br />
         <div role="tabpanel" class="tab-pane active" id="contributions">
           <%= render partial: 'coders/scoreboard' %>
         </div>
 
         <div role="tabpanel" class="tab-pane" id="charts">
-          Sup
+          <div id='chart'></div>
+          <%= render_chart(@chart, 'chart') %>
         </div>
       </div>
     </div>

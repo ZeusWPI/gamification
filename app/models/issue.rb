@@ -23,16 +23,20 @@ class Issue < ActiveRecord::Base
   belongs_to :issuer,   class_name: :Coder,
                         inverse_of: :created_issues,
                         foreign_key: 'issuer_id'
-  belongs_to :assignee, inverse_of: :assigned_issues, 
+  belongs_to :assignee, inverse_of: :assigned_issues,
                         class_name: 'Coder'
   belongs_to :repository
   has_many :bounties
   has_many :unclaimed_bounties, ->{ where claimed_at: nil },
     class_name: 'Bounty'
 
+  default_scope { order(:number) }
+  scope :open, -> { where(closed_at: nil) }
+  scope :closed, -> { where.not(closed_at: nil) }
+
   serialize :labels
   include Schwarm
-  stat :total_bounty_value, 
+  stat :total_bounty_value,
     (BountyFisch.bounty_value * ->{ BountyPoints.bounty_factor }).round
 
   def close time: Time.now
