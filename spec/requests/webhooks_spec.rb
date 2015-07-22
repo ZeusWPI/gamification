@@ -69,7 +69,7 @@ RSpec.describe 'Webhooks', :type => :request do
         RSpec::Mocks.with_temporary_scope do
           allow(Commit).to receive(:get_committer) { @iasoon }
           allow_any_instance_of(Repository).to receive(:rugged_repo) { FakeRepo.new }
-          allow_any_instance_of(Repository).to receive(:pull)
+          allow_any_instance_of(Repository).to receive(:pull_or_clone)
           json = File.read("spec/github_jsons/push.json")
           post_payload json, 'push'
         end
