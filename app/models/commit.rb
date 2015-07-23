@@ -22,7 +22,7 @@ class Commit < ActiveRecord::Base
   scope :additions, -> { sum :additions }
   scope :deletions, -> { sum :deletions }
 
-  def reward(**_opts)
+  def reward
     coder.reward_commit self
   end
 
