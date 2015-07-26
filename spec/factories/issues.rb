@@ -26,7 +26,7 @@ FactoryGirl.define do
     title  { Faker::Lorem.sentence }
     github_url { "example.org/issues/#{number}" }
     opened_at { Faker::Date.backward 30 }
-    labels ""
+    labels ''
 
     association :issuer, factory: :coder
     repository

@@ -1,12 +1,11 @@
 module Schwarm
-
   CommitFisch = Datenfisch.provider Commit do
     stat :additions, col(:additions).sum
     stat :deletions, col(:deletions).sum
     stat :count,     count
     stat :addition_score, (
-      ln(col(:additions)+1) *
-      ->{ Rails.application.config.addition_score_factor }
+      ln(col(:additions) + 1) *
+      -> { Rails.application.config.addition_score_factor }
     ).round.sum
   end
 

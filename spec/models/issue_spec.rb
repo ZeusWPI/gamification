@@ -19,7 +19,6 @@
 #
 
 describe Issue do
-
   before :each do
     @issue = create :issue
   end
@@ -29,7 +28,6 @@ describe Issue do
   end
 
   context 'with bounties' do
-
     before :each do
       @claimant = create :coder
       @bounty = create :bounty, issue: @issue

@@ -1,5 +1,5 @@
 describe BountiesController, type: :controller do
-  #include Devise::TestHelpers
+  # include Devise::TestHelpers
 
   before :each do
     @issue = create :issue
@@ -15,8 +15,8 @@ describe BountiesController, type: :controller do
     before :each do
       # Place a bounty
       put :update_or_create,
-        bounty: { issue_id: @issue, absolute_value: 10 },
-        format: :coffee
+          bounty: { issue_id: @issue, absolute_value: 10 },
+          format: :coffee
     end
 
     it 'is placed' do
@@ -36,8 +36,8 @@ describe BountiesController, type: :controller do
     context 'when updated' do
       before :each do
         put :update_or_create,
-          bounty: { issue_id: @issue, absolute_value: 20 },
-          format: :coffee
+            bounty: { issue_id: @issue, absolute_value: 20 },
+            format: :coffee
       end
 
       it 'does not create a new bounty' do
@@ -48,31 +48,29 @@ describe BountiesController, type: :controller do
         expect(@issue.total_bounty_value).to eq(20)
       end
     end
-
   end
 
   context 'dumb coder' do
-
     it 'cannot place bounties with insufficient bounty points' do
       put :update_or_create,
-        bounty: { issue_id: @issue, absolute_value: 110 },
-        format: :coffee
+          bounty: { issue_id: @issue, absolute_value: 110 },
+          format: :coffee
       expect(@coder.bounty_residual).to eq(100)
       expect(@issue.total_bounty_value).to eq(0)
     end
 
     it 'cannot place bounties with negative value' do
       put :update_or_create,
-        bounty: { issue_id: @issue, absolute_value: -10 },
-        format: :coffee
+          bounty: { issue_id: @issue, absolute_value: -10 },
+          format: :coffee
       expect(@coder.bounty_residual).to eq(100)
       expect(@issue.total_bounty_value).to eq(0)
     end
 
     it 'cannot place bounties with non-numeric value' do
       put :update_or_create,
-        bounty: { issue_id: @issue, absolute_value: 'A' },
-        format: :coffee
+          bounty: { issue_id: @issue, absolute_value: 'A' },
+          format: :coffee
       expect(@coder.bounty_residual).to eq(100)
       expect(@issue.total_bounty_value).to eq(0)
     end
@@ -84,8 +82,8 @@ describe BountiesController, type: :controller do
       @first_claimant = create :coder
       @issue.assignee = @first_claimant
       put :update_or_create,
-        bounty: { issue_id: @issue, absolute_value: 20 },
-        format: :coffee
+          bounty: { issue_id: @issue, absolute_value: 20 },
+          format: :coffee
       @issue.close
     end
 
@@ -100,8 +98,8 @@ describe BountiesController, type: :controller do
         # Reopen and put a second bounty
         @issue.closed_at = nil
         put :update_or_create,
-          bounty: { issue_id: @issue, absolute_value: 20 },
-          format: :coffee
+            bounty: { issue_id: @issue, absolute_value: 20 },
+            format: :coffee
       end
 
       it 'has a claimed bounty' do

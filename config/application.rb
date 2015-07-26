@@ -27,7 +27,7 @@ module Gamification
 
     config.repository_filters = {
       # only: [ 'gamification', 'Haldis' ]
-      except: [ 
+      except: [
         'glowing-octo-dubstep',
         'VPW-voorbereiding-2015',
         'VPW-voorbereiding-2014',
@@ -38,7 +38,7 @@ module Gamification
         'manage-user',
         'website-manage',
         'errbit'
-    ]
+      ]
       # private: false
     }
 
@@ -50,12 +50,12 @@ module Gamification
 
     config.generators do |g|
       g.test_framework :rspec,
-        fixtures: true,
-        view_specs: false,
-        helper_specs: false,
-        routing_specs: false,
-        controller_specs: true,
-        request_specs: true
+                       fixtures: true,
+                       view_specs: false,
+                       helper_specs: false,
+                       routing_specs: false,
+                       controller_specs: true,
+                       request_specs: true
       g.fixture_replacement :factory_girl, dir: 'spec/factories'
     end
   end

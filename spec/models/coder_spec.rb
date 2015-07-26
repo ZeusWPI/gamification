@@ -15,7 +15,6 @@
 #
 
 describe Coder do
-
   before :each do
     @coder = create :coder
   end
@@ -24,17 +23,15 @@ describe Coder do
     expect(@coder).to be_valid
   end
 
-
   context 'with commits' do
-
     before :each do
       create :commit, coder: @coder, additions: 10, deletions: 4
       create :commit, coder: @coder, additions: 20, deletions: 8
       create :commit, coder: @coder, additions: 12, deletions: 7
 
-      @addition_score = [ 10, 20, 12 ].map do |n| 
+      @addition_score = [10, 20, 12].map do |n|
         Rails.application.config.addition_score_factor *
-          Math::log(n + 1)
+        Math.log(n + 1)
       end.map(&:round).sum
 
       @coder.commits.each do |commit|
@@ -63,9 +60,7 @@ describe Coder do
     end
   end
 
-
   context 'with claimed bounties' do
-
     before :each do
       @issue = create :issue, assignee: @coder
       @bounty = create :bounty, issue: @issue, value: 100
@@ -87,7 +82,5 @@ describe Coder do
     it 'was granted bounty points' do
       expect(@coder.bounty_residual).to eq(100)
     end
-
   end
-
 end

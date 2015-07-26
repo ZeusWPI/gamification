@@ -19,10 +19,10 @@ FactoryGirl.define do
     issue
     association :issuer, factory: :coder
 
-      factory :claimed_bounty do
-        association :claimant, factory: :coder
-        claimed_at { Faker::Date.backward 30 }
-        claimed_value { absolute_value }
-      end
+    factory :claimed_bounty do
+      association :claimant, factory: :coder
+      claimed_at { Faker::Date.backward 30 }
+      claimed_value { absolute_value }
+    end
   end
 end

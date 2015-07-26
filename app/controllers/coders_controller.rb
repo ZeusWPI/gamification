@@ -9,6 +9,7 @@ class CodersController < ApplicationController
   end
 
   private
+
   def set_coder
     @coder = Coder.friendly.find params[:id]
   end

@@ -14,7 +14,6 @@
 #
 
 describe Bounty do
-
   before :each do
     @issuer = create :coder
     @issue = create :issue
@@ -31,7 +30,6 @@ describe Bounty do
   end
 
   context 'claimed by issuer' do
-
     before :each do
       @issue.assignee = @issuer
       @bounty.claim
@@ -47,7 +45,6 @@ describe Bounty do
   end
 
   context 'when claimed' do
-
     before :each do
       @claimant = create :coder
       @issue.assignee = @claimant
@@ -79,7 +76,6 @@ describe Bounty do
   end
 
   context 'with scaled value' do
-
     before :each do
       @limit = Rails.application.config.total_bounty_value
       @bounty.update value: @limit * 2
@@ -102,5 +98,4 @@ describe Bounty do
       expect(@assignee.bounty_residual).to eq(@limit * 2)
     end
   end
-
 end
