@@ -1,10 +1,10 @@
 module BountyPoints
-  def self.bounty_points_from_abs value
-    (value * self.bounty_factor).to_i
+  def self.bounty_points_from_abs(value)
+    (value * bounty_factor).to_i
   end
 
-  def self.bounty_points_to_abs value
-    (value / self.bounty_factor).to_i
+  def self.bounty_points_to_abs(value)
+    (value / bounty_factor).to_i
   end
 
   def self.bounty_factor

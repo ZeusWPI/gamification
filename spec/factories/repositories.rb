@@ -17,4 +17,3 @@ FactoryGirl.define do
     clone_url  { "https://example.com/#{name}.git" }
   end
 end
-

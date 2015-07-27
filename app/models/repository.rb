@@ -30,7 +30,7 @@ class Repository < ActiveRecord::Base
   require 'rugged'
 
   def pull_or_clone
-    if Dir.exists? path
+    if Dir.exist? path
       `cd #{path} && git fetch && git reset --hard origin/master`
     else
       `mkdir -p #{path} && git clone #{authenticated_clone_url} #{path}`
@@ -64,7 +64,7 @@ class Repository < ActiveRecord::Base
     "#{Rails.application.config.organisation}/#{name}"
   end
 
-  def self.create_or_update repo_hash
+  def self.create_or_update(repo_hash)
     repo = Repository.find_or_create_by name: repo_hash['name'] do |r|
       r.github_url = repo_hash['html_url']
       r.clone_url = repo_hash['clone_url']
@@ -75,6 +75,7 @@ class Repository < ActiveRecord::Base
   end
 
   private
+
   def path
     "#{Rails.root}/repos/#{name}"
   end

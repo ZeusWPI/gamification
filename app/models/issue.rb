@@ -27,8 +27,8 @@ class Issue < ActiveRecord::Base
                         class_name: 'Coder'
   belongs_to :repository
   has_many :bounties
-  has_many :unclaimed_bounties, ->{ where claimed_at: nil },
-    class_name: 'Bounty'
+  has_many :unclaimed_bounties, -> { where claimed_at: nil },
+           class_name: 'Bounty'
 
   default_scope { order(:number) }
   scope :open, -> { where(closed_at: nil) }
@@ -37,15 +37,15 @@ class Issue < ActiveRecord::Base
   serialize :labels
   include Schwarm
   stat :total_bounty_value,
-    (BountyFisch.bounty_value * ->{ BountyPoints.bounty_factor }).round
+       (BountyFisch.bounty_value * -> { BountyPoints.bounty_factor }).round
 
-  def close time: Time.now
-    bounties.where(claimed_at: nil).each(&:claim)
+  def close(time: Time.zone.now)
+    bounties.where(claimed_at: nil).find_each(&:claim)
     update! closed_at: time
     save!
   end
 
-  def self.find_or_create_from_hash json, repo
+  def self.find_or_create_from_hash(json, repo)
     Issue.find_or_create_by number: json['number'],
                             repository: repo do |issue|
       issue.github_url = json['html_url']
