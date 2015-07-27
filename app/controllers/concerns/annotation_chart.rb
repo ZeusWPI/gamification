@@ -6,8 +6,8 @@ module AnnotationChart
 
     # Get the full range
     start_date = Time.zone.now.to_date
-    unless issues.first.nil?
-      start_date = issues.first.opened_at.to_date
+    unless issues.order(:number).first.nil?
+      start_date = issues.order(:number).first.opened_at.to_date
     end
     daterange =  start_date .. Time.zone.now.to_date
 
