@@ -30,6 +30,10 @@ class Issue < ActiveRecord::Base
   has_many :unclaimed_bounties, -> { where claimed_at: nil },
            class_name: 'Bounty'
 
+  default_scope { order(:number) }
+  scope :open, -> { where(closed_at: nil) }
+  scope :closed, -> { where.not(closed_at: nil) }
+
   serialize :labels
   include Schwarm
   stat :total_bounty_value,

@@ -7,12 +7,28 @@
     <div class="col-md-8 col-md-offset-2">
       <div class="page-header">
         <h1>
-          <%= @repository.name%>
+          <%= @repository.name %>
           <%= link_to image_tag('github.png'), @repository.github_url,
             title: 'View on GitHub' %>
         </h1>
       </div>
-      <%= render partial: 'coders/scoreboard'%>
+
+      <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="#contributions" aria-controls="contributions" role="tab" data-toggle="tab">Contributions</a</li>
+        <li role="presentation"><a href="#charts" aria-controls="charts" role="tab" data-toggle="tab">Charts</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <br />
+        <div role="tabpanel" class="tab-pane active" id="contributions">
+          <%= render partial: 'coders/scoreboard' %>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="charts">
+          <div id='chart'></div>
+          <%= render_chart(@chart, 'chart') %>
+        </div>
+      </div>
     </div>
   </div>
-<%end%>
+<% end %>

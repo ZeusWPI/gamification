@@ -35,6 +35,9 @@ gem 'turbolinks'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 
+# Build google charts
+gem 'google_visualr'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
@@ -55,6 +58,7 @@ group :development do
   gem 'capistrano-rbenv'
   gem 'capistrano-rails-collection'
 
+  gem 'pry-byebug'
   gem 'annotate'
 
   gem 'rubocop', github: 'bbatsov/rubocop'
