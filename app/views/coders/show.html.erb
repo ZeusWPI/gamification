@@ -15,7 +15,7 @@
 
       <div class="well row score-table">
         <div class="col-md-4">
-          <%= avatar @coder, size: if @coder.github_name == 'feliciaan' then '400' else '184' end %>
+          <%= avatar @coder, size: '184' %>
         </div>
         <div class="col-md-8">
           <span class="metric"><span class="number"><%= format_score @coder.score %></span> points</span>
