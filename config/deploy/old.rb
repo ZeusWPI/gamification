@@ -6,6 +6,4 @@ server 'king.ugent.be', user: 'gamification', roles: %w(web app db),
                         }
 
 set :rails_env, 'production'
-set :rbenv_type, :system
-set :rbenv_ruby, File.read('.ruby-version').strip
 set :default_env, 'RAILS_RELATIVE_URL_ROOT' => '/game'
