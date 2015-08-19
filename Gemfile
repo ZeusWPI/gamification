@@ -112,3 +112,6 @@ gem 'd3-rails'
 
 # High voltage static pages
 gem 'high_voltage'
+
+# Use HTTParty for easier HTTP requests
+gem 'httparty'
