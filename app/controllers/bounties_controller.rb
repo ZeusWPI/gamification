@@ -23,7 +23,7 @@ class BountiesController < ApplicationController
 
     begin
       Bounty.update_or_create(@issue, current_coder, new_abs_value.to_i)
-    rescue => error
+    rescue Bounty::Error => error
       flash.now[:error] = error.message
     end
   end

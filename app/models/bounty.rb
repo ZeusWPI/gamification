@@ -34,15 +34,15 @@ class Bounty < ActiveRecord::Base
 
     # Find the bounty for this issue if it already exists
     bounty = Bounty.find_or_create_by issue: issue,
-                                       issuer: current_coder,
+                                       issuer: coder,
                                        claimed_at: nil do |b|
       b.value = 0
     end
 
     # Check whether the user has got enought points to spend
-    delta = new_value - @bounty.value
-    if delta > current_coder.bounty_residual
-      raise Exception.new("You don\'t have enough bounty points to put a"\
+    delta = new_value - bounty.value
+    if delta > coder.bounty_residual
+      raise Error.new("You don\'t have enough bounty points to put a"\
                           " bounty of this amount.")
     end
 
@@ -52,12 +52,12 @@ class Bounty < ActiveRecord::Base
     # Try to save the bounty, update the remaining bounty points, and return
     # some possibly updated records
     unless bounty.save
-      raise Exception.new("There occured an error while trying to save your"\
-                          " bounty (#{@bounty.errors.full_messages})")
+      raise Error.new("There occured an error while trying to save your"\
+                          " bounty (#{bounty.errors.full_messages})")
     end
 
-    current_coder.bounty_residual -= delta
-    current_coder.save!
+    coder.bounty_residual -= delta
+    coder.save!
 
     SlackWebhook.publish_bounty(bounty)
   end
@@ -87,6 +87,9 @@ class Bounty < ActiveRecord::Base
     self.claimed_value = absolute_value
     self.value = 0
     save!
+  end
+
+  class Error < StandardError
   end
 
   private
