@@ -51,13 +51,15 @@ class Bounty < ActiveRecord::Base
 
     # Try to save the bounty, update the remaining bounty points, and return
     # some possibly updated records
-    if bounty.save
-      current_coder.bounty_residual -= delta
-      current_coder.save!
-    else
+    unless bounty.save
       raise Exception.new("There occured an error while trying to save your"\
                           " bounty (#{@bounty.errors.full_messages})")
     end
+
+    current_coder.bounty_residual -= delta
+    current_coder.save!
+
+    SlackWebhook.publish_bounty(bounty)
   end
 
   def claim(time: Time.zone.now)
