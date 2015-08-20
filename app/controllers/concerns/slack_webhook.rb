@@ -4,7 +4,6 @@ require 'active_record_extensions'
 
 module SlackWebhook
   include HTTParty
-  HOOK_URL = 'https://hooks.slack.com/services/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'
 
   def self.publish_bounty(bounty)
     message = "<#{bounty.issuer.base_uri}|#{bounty.issuer.github_name}> "\
@@ -13,6 +12,7 @@ module SlackWebhook
       "#"\
       "<#{bounty.issue.github_url}|#{bounty.issue.number}: #{bounty.issue.title}>"
 
-    response = post(HOOK_URL, {body: JSON.dump({text: message})})
+    hook_url = Rails.application.secrets.slack_hook_url
+    post(hook_url, {body: JSON.dump({text: message})}) if hook_url
   end
 end
