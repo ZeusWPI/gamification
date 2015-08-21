@@ -28,3 +28,8 @@
 .table:last-child {
     margin-bottom: 0px;
 }
+
+/* Allow non-<a> elements to look exactly like <a> elements */
+.hyperlink {
+    @extend a;
+}

@@ -2,15 +2,20 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.top4.toprow {
-    height: 300px;
+.toprow {
+    // At 992 px the ordinal bar graph drops down
+    @media (min-width: 992px) {
+        height: 300px;
+    }
+
+    .top4, .panel, #top-coders, #top-repos {
+        height: 100%;
+    }
 }
 
 div.top4 {
     margin: auto;
-    .panel {
-        height: 100%;
-    }
+
 
     #top-coders {
         td {
@@ -21,7 +26,7 @@ div.top4 {
             font-size: 20pt;
             text-align: right;
             width: 45px;
-            height: 45px;
+            height: 20%;
         }
         .avatar {
             width: 45px;
@@ -39,7 +44,7 @@ div.top4 {
 
         tr:first-child {
             width: 90px;
-            height: 90px;
+            height: 40%;
             .name {
                 font-size: 15pt;
             }

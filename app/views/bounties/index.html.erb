@@ -17,33 +17,37 @@
         <th>Repo</th>
         <th>Issue</th>
         <th data-sort-initial-order="desc">Total bounty</th>
-        <th data-sort-initial-order="desc">My bounty</th>
+        <% if coder_signed_in? %>
+            <th data-sort-initial-order="desc">My bounty</th>
+        <% end %>
         </tr>
     </thead>
     <tbody>
         <% @issues.each do |issue| %>
-        <% repo = issue.repository %>
-        <tr id="issue-<%= issue.id %>", issue.repository>
-            <td><%= link_to repo.name, repo %> </td>
-            <td><%= link_to issue.title, issue.github_url %></td>
-            <td class="total-bounty"><%= issue.total_bounty_value %></td>
-            <td>
-            <div class="input-group">
-                <%= form_for find_bounty(issue, current_coder),
-                            url: {action: 'update_or_create'},
-                            method: :post,
-                            remote: true do |f| %>
-                <%= f.hidden_field :issue_id %>
-                <%= f.text_field :absolute_value,
-                  autocomplete: 'off', class: 'form-control text-right'%>
-                <span class='input-group-btn'>
-                    <%= f.submit(value: 'Put', data: {disable_with: 'Saving'},
-                                class: 'btn btn-default') %>
-                </span>
+            <% repo = issue.repository %>
+            <tr id="issue-<%= issue.id %>", issue.repository>
+                <td><%= link_to repo.name, repo %> </td>
+                <td><%= link_to issue.title, issue.github_url %></td>
+                <td class="total-bounty"><%= issue.total_bounty_value %></td>
+                <% if coder_signed_in? %>
+                    <td>
+                        <div class="input-group">
+                            <%= form_for find_bounty(issue, current_coder),
+                                        url: {action: 'update_or_create'},
+                                        method: :post,
+                                        remote: true do |f| %>
+                            <%= f.hidden_field :issue_id %>
+                            <%= f.text_field :absolute_value,
+                              autocomplete: 'off', class: 'form-control text-right'%>
+                            <span class='input-group-btn'>
+                                <%= f.submit(value: 'Put', data: {disable_with: 'Saving'},
+                                            class: 'btn btn-default') %>
+                            </span>
+                            <% end %>
+                        </div>
+                    </td>
                 <% end %>
-            </div>
-            </td>
-        </tr>
+            </tr>
         <% end %>
     </tbody>
     </table>
