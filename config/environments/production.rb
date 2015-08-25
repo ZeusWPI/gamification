@@ -3,7 +3,6 @@ Rails.application.configure do
 
   # Host, to be used for routes and Action Mailer.
   config.x.host = 'zeus.ugent.be'
-
   config.relative_url_root = '/game'
 
   # Code is not reloaded between requests.
@@ -68,7 +67,10 @@ Rails.application.configure do
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { host: config.x.host }
+  config.action_mailer.default_url_options = {
+    host: config.x.host,
+    script_name: config.x.relative_root_url,
+  }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
@@ -86,3 +88,6 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 end
+
+# Remove me when updated to > 4.2
+Rails.application.routes.default_url_options[:script_name] = "/game"
