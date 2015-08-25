@@ -58,5 +58,29 @@ module Gamification
                        request_specs: true
       g.fixture_replacement :factory_girl, dir: 'spec/factories'
     end
+
+    # Backport from Rails 4.2: custom configurations
+    # Just remove this block when upgrading from 4.1.8 to 4.2
+    if Rails.version == '4.1.8'
+      class Custom
+        def initialize
+          @configurations = Hash.new
+        end
+
+        def method_missing(method, *args)
+          if method =~ /=$/
+            @configurations[$`.to_sym] = args.first
+          else
+            @configurations.fetch(method) {
+              @configurations[method] = ActiveSupport::OrderedOptions.new
+            }
+          end
+        end
+      end
+
+      config.x = Custom.new
+    else
+      warn('Remove this backport at config/application:62-84')
+    end
   end
 end

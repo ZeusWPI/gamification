@@ -9,46 +9,22 @@ class BountiesController < ApplicationController
               .includes(:repository, :unclaimed_bounties).run
   end
 
-  # Todo split this
   def update_or_create
     issue_id = bounty_params[:issue_id]
-    new_abs_value = bounty_params[:absolute_value]
 
-    @issue = Issue.find issue_id
+    new_abs_value = bounty_params[:absolute_value]
     # Value must be a non-negative integer
     unless new_abs_value =~ /^\d+$/
       flash.now[:error] = 'This value is not an integer.'
       return
     end
 
-    new_value = BountyPoints.bounty_points_from_abs new_abs_value.to_i
+    @issue = Issue.find issue_id
 
-    # Find the bounty for this issue if it already exists
-    @bounty = Bounty.find_or_create_by issue: @issue,
-                                       issuer: current_coder,
-                                       claimed_at: nil do |b|
-      b.value = 0
-    end
-
-    # Check whether the user has got enought points to spend
-    delta = new_value - @bounty.value
-    if delta > current_coder.bounty_residual
-      flash.now[:error] = 'You don\'t have enough bounty points to put a'\
-                          ' bounty of this amount.'
-      return
-    end
-
-    # Increase value
-    @bounty.value += delta
-
-    # Try to save the bounty, update the remaining bounty points, and return
-    # some possibly updated records
-    if @bounty.save
-      current_coder.bounty_residual -= delta
-      current_coder.save!
-    else
-      flash.now[:error] = 'There occured an error while trying to save your'\
-                          " bounty (#{@bounty.errors.full_messages})"
+    begin
+      Bounty.update_or_create(@issue, current_coder, new_abs_value.to_i)
+    rescue Bounty::Error => error
+      flash.now[:error] = error.message
     end
   end
 
