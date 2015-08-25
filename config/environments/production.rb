@@ -4,6 +4,8 @@ Rails.application.configure do
   # Host, to be used for routes and Action Mailer.
   config.x.host = 'zeus.ugent.be'
 
+  config.relative_url_root = '/game'
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 
