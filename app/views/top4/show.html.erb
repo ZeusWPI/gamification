@@ -1,78 +1,93 @@
 <div class="container-fluid">
-<div class="col-md-10 col-md-offset-1">
+  <div class="col-md-10 col-md-offset-1">
 
     <div class="page-header text-center">
-    <h1>Weekly Overview</h1>
+      <h1>Weekly Overview</h1>
     </div>
 
     <div class="row">
-    <div class="top4 col-md-6">
-      <div class="panel panel-default table-responsive scoreboard">
-        <table id="top-coders" class="table table-striped">
-          <tbody>
-            <% @coders.each_with_index do |coder, index| %>
-              <tr>
-              <td class="rank">
-                <% if index != 0 %>
-                <%= index + 1 %>.
-                <% end %>
-              </td>
-              <td class="avatar">
-                <%= avatar coder, size: (index == 0 ? '120' : '45') %>
-              </td>
-              <td class="name">
-                <%= link_to coder.github_name, coder_path(coder), class: "username" %>
-                <br>
-                <% unless coder.full_name.blank? %>
-                <small><%= coder.full_name %></small>
-                <% end %>
-              </td>
-              <td class="score"><%= format_score coder.score %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+      <div class="top4 col-md-6">
+        <div class="panel panel-default table-responsive scoreboard">
+          <table id="top-coders" class="table table-striped">
+            <tbody>
+              <% @coders.each_with_index do |coder, index| %>
+                <tr>
+                  <td class="rank">
+                    <% if index != 0 %>
+                      <%= index + 1 %>.
+                    <% end %>
+                  </td>
+                  <td class="avatar">
+                    <%= avatar coder, size: (index == 0 ? '120' : '45') %>
+                  </td>
+                  <td class="name">
+                    <%= link_to coder.github_name, coder_path(coder), class: "username" %>
+                    <br>
+                    <% unless coder.full_name.blank? %>
+                      <small><%= coder.full_name %></small>
+                    <% end %>
+                  </td>
+                  <td class="score"><%= format_score coder.score %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-    <div class="top4 col-md-6">
-      <div class="panel panel-default">
-        <svg id="top-repos" ViewBox="0 0 600 300"></svg>
+      <div class="top4 col-md-6">
+        <div class="panel panel-default">
+          <svg id="top-repos" ViewBox="0 0 600 300"></svg>
+        </div>
       </div>
-    </div>
     </div>
 
-      <div class="row equal-height">
-        <div class="col-md-4">
-          <h2 class="text-center">New issues</h2>
-          <div class="top4 panel panel-default">
-            <table id="new-issue" class="table table-striped">
-              <tbody>
-                <%= render partial: 'issue', collection: @new_issues %>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <h2 class="text-center">Largest bounties</h2>
-          <div class="top4 panel panel-default">
-            <table id="top-issue" class="table table-striped">
-              <tbody>
-                <%= render partial: 'issue', collection: @top_issues %>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <h2 class="text-center">Recently closed</h2>
-          <div class="top4 panel panel-default">
-            <table id="closed-issue" class="table table-striped">
-              <tbody>
-                <%= render partial: 'issue_closed', collection: @closed_issues %>
-              </tbody>
-            </table>
-          </div>
+    <div class="row equal-height">
+      <div class="col-md-4">
+        <h2 class="text-center">New issues</h2>
+        <div class="top4 panel panel-default">
+          <table id="new-issue" class="table table-striped">
+            <colgroup>
+              <col width="0%" />
+              <col width="100%" />
+              <col width="0%" />
+            </colgroup>
+            <tbody>
+              <%= render partial: 'issue', collection: @new_issues %>
+            </tbody>
+          </table>
         </div>
       </div>
+      <div class="col-md-4">
+        <h2 class="text-center">Largest bounties</h2>
+        <div class="top4 panel panel-default">
+          <table id="top-issue" class="table table-striped">
+            <colgroup>
+              <col width="0%" />
+              <col width="100%" />
+              <col width="0%" />
+            </colgroup>
+            <tbody>
+              <%= render partial: 'issue', collection: @top_issues %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <h2 class="text-center">Recently closed</h2>
+        <div class="top4 panel panel-default">
+          <table id="closed-issue" class="table table-striped">
+            <colgroup>
+              <col width="0%" />
+              <col width="100%" />
+              <col width="0%" />
+            </colgroup>
+            <tbody>
+              <%= render partial: 'issue_closed', collection: @closed_issues %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
   </div>
 </div>

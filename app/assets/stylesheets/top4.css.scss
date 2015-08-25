@@ -98,3 +98,9 @@ div.top4 {
         }
     }
 }
+
+td.truncatable {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 1px;
+}
