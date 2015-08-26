@@ -69,7 +69,7 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default_url_options = {
     host: config.x.host,
-    script_name: config.x.relative_root_url,
+    script_name: config.relative_root_url,
   }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
