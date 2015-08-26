@@ -93,8 +93,8 @@
 </div>
 
 <script>
-var repos = <%=raw @top_repos.to_json %>;
-var contributors = <%=raw @repo_contributors.to_json %>
+var repos = <%= raw @top_repos.to_json(methods: :base_uri) %>;
+var contributors = <%= raw @repo_contributors.to_json %>;
 
 for (var i = 0; i < repos.length; i++) {
   repos[i].contributors = contributors[i].slice(0,3);
@@ -118,7 +118,7 @@ var height = 300 - margin.top - margin.bottom;
 
 var x = d3.scale.ordinal()
     .rangeRoundBands([0, width], .1)
-    .domain( repos.map(function(d) { return d.name; }) );
+    .domain(repos.map(function(d) { return d.name; }));
 
 var y = d3.scale.linear()
     .range([0, height])
@@ -215,11 +215,31 @@ var xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom");
 
-chart.append("g")
-    .attr("class", "axis xaxis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(xAxis)
-    .selectAll("text")
-        .attr("dy", "1em");
+var repo_name_nodes = chart.append("g")
+  .attr("class", "axis xaxis")
+  .attr("transform", "translate(0," + height + ")")
+  .call(xAxis)
+  .selectAll("text")
+  .attr("dy", "1em");
+
+// Add links to repo names in x axis
+d3.zip(repo_name_nodes[0], repos).forEach(function(tuple) {
+   var text_node = $(tuple[0]);
+   var repo = tuple[1];
+   text_node
+     .css('cursor', 'pointer')
+     .hover(function() {
+       $(this).css('text-decoration', 'underline');
+     }, function() {
+       $(this).css('text-decoration', 'inherit');
+     })
+     .click(function(event) {
+       if (event.ctrlKey) {
+         window.open(repo.base_uri, '_blank');
+       } else {
+         document.location.href = repo.base_uri;
+       }
+     });
+});
 
 </script>
