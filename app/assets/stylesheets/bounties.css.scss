@@ -15,13 +15,20 @@
     // My bounty cell
     td:nth-child(4), th:nth-child(4) {
         text-align: center;
-        min-width: 9em;
-        padding-left: 0;
+        min-width: 10em;
         input {
             max-width: 4em;
         }
         input[type=submit] {
             min-width: 4em;
+        }
+
+        .input-group {
+            @media screen and (min-width: 768px) {
+                .new_bounty > span {
+                    display: inline;
+                }
+            }
         }
     }
     td {

@@ -26,7 +26,7 @@ module Gamification
     config.organisation = 'ZeusWPI'
 
     config.repository_filters = {
-      # only: [ 'gamification', 'Haldis' ]
+      # only: [ 'gamification', 'Haldis' ],
       except: [
         'glowing-octo-dubstep',
         'VPW-voorbereiding-2015',
