@@ -25,7 +25,8 @@ class Repository < ActiveRecord::Base
   stat :deletions, CommitFisch.deletions
   stat :commit_count, CommitFisch.count
   stat :changed_lines, additions + deletions
-  stat :score, CommitFisch.addition_score
+  stat :bounty_score, BountyFisch.claimed_value
+  stat :score, CommitFisch.addition_score + bounty_score
 
   require 'rugged'
 
