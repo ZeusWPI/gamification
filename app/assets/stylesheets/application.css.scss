@@ -11,6 +11,7 @@
  *= require_self
  *= require_tree .
  *= require jquery-tablesorter/theme.bootstrap
+ *= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";

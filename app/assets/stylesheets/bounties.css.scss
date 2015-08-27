@@ -3,33 +3,29 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 #bounties-table {
-    td {
+    td, th {
         vertical-align: middle;
-    }
-
-    // Total bounty cell
-    td:nth-child(3), th:nth-child(3) {
-        text-align: center;
-    }
-
-    // My bounty cell
-    td:nth-child(4), th:nth-child(4) {
-        text-align: center;
-        min-width: 9em;
-        padding-left: 0;
-        input {
-            max-width: 4em;
-        }
-        input[type=submit] {
-            min-width: 4em;
-        }
-    }
-    td {
         overflow: hidden;
-    }
 
+        &.total-bounty {
+            text-align: center;
+        }
+
+        &.my-bounty {
+            text-align: center;
+            min-width: 9em;
+            padding-left: 0;
+            input {
+                max-width: 4em;
+            }
+            input[type=submit] {
+                min-width: 4em;
+            }
+        }
+    }
 }
 
+// DataTables fucks up
 #bounties-table_wrapper {
     // Fuck off, random div
     .col-xs-6:nth-child(1){
@@ -38,6 +34,8 @@
 }
 
 .dataTables_filter {
+    float: left;
+    margin-left: 20px;
     margin-top: 10px;
 
     input {
