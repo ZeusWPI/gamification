@@ -117,12 +117,12 @@ var width = 600 - margin.right - margin.left;
 var height = 300 - margin.top - margin.bottom;
 
 var x = d3.scale.ordinal()
-    .rangeRoundBands([0, width], .1)
-    .domain(repos.map(function(d) { return d.name; }));
+  .rangeRoundBands([0, width], .1)
+  .domain(repos.map(function(d) { return d.name; }));
 
 var y = d3.scale.linear()
-    .range([0, height])
-    .domain([0, d3.max(repos, function(d) { return d.score; })]);
+  .range([0, height])
+  .domain([0, d3.max(repos, function(d) { return d.score; })]);
 
 var colors = d3.scale.ordinal()
   .range(['#1976d2','#2196f3', '#64b5f6','#bbdefb'])
@@ -130,7 +130,7 @@ var colors = d3.scale.ordinal()
 
 var chart = d3.select("#top-repos")
   .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var repo_groups = chart.selectAll("g")
   .data(repos)
@@ -159,13 +159,13 @@ var contributor_groups = repo_groups.selectAll(".contributor")
   .data(function(d) { return d.contributors; })
   .enter().append("g")
   .attr("class", "contributor")
-  .attr("transform", "translate(0,"+height+")");
+  .attr("transform", "translate(0," + height + ")");
 
-//collapse groups
+// Collapse groups
 repo_groups.each(function(d) {
-  var h = d.score;
-  d3.select(this).selectAll(".contributor")
-    .attr("transform", "translate(0,"+y(h)+")");
+  d3.select(this)
+    .selectAll(".contributor")
+    .attr("transform", "translate(0," + y(d.score) + ")");
 });
 
 contributor_groups
@@ -178,7 +178,7 @@ contributor_groups
 contributor_groups
   .append("text")
   .attr("class", "contributor-name")
-  .attr("x", x.rangeBand()/2)
+  .attr("x", x.rangeBand() / 2)
   .attr("y", "1em")
   .text(function(d) { return d.github_name; });
 
@@ -188,7 +188,7 @@ repo_groups
     // breakdown
     t.selectAll(".contributor")
       .attr("transform", function(d) {
-        return "translate(0,"+(y(d.y0))+")";
+        return "translate(0," + y(d.y0) + ")";
       });
     t.selectAll(".contributor-bar")
       .attr("height", function(d) { return y(d.score); });
@@ -202,7 +202,7 @@ repo_groups
     var h = d.score;
     // breakdown
     t.selectAll(".contributor")
-      .attr("transform", "translate(0,"+y(h)+")");
+      .attr("transform", "translate(0," + y(h) + ")");
     t.selectAll(".contributor-bar")
       .attr("height", 0);
     // label
@@ -212,8 +212,8 @@ repo_groups
   });
 
 var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
+  .scale(x)
+  .orient("bottom");
 
 var repo_name_nodes = chart.append("g")
   .attr("class", "axis xaxis")
