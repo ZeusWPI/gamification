@@ -176,6 +176,7 @@ contributor_groups
   .style("fill", function(d, i) { return colors(i); });
 
 contributor_groups
+  .filter(function(d) { return y(d.score) > 15; })
   .append("text")
   .attr("class", "contributor-name")
   .attr("x", x.rangeBand() / 2)
