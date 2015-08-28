@@ -5,5 +5,4 @@
 $ ->
     $('#bounties-table').DataTable
         order: [[2, 'desc'], [0, 'asc'], [1, 'asc']]
-        paging: false
         autoWidth: false
