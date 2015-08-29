@@ -11,44 +11,45 @@
       </ul>
     <% end %>
 
-    <table id="bounties-table" class="table table-striped table-responsive table-hover">
-    <thead>
+    <table id="bounties-table" class="table table-striped table-hover">
+      <thead>
         <tr>
         <th>Repo</th>
         <th>Issue</th>
         <th class="total-bounty">Total bounty</th>
         <% if current_coder %><th class="my-bounty">My bounty</th><% end %>
         </tr>
-    </thead>
-    <tbody>
-      <% @issues.each do |issue| %>
-        <% repo = issue.repository %>
-        <tr id="issue-<%= issue.id %>", issue.repository>
-          <td><%= link_to repo.name, repo %> </td>
-          <td><%= link_to issue.title, issue.github_url %></td>
-          <td class="total-bounty"><%= issue.total_bounty_value %></td>
-          <% if current_coder %>
-            <td class="my-bounty">
-              <div class="input-group">
-                <%= form_for find_bounty(issue, current_coder),
-                             url: {action: 'update_or_create'},
-                             method: :post,
-                             remote: true do |f| %>
-                <%= f.hidden_field :issue_id %>
-                <%= f.text_field :absolute_value,
-                  autocomplete: 'off', class: 'form-control text-right' %>
-                <span class='input-group-btn'>
-                  <%= f.submit(value: 'Put', data: {disable_with: 'Saving'},
-                               class: 'btn btn-default') %>
-                </span>
-                <% end %>
-              </div>
-            </td>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
+      </thead>
+      <tbody>
+        <% @issues.each do |issue| %>
+          <% repo = issue.repository %>
+          <tr id="issue-<%= issue.id %>", issue.repository>
+            <td><%= link_to repo.name, repo %> </td>
+            <td><%= link_to issue.title, issue.github_url %></td>
+            <td class="total-bounty"><%= issue.total_bounty_value %></td>
+            <% if current_coder %>
+              <td class="my-bounty">
+                <div class="input-group">
+                  <%= form_for find_bounty(issue, current_coder),
+                               url: {action: 'update_or_create'},
+                               method: :post,
+                               remote: true do |f| %>
+                  <%= f.hidden_field :issue_id %>
+                  <%= f.text_field :absolute_value,
+                    autocomplete: 'off', class: 'form-control text-right' %>
+                  <span class='input-group-btn'>
+                    <%= f.submit(value: 'Put', data: {disable_with: 'Saving'},
+                                 class: 'btn btn-default') %>
+                  </span>
+                  <% end %>
+                </div>
+              </td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
     </table>
   </div>
+
   <div class="col-md-2"></div>
 </div>
