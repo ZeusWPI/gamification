@@ -5,4 +5,8 @@
 $('body.bounties.index').ready ->
     $('#bounties-table').DataTable
         order: [[2, 'desc'], [0, 'asc'], [1, 'asc']]
+        columnDefs: [
+                targets: ['total-bounty', 'my-bounty']
+                orderSequence: ['desc', 'asc']
+        ]
         autoWidth: false

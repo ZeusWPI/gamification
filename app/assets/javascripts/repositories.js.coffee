@@ -11,6 +11,7 @@ $('body.repositories.index').ready ->
                 searchable: false
             ,
                 targets: ['score', 'commits', 'additions', 'deletions']
+                orderSequence: ['desc', 'asc']
                 render: (data, type, _row, _meta) ->
                     if type is 'display'
                         return data
