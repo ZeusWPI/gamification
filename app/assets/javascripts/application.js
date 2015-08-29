@@ -16,10 +16,10 @@
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require turbolinks
+//= require jquery.readyselector
 
 //= require bootstrap-sprockets
 //= require d3
 
 //= require_self
 //= require_tree .
-
