@@ -10,7 +10,6 @@
  *
  *= require_self
  *= require_tree .
- *= require jquery-tablesorter/theme.bootstrap
  *= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
  */
 @import "bootstrap-sprockets";
@@ -28,4 +27,22 @@
 
 .table:last-child {
     margin-bottom: 0px;
+}
+
+// DataTables tweaks:
+//   Remove option to select amount of entries per page
+//   and pull search box to the left
+.dataTables_wrapper {
+    .col-xs-6:nth-child(1){
+        display: none;
+    }
+}
+.dataTables_filter {
+    float: left;
+    margin-left: 20px;
+    margin-top: 10px;
+
+    input {
+        margin-left: 10px;
+    }
 }

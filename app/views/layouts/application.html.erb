@@ -6,7 +6,7 @@
     <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
     <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
     <%# Google charts dependency %>
-    <script src='https://www.google.com/jsapi'></script>
+    <%= javascript_include_tag "//www.google.com/jsapi" %>
     <%= csrf_meta_tags %>
   </head>
 

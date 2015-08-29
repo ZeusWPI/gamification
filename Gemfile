@@ -101,9 +101,6 @@ gem 'jquery-turbolinks'
 gem 'datenfisch', git: 'git://github.com/Iasoon/datenfisch.git',
                   ref: '4f39bb3686b5facfb2552fe186d568ce3d259993'
 
-# Use jQuery plugin tablesorter (https://github.com/Mottie/tablesorter)
-gem 'jquery-tablesorter'
-
 # Use jQuery plugin datatables (https://github.com/DataTables/DataTables)
 gem 'jquery-datatables-rails'
 

@@ -24,21 +24,3 @@
         }
     }
 }
-
-// DataTables fucks up
-#bounties-table_wrapper {
-    // Fuck off, random div
-    .col-xs-6:nth-child(1){
-        display: none;
-    }
-}
-
-.dataTables_filter {
-    float: left;
-    margin-left: 20px;
-    margin-top: 10px;
-
-    input {
-        margin-left: 10px;
-    }
-}
