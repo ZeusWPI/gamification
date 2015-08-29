@@ -25,8 +25,11 @@ class WebhooksController < ApplicationController
     return head :ok unless repo && valid_owner?
 
     repo.pull_or_clone
-    json['commits'].each do |commit|
-      Commit.register_from_sha repo, commit['id']
+
+    if json['commits']
+      json['commits'].each do |commit|
+        Commit.register_from_sha repo, commit['id']
+      end
     end
     head :created
   end
