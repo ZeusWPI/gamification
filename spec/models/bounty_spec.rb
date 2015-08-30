@@ -90,7 +90,7 @@ describe Bounty do
 
     it 'rewards a scaled value' do
       @bounty.claim
-      expect(@assignee.reward_residual).to eq(2 * @limit)
+      expect(@assignee.reward_residual).to eq(@limit)
     end
 
     it 'rewards a scaled amount of bounty points' do
