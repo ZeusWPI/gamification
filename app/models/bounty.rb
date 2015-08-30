@@ -30,28 +30,32 @@ class Bounty < ActiveRecord::Base
   delegate :to_s, to: :value
 
   def self.update_or_create(issue, coder, new_abs_value)
-    new_value = BountyPoints.bounty_points_from_abs new_abs_value
-
-    # Find the bounty for this issue if it already exists
+    # Find the bounty for this issue if it already exists, or make a new one
     bounty = Bounty.find_or_create_by issue: issue,
-                                       issuer: coder,
-                                       claimed_at: nil do |b|
+                                      issuer: coder,
+                                      claimed_at: nil do |b|
       b.value = 0
     end
 
+    bounty.update!(coder, new_abs_value)
+  end
+
+  def update!(coder, new_abs_value)
+    new_value = BountyPoints.bounty_points_from_abs new_abs_value
+
     # Check whether the user has got enought points to spend
-    delta = new_value - bounty.value
+    delta = new_value - value
     if delta > coder.bounty_residual
       raise Error.new("You don\'t have enough bounty points to put a"\
                           " bounty of this amount.")
     end
 
     # Increase value
-    bounty.value += delta
+    value += delta
 
     # Try to save the bounty, update the remaining bounty points, and return
     # some possibly updated records
-    unless bounty.save
+    unless save
       raise Error.new("There occured an error while trying to save your"\
                           " bounty (#{bounty.errors.full_messages})")
     end
