@@ -35,7 +35,7 @@ describe Coder do
       end.map(&:round).sum
 
       @coder.commits.each do |commit|
-        @coder.reward_commit commit
+        @coder.reward_commit! commit
       end
     end
 
