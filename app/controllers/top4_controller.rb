@@ -14,14 +14,16 @@ class Top4Controller < ApplicationController
       .order(score: :desc).run
     end
 
-    @new_issues = Issue.with_stats(:total_bounty_value).includes(:repository)
+    @new_issues = Issue.with_stats(:absolute_bounty_value)
+                  .includes(:repository)
                   .order(opened_at: :desc).take(4)
 
     @closed_issues = Issue.where.not(closed_at: nil)
                      .includes(:repository, :assignee)
                      .order(closed_at: :desc).take(4)
 
-    @top_issues = Issue.with_stats(:total_bounty_value).includes(:repository)
-                  .order(total_bounty_value: :desc).take(4)
+    @top_issues = Issue.with_stats(:absolute_bounty_value)
+                  .includes(:repository)
+                  .order(absolute_bounty_value: :desc).take(4)
   end
 end

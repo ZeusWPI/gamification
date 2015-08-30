@@ -37,15 +37,14 @@ class Coder < ActiveRecord::Base
   stat :addition_score, CommitFisch.addition_score
   stat :score, addition_score + claimed_value
 
-  # Bounty points should not be rescaled yet.
-  def reward_bounty(bounty, time: Time.current)
-    self.bounty_residual += bounty.value
+  def reward_bounty!(bounty, time: Time.current)
     bounty.pinpoint_value coder: self, time: time
+    self.bounty_residual += bounty.value
     self.reward_residual += bounty.claimed_value
     save!
   end
 
-  def reward_commit(commit)
+  def reward_commit!(commit)
     addition_score = (Math.log(commit.additions + 1) *
       Rails.application.config.addition_score_factor).round
     self.reward_residual += addition_score
@@ -53,8 +52,13 @@ class Coder < ActiveRecord::Base
     save!
   end
 
-  def abs_bounty_residual
-    BountyPoints.bounty_points_to_abs bounty_residual
+  def bounty_residual
+    BountyPoints.bounty_points_from_abs absolute_bounty_residual
+  end
+
+  def bounty_residual=(new_value)
+    self.absolute_bounty_residual =
+      BountyPoints.bounty_points_to_abs(new_value)
   end
 
   def self.from_omniauth(auth)

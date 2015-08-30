@@ -63,7 +63,7 @@ describe Coder do
   context 'with claimed bounties' do
     before :each do
       @issue = create :issue, assignee: @coder
-      @bounty = create :bounty, issue: @issue, value: 100
+      @bounty = create :bounty, issue: @issue, absolute_value: 100
       @bounty.claim
     end
 

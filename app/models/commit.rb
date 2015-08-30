@@ -22,8 +22,8 @@ class Commit < ActiveRecord::Base
   scope :additions, -> { sum :additions }
   scope :deletions, -> { sum :deletions }
 
-  def reward
-    coder.reward_commit self
+  def reward!
+    coder.reward_commit! self
   end
 
   def self.register_from_sha(repo, sha, **opts)
@@ -40,7 +40,7 @@ class Commit < ActiveRecord::Base
                              coder: committer do |commit|
       commit.date = r_commit.time
       commit.set_stats r_commit
-      commit.reward if reward
+      commit.reward! if reward
     end
   end
 

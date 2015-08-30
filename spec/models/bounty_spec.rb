@@ -17,7 +17,7 @@ describe Bounty do
   before :each do
     @issuer = create :coder
     @issue = create :issue
-    @bounty = create :bounty, issue: @issue, issuer: @issuer, value: 100
+    @bounty = create :bounty, issue: @issue, issuer: @issuer, absolute_value: 100
   end
 
   it 'has a valid factory' do
@@ -71,31 +71,32 @@ describe Bounty do
     end
 
     it 'clears its bounty value' do
-      expect(@bounty.value).to eq(0)
+      expect(@bounty.absolute_value).to eq(0)
     end
   end
 
   context 'with scaled value' do
     before :each do
       @limit = Rails.application.config.total_bounty_value
-      @bounty.update value: @limit * 2
+      @bounty.update absolute_value: @limit * 2
       @assignee = create :coder
       @bounty.issue.assignee = @assignee
     end
 
     it 'has a scaled value' do
-      @bounty.update value: @limit * 2
-      expect(@bounty.absolute_value).to eq(@limit)
+      expect(@bounty.absolute_value).to eq(2 * @limit)
+      expect(@bounty.value).to eq(@limit)
     end
 
     it 'rewards a scaled value' do
       @bounty.claim
-      expect(@assignee.reward_residual).to eq(@limit)
+      expect(@assignee.reward_residual).to eq(2 * @limit)
     end
 
     it 'rewards a scaled amount of bounty points' do
       @bounty.claim
-      expect(@assignee.bounty_residual).to eq(@limit * 2)
+      expect(@assignee.absolute_bounty_residual).to eq(2 * @limit)
+      expect(@assignee.bounty_residual).to eq(@limit)
     end
   end
 end

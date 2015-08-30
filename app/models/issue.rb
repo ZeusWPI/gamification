@@ -34,9 +34,13 @@ class Issue < ActiveRecord::Base
   scope :closed, -> { where.not(closed_at: nil) }
 
   serialize :labels
+
   include Schwarm
-  stat :total_bounty_value,
-       (BountyFisch.bounty_value * -> { BountyPoints.bounty_factor }).round
+  stat :absolute_bounty_value, BountyFisch.absolute_bounty_value
+
+  def total_bounty_value
+    BountyPoints.bounty_points_from_abs absolute_bounty_value
+  end
 
   def close(time: Time.zone.now)
     bounties.where(claimed_at: nil).find_each(&:claim)
