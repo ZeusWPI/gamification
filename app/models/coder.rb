@@ -37,10 +37,14 @@ class Coder < ActiveRecord::Base
   stat :addition_score, CommitFisch.addition_score
   stat :score, addition_score + claimed_value
 
-  def reward_bounty!(bounty, time: Time.current)
-    bounty.pinpoint_value coder: self, time: time
+  def reward_bounty!(bounty)
     self.bounty_residual += bounty.value
-    self.reward_residual += bounty.claimed_value
+    self.reward_residual += bounty.value
+    save!
+  end
+
+  def refund_bounty!(bounty)
+    self.bounty_residual += bounty.value
     save!
   end
 

@@ -74,11 +74,11 @@ class Bounty < ActiveRecord::Base
     return if claimed_at  # This bounty has already been claimed
     if issue.assignee && issue.assignee != issuer
       # Reward assignee
-      issue.assignee.reward_bounty!(self, time: time)
+      pinpoint_value(coder: issue.assignee, time: time)
+      issue.assignee.reward_bounty!(self)
     else
       # Refund bounty points
-      issuer.bounty_residual += self.value
-      issuer.save!
+      issuer.refund_bounty!(self)
       # This bounty is of no use; destroy it.
       destroy
     end
