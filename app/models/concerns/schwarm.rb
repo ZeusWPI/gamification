@@ -13,8 +13,10 @@ module Schwarm
     stat :claimed_value, col(:claimed_value).sum
     stat :absolute_bounty_value, col(:absolute_value).sum
 
+    # rubocop:disable Style/Attr
     attr :repository_id, :repository_id, through: :issue
     attr :coder_id, :claimant_id
     attr :date,     :claimed_at
+    # rubocop:enable Style/Attr
   end
 end
