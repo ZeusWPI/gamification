@@ -78,7 +78,7 @@ describe Bounty do
   context 'with scaled value' do
     before :each do
       @limit = Rails.application.config.total_bounty_value
-      @bounty.update absolute_value: @limit * 2
+      @bounty.update!(absolute_value: @limit * 2)
       @assignee = create :coder
       @bounty.issue.assignee = @assignee
     end
@@ -97,6 +97,44 @@ describe Bounty do
       @bounty.claim
       expect(@assignee.absolute_bounty_residual).to eq(2 * @limit)
       expect(@assignee.bounty_residual).to eq(@limit)
+    end
+  end
+
+  context 'with other bounty points in the running' do
+    before :each do
+      @limit = Rails.application.config.total_bounty_value
+      @issuer.update!(absolute_bounty_residual: @limit - 100)
+      @other_coder = create :coder, absolute_bounty_residual: 2 * @limit
+    end
+
+    it 'has a rescaled value' do
+      expect(@bounty.absolute_value).to eq(100)
+      expect(@bounty.value).to eq(33)
+    end
+
+    context 'when claimed' do
+      before :each do
+        @issue.assignee = @other_coder
+        @bounty.claim
+      end
+
+      it 'has a claimed value, but no absolute_value' do
+        expect(@bounty.absolute_value).to eq(0)
+        expect(@bounty.claimed_value).to eq(33)
+        expect(@bounty.value).to eq(33)
+      end
+
+      context 'and when other bounties come to exist' do
+        before :each do
+          @other_bounty = create :bounty, absolute_value: 1000
+        end
+
+        it 'has a claimed value, but no absolute_value' do
+          expect(@bounty.absolute_value).to eq(0)
+          expect(@bounty.claimed_value).to eq(33)
+          expect(@bounty.value).to eq(33)
+        end
+      end
     end
   end
 end
