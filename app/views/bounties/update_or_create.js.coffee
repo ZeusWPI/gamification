@@ -20,7 +20,7 @@ $tr.find('.btn').addClass('btn-danger')
 # Update the total bounty value
 $totalBountyCell.text <%= @issue.total_bounty_value %>
 # Update the total bounty points that can be spend
-$('#remaining-points').text <%= current_coder.abs_bounty_residual %>
+$('#remaining-points').text <%= current_coder.bounty_residual %>
 $tr.addClass('has-success')
 $tr.find('.btn').addClass('btn-success')
 

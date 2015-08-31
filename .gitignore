@@ -48,3 +48,6 @@ repos/*
 
 # Capistrano
 .capistrano
+
+# RSpec failure-file
+spec/.failures.txt

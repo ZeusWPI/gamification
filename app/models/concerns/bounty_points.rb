@@ -1,17 +1,17 @@
 module BountyPoints
   def self.bounty_points_from_abs(value)
-    (value * bounty_factor).to_i
+    (value * bounty_factor).round
   end
 
   def self.bounty_points_to_abs(value)
-    (value / bounty_factor).to_i
+    (value / bounty_factor).round
   end
 
   def self.bounty_factor
     if total_bounty_points < Rails.application.config.total_bounty_value
       1
     else
-      total_bounty_points.to_f / Rails.application.config.total_bounty_value
+      Rails.application.config.total_bounty_value.to_f / total_bounty_points
     end
   end
 
@@ -20,11 +20,15 @@ module BountyPoints
   end
 
   def self.coder_bounty_points
-    Rails.cache.fetch('stats_coder_bounty_points') { Coder.sum(:bounty_residual) }
+    Rails.cache.fetch('stats_coder_bounty_points') do
+      Coder.sum(:absolute_bounty_residual)
+    end
   end
 
   def self.assigned_bounty_points
-    Rails.cache.fetch('stats_assigned_bounty_points') { Bounty.sum(:value) }
+    Rails.cache.fetch('stats_assigned_bounty_points') do
+      Bounty.sum(:absolute_value)
+    end
   end
 
   def self.expire_assigned_bounty_points

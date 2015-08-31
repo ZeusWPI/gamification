@@ -2,16 +2,16 @@
 #
 # Table name: coders
 #
-#  id              :integer          not null, primary key
-#  github_name     :string(255)      not null
-#  full_name       :string(255)      default(""), not null
-#  avatar_url      :string(255)      not null
-#  github_url      :string(255)      not null
-#  reward_residual :integer          default(0), not null
-#  bounty_residual :integer          default(0), not null
-#  other_score     :integer          default(0), not null
-#  created_at      :datetime
-#  updated_at      :datetime
+#  id                       :integer          not null, primary key
+#  github_name              :string(255)      not null
+#  full_name                :string(255)      default(""), not null
+#  avatar_url               :string(255)      not null
+#  github_url               :string(255)      not null
+#  reward_residual          :integer          default(0), not null
+#  absolute_bounty_residual :integer          default(0), not null
+#  other_score              :integer          default(0), not null
+#  created_at               :datetime
+#  updated_at               :datetime
 #
 
 class Coder < ActiveRecord::Base
@@ -26,7 +26,9 @@ class Coder < ActiveRecord::Base
   has_many :claimed_bounties, class_name: 'Bounty', foreign_key: 'claimant_id'
   has_many :bounties
   has_many :commits
-  after_save :clear_caches
+
+  after_commit :clear_caches
+  after_rollback :clear_caches
 
   include Schwarm
   stat :additions, CommitFisch.additions
@@ -37,15 +39,18 @@ class Coder < ActiveRecord::Base
   stat :addition_score, CommitFisch.addition_score
   stat :score, addition_score + claimed_value
 
-  # Bounty points should not be rescaled yet.
-  def reward_bounty(bounty, time: Time.current)
+  def reward_bounty!(bounty)
     self.bounty_residual += bounty.value
-    bounty.pinpoint_value coder: self, time: time
-    self.reward_residual += bounty.claimed_value
+    self.reward_residual += bounty.value
     save!
   end
 
-  def reward_commit(commit)
+  def refund_bounty!(bounty)
+    self.bounty_residual += bounty.value
+    save!
+  end
+
+  def reward_commit!(commit)
     addition_score = (Math.log(commit.additions + 1) *
       Rails.application.config.addition_score_factor).round
     self.reward_residual += addition_score
@@ -53,8 +58,13 @@ class Coder < ActiveRecord::Base
     save!
   end
 
-  def abs_bounty_residual
-    BountyPoints.bounty_points_to_abs bounty_residual
+  def bounty_residual
+    BountyPoints.bounty_points_from_abs(absolute_bounty_residual)
+  end
+
+  def bounty_residual=(new_value)
+    self.absolute_bounty_residual =
+      BountyPoints.bounty_points_to_abs(new_value)
   end
 
   def self.from_omniauth(auth)

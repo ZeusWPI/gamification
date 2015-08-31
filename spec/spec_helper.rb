@@ -20,6 +20,11 @@ Coveralls.wear!
 
 require 'factory_girl'
 require 'devise'
+# Requrire all files in spec/support/
+Dir[File.join(File.dirname(__FILE__),'support','**','*.rb')].each do |f|
+  require f
+end
+
 RSpec.configure do |config|
   # use FactoryGirl
   config.include FactoryGirl::Syntax::Methods
@@ -46,6 +51,9 @@ RSpec.configure do |config|
     # `true` in RSpec 4.
     mocks.verify_partial_doubles = true
   end
+
+  # Let RSpec remember failures, so we can run '--only-failures' next time.
+  config.example_status_persistence_file_path = "./spec/.failures.txt"
 
   # The settings below are suggested to provide a good initial experience
   # with RSpec, but feel free to customize to your heart's content.
