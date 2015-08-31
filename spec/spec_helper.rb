@@ -20,6 +20,11 @@ Coveralls.wear!
 
 require 'factory_girl'
 require 'devise'
+# Requrire all files in spec/support/
+Dir[File.join(File.dirname(__FILE__),'support','**','*.rb')].each do |f|
+  require f
+end
+
 RSpec.configure do |config|
   # use FactoryGirl
   config.include FactoryGirl::Syntax::Methods
