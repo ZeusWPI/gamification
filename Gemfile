@@ -43,6 +43,10 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+group :test, :development do
+  gem 'pry-byebug'
+end
+
 group :test do
   gem 'rack-test'
   gem 'rspec-rails'
@@ -58,7 +62,6 @@ group :development do
   gem 'capistrano-rbenv'
   gem 'capistrano-rails-collection'
 
-  gem 'pry-byebug'
   gem 'annotate'
 
   gem 'rubocop', github: 'bbatsov/rubocop'
