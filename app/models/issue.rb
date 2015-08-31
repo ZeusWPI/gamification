@@ -39,7 +39,7 @@ class Issue < ActiveRecord::Base
   stat :absolute_bounty_value, BountyFisch.absolute_bounty_value
 
   def total_bounty_value
-    BountyPoints.bounty_points_from_abs absolute_bounty_value
+    BountyPoints.bounty_points_from_abs(absolute_bounty_value)
   end
 
   def close(time: Time.zone.now)

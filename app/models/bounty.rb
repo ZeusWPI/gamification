@@ -25,7 +25,9 @@ class Bounty < ActiveRecord::Base
     only_integer: true,
     greater_than_or_equal_to: 0
   }
-  after_save :expire_caches
+
+  after_commit :clear_caches
+  after_rollback :clear_caches
 
   delegate :to_s, to: :value
 
@@ -34,36 +36,38 @@ class Bounty < ActiveRecord::Base
     bounty = Bounty.find_or_create_by issue: issue,
                                       issuer: coder,
                                       claimed_at: nil do |b|
-      b.value = 0
+      b.absolute_value = 0
     end
 
-    bounty.update!(coder, new_value)
+    bounty.update_value!(new_value)
   end
 
-  def update!(coder, new_value)
+  def update_value!(new_value)
     # Check whether the user has got enought points to spend
     delta = new_value - self.value
-    if delta > coder.bounty_residual
+    if delta > issuer.bounty_residual
       raise Error.new("You don\'t have enough bounty points to put a"\
                       " bounty of this amount.")
     end
 
     self.value += delta
 
-    coder.bounty_residual -= delta
+    issuer.bounty_residual -= delta
 
     # Try to save the bounty, update the remaining bounty points, and return
     # some possibly updated records
+    # It is important that this happens at the same time, so
+    # BountyPoints.total_bounty_points stays the same!
     transaction do
       unless save!
         raise Error.new("There occured an error while trying to save your"\
                         " bounty (#{bounty.errors.full_messages})")
       end
 
-      unless coder.save!
+      unless issuer.save!
         raise Error.new("There occured an error while trying to adjust your"\
                         " remaining bounty points"\
-                        "(#{bounty.errors.full_messages})")
+                        " (#{bounty.errors.full_messages})")
       end
     end
 
@@ -109,7 +113,7 @@ class Bounty < ActiveRecord::Base
 
   private
 
-  def expire_caches
+  def clear_caches
     BountyPoints.expire_assigned_bounty_points
   end
 end

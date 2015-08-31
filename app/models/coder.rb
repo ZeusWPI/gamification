@@ -26,7 +26,9 @@ class Coder < ActiveRecord::Base
   has_many :claimed_bounties, class_name: 'Bounty', foreign_key: 'claimant_id'
   has_many :bounties
   has_many :commits
-  after_save :clear_caches
+
+  after_commit :clear_caches
+  after_rollback :clear_caches
 
   include Schwarm
   stat :additions, CommitFisch.additions
@@ -57,7 +59,7 @@ class Coder < ActiveRecord::Base
   end
 
   def bounty_residual
-    BountyPoints.bounty_points_from_abs absolute_bounty_residual
+    BountyPoints.bounty_points_from_abs(absolute_bounty_residual)
   end
 
   def bounty_residual=(new_value)
