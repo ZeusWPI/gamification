@@ -69,7 +69,7 @@ Rails.application.configure do
   # config.action_mailer.raise_delivery_errors = false
   config.action_mailer.default_url_options = {
     host: config.x.host,
-    script_name: config.relative_url_root,
+    script_name: config.relative_url_root
   }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
@@ -90,4 +90,4 @@ Rails.application.configure do
 end
 
 # Remove me when updated to > 4.2
-Rails.application.routes.default_url_options[:script_name] = "/game"
+Rails.application.routes.default_url_options[:script_name] = '/game'

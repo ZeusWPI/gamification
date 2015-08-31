@@ -9,7 +9,7 @@ module AnnotationChart
     unless issues.order(:number).first.nil?
       start_date = issues.order(:number).first.opened_at.to_date
     end
-    daterange =  start_date .. Time.zone.now.to_date
+    daterange =  start_date..Time.zone.now.to_date
 
     data = []
     open = 0
@@ -21,7 +21,7 @@ module AnnotationChart
     data_table = GoogleVisualr::DataTable.new
 
     # Add Column Headers
-    data_table.new_column('date', 'Date' )
+    data_table.new_column('date', 'Date')
     data_table.new_column('number', 'New issues')
     data_table.new_column('number', 'Closed issues')
     data_table.new_column('number', 'Open issues')
@@ -32,7 +32,7 @@ module AnnotationChart
     option = {
       width: 1000,
       height: 440,
-      colors: ['orange', 'green', 'blue'],
+      colors: %w(orange green blue)
     }
 
     GoogleVisualr::Interactive::AnnotatedTimeLine.new(data_table, option)

@@ -9,6 +9,6 @@
 # Fetch organisation repositories
 repos = $github.repos.list :all, org: Rails.application.config.organisation
 
-repos.select {|r| RepoFilters.track? r}.each do |hash|
+repos.select { |r| RepoFilters.track? r }.each do |hash|
   Repository.create_or_update hash
 end

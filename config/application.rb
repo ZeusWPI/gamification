@@ -64,16 +64,16 @@ module Gamification
     if Rails.version == '4.1.8'
       class Custom
         def initialize
-          @configurations = Hash.new
+          @configurations = {}
         end
 
         def method_missing(method, *args)
           if method =~ /=$/
             @configurations[$`.to_sym] = args.first
           else
-            @configurations.fetch(method) {
+            @configurations.fetch(method) do
               @configurations[method] = ActiveSupport::OrderedOptions.new
-            }
+            end
           end
         end
       end

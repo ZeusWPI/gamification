@@ -8,7 +8,7 @@ class RepositoriesController < ApplicationController
   def show
     @repository = Repository.friendly.find params[:id]
     @coders = Coder.only_with_stats(:score, :commit_count, :additions, :deletions)
-                   .where(repository: @repository).order(score: :desc).run
+              .where(repository: @repository).order(score: :desc).run
     @chart = AnnotationChart.burndown_chart(@repository.issues)
   end
 end

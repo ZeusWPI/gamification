@@ -5,6 +5,7 @@ AllCops:
     - config.ru
   Exclude:
     - db/schema.rb
+    - repos/**/*
 
 Style/ClassAndModuleChildren:
   EnforcedStyle: compact

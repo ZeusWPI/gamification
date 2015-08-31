@@ -44,10 +44,10 @@ class Bounty < ActiveRecord::Base
 
   def update_value!(new_value)
     # Check whether the user has got enought points to spend
-    delta = new_value - self.value
+    delta = new_value - value
     if delta > issuer.bounty_residual
-      raise Error.new("You don\'t have enough bounty points to put a"\
-                      " bounty of this amount.")
+      fail Error.new("You don\'t have enough bounty points to put a"\
+                      ' bounty of this amount.')
     end
 
     self.value += delta
@@ -60,13 +60,13 @@ class Bounty < ActiveRecord::Base
     # BountyPoints.total_bounty_points stays the same!
     transaction do
       unless save!
-        raise Error.new("There occured an error while trying to save your"\
+        fail Error.new('There occured an error while trying to save your'\
                         " bounty (#{bounty.errors.full_messages})")
       end
 
       unless issuer.save!
-        raise Error.new("There occured an error while trying to adjust your"\
-                        " remaining bounty points"\
+        fail Error.new('There occured an error while trying to adjust your'\
+                        ' remaining bounty points'\
                         " (#{bounty.errors.full_messages})")
       end
     end
@@ -94,8 +94,8 @@ class Bounty < ActiveRecord::Base
 
   def value=(new_value)
     if claimed_at
-      raise Error.new("Trying to set a new value to an already claimed"\
-                      " bounty!")
+      fail Error.new('Trying to set a new value to an already claimed'\
+                      ' bounty!')
     end
     self.absolute_value = BountyPoints.bounty_points_to_abs(new_value)
   end
