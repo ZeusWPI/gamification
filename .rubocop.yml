@@ -7,32 +7,22 @@ AllCops:
     - db/schema.rb
     - repos/**/*
 
+
 Style/ClassAndModuleChildren:
   EnforcedStyle: compact
-  Enabled: false
 
-# disable for now
-Lint/NestedMethodDefinition:
-  Enabled: false
-Style/ClassVars:
-  Enabled: false
+# We right self-documenting code, right? Disabling for now.
 Style/Documentation:
   Enabled: false
-Style/RescueModifier:
-  Enabled: false
-Style/AccessorMethodName:
-  Enabled: false
-Style/PredicateName:
-  Enabled: false
+
+# Tests don't have to be awfully readable
+Metrics/LineLength:
+  Exclude:
+    - spec/**/*
+
 Metrics/AbcSize:
   Enabled: false
-Metrics/ClassLength:
-  Enabled: false
-Metrics/LineLength:
-  Enabled: false
 Metrics/MethodLength:
-  Enabled: false
-Metrics/PerceivedComplexity:
-  Enabled: false
+  Max: 20
 Metrics/CyclomaticComplexity:
   Enabled: false
