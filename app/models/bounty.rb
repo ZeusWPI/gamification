@@ -59,12 +59,12 @@ class Bounty < ActiveRecord::Base
     # It is important that this happens at the same time, so
     # BountyPoints.total_bounty_points stays the same!
     transaction do
-      unless save!
+      unless save
         fail Error, 'There occured an error while trying to save your bounty'\
                     " (#{bounty.errors.full_messages})"
       end
 
-      unless issuer.save!
+      unless issuer.save
         fail Error, 'There occured an error while trying to adjust your'\
                     ' remaining bounty points'\
                     " (#{bounty.errors.full_messages})"
@@ -74,17 +74,17 @@ class Bounty < ActiveRecord::Base
     SlackWebhook.publish_bounty(self)
   end
 
-  def claim(time: Time.zone.now)
+  def claim!(time: Time.zone.now)
     return if claimed_at  # This bounty has already been claimed
     if issue.assignee && issue.assignee != issuer
       # Reward assignee
-      pinpoint_value(coder: issue.assignee, time: time)
+      pinpoint_value!(coder: issue.assignee, time: time)
       issue.assignee.reward_bounty!(self)
     else
       # Refund bounty points
       issuer.refund_bounty!(self)
       # This bounty is of no use; destroy it.
-      destroy
+      destroy!
     end
   end
 
@@ -99,7 +99,7 @@ class Bounty < ActiveRecord::Base
     self.absolute_value = BountyPoints.bounty_points_to_abs(new_value)
   end
 
-  def pinpoint_value(coder: nil, time: Time.current)
+  def pinpoint_value!(coder: nil, time: Time.current)
     self.claimant = coder
     self.claimed_at = time
     self.claimed_value = self.value

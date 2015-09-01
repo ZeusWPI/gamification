@@ -25,14 +25,14 @@ describe Bounty do
   end
 
   it 'refunds bounty points when issue was not claimed' do
-    @bounty.claim
+    @bounty.claim!
     expect(@issuer.bounty_residual).to eq(100)
   end
 
   context 'claimed by issuer' do
     before :each do
       @issue.assignee = @issuer
-      @bounty.claim
+      @bounty.claim!
     end
 
     it 'refunds bounty points' do
@@ -48,7 +48,7 @@ describe Bounty do
     before :each do
       @claimant = create :coder
       @issue.assignee = @claimant
-      @bounty.claim
+      @bounty.claim!
     end
 
     it 'sets claimed time' do
@@ -66,7 +66,7 @@ describe Bounty do
     it 'cannot be claimed again' do
       contender = create :coder
       @issue.assignee = contender
-      @bounty.claim
+      @bounty.claim!
       expect(@bounty.claimant).to eq(@claimant)
     end
 
@@ -89,12 +89,12 @@ describe Bounty do
     end
 
     it 'rewards a scaled value' do
-      @bounty.claim
+      @bounty.claim!
       expect(@assignee.reward_residual).to eq(@limit)
     end
 
     it 'rewards a scaled amount of bounty points' do
-      @bounty.claim
+      @bounty.claim!
       expect(@assignee.absolute_bounty_residual).to eq(2 * @limit)
       expect(@assignee.bounty_residual).to eq(@limit)
     end
@@ -115,7 +115,7 @@ describe Bounty do
     context 'when claimed' do
       before :each do
         @issue.assignee = @other_coder
-        @bounty.claim
+        @bounty.claim!
       end
 
       it 'has a claimed value, but no absolute_value' do

@@ -39,25 +39,8 @@ class Commit < ActiveRecord::Base
                              sha: r_commit.oid,
                              coder: committer do |commit|
       commit.date = r_commit.time
-      commit.set_stats!(r_commit)
+      commit.set_stats(r_commit)
       commit.reward! if reward
-    end
-  end
-
-  # should be private
-  def set_stats!(r_commit)  # rubocop:disable Style/AccessorMethodName
-    if r_commit.parents.size >= 2
-      # Do not reward merges
-      self.additions = self.deletions = 0
-    else
-      if r_commit.parents.empty?
-        # First commit
-        diff = r_commit.diff
-      else
-        diff = r_commit.diff r_commit.parents.first
-      end
-      self.additions = diff.stat[2]
-      self.deletions = diff.stat[1]
     end
   end
 
@@ -80,6 +63,24 @@ class Commit < ActiveRecord::Base
                                       repo.name, r_commit.oid
     if commit.committer
       Coder.find_or_create_by_github_name commit.committer.login
+    end
+  end
+
+  private
+
+  def set_stats(r_commit)  # rubocop:disable Style/AccessorMethodName
+    if r_commit.parents.size >= 2
+      # Do not reward merges
+      self.additions = self.deletions = 0
+    else
+      if r_commit.parents.empty?
+        # First commit
+        diff = r_commit.diff
+      else
+        diff = r_commit.diff r_commit.parents.first
+      end
+      self.additions = diff.stat[2]
+      self.deletions = diff.stat[1]
     end
   end
 end

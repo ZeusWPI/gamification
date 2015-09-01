@@ -84,7 +84,7 @@ describe BountiesController, type: :controller do
       put :update_or_create,
           bounty: { issue_id: @issue, value: 20 },
           format: :coffee
-      @issue.close
+      @issue.close!
     end
 
     it 'has a claimed bounty' do
@@ -114,7 +114,7 @@ describe BountiesController, type: :controller do
         before :each do
           @second_claimant = create :coder
           @issue.assignee = @second_claimant
-          @issue.close
+          @issue.close!
         end
 
         it 'rewarded first claimant' do

@@ -64,7 +64,7 @@ describe Coder do
     before :each do
       @issue = create :issue, assignee: @coder
       @bounty = create :bounty, issue: @issue, absolute_value: 100
-      @bounty.claim
+      @bounty.claim!
     end
 
     it 'has a corrent claimed_value stat' do
@@ -123,7 +123,7 @@ describe Coder do
       context 'and self-claimed' do
         before :each do
           @issue.assignee = @coder
-          @bounty.claim
+          @bounty.claim!
         end
 
         it 'ensures total amount of bounty points stays the same' do
@@ -139,7 +139,7 @@ describe Coder do
       context 'and claimed by someone else' do
         before :each do
           @issue.assignee = @other_coder
-          @bounty.claim
+          @bounty.claim!
         end
 
         it 'has attributed reward and bounty points to the other coder' do

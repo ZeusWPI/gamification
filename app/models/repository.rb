@@ -44,7 +44,7 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  def register_commits
+  def register_commits!
     r_repo = rugged_repo
     walker = Rugged::Walker.new(r_repo)
     # Push all heads
@@ -55,7 +55,7 @@ class Repository < ActiveRecord::Base
     end
   end
 
-  def fetch_issues
+  def fetch_issues!
     github = Rails.configuration.x.github
     github.issues.list(user: Rails.application.config.organisation,
                        repo: name, state: 'all', filter: 'all').each do |hash|
@@ -78,8 +78,8 @@ class Repository < ActiveRecord::Base
       r.clone_url = repo_hash['clone_url']
     end
     repo.pull_or_clone
-    repo.register_commits
-    repo.fetch_issues
+    repo.register_commits!
+    repo.fetch_issues!
   end
 
   private

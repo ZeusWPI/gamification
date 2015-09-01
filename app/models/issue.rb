@@ -42,8 +42,8 @@ class Issue < ActiveRecord::Base
     BountyPoints.bounty_points_from_abs(absolute_bounty_value)
   end
 
-  def close(time: Time.zone.now)
-    bounties.where(claimed_at: nil).find_each(&:claim)
+  def close!(time: Time.zone.now)
+    bounties.where(claimed_at: nil).find_each(&:claim!)
     update! closed_at: time
     save!
   end
