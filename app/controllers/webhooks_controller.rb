@@ -39,7 +39,6 @@ class WebhooksController < ApplicationController
     repo = Repository.find_by name: json['repository']['name']
     return head :ok unless repo && valid_owner?
 
-    # get issue
     issue = Issue.find_or_create_from_hash json['issue'], repo
 
     case json['action']

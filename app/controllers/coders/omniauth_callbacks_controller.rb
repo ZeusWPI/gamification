@@ -1,6 +1,6 @@
 class Coders::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def github
-    @user = Coder.from_omniauth request.env['omniauth.auth']
+    @user = Coder.from_omniauth(request.env['omniauth.auth'])
 
     if @user.blank?
       flash[:warning] = 'It seems you have no contributions made so far.'\

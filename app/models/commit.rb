@@ -39,13 +39,13 @@ class Commit < ActiveRecord::Base
                              sha: r_commit.oid,
                              coder: committer do |commit|
       commit.date = r_commit.time
-      commit.set_stats r_commit
+      commit.set_stats!(r_commit)
       commit.reward! if reward
     end
   end
 
   # should be private
-  def set_stats(r_commit)
+  def set_stats!(r_commit)  # rubocop:disable Style/AccessorMethodName
     if r_commit.parents.size >= 2
       # Do not reward merges
       self.additions = self.deletions = 0
