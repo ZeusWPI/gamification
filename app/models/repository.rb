@@ -34,17 +34,12 @@ class Repository < ActiveRecord::Base
 
   def pull_or_clone
     if Dir.exist? path
-      puts "Checking remote url of #{name}..."
-      remote_url = `cd #{path} && git remote -v`.split[1]
-      if remote_url != authenticated_clone_url
-        puts 'Setting new remote url...'
-        `cd #{path} && git remote set-url origin #{authenticated_clone_url}`
-      end
+      ensure_correct_remote_url
 
-      puts "Fetching #{name}..."
+      logger.info("Fetching #{name}...")
       `cd #{path} && git fetch && git reset --hard origin/master`
     else
-      puts "Cloning #{name}..."
+      logger.info("Cloning #{name}...")
       `mkdir -p #{path} && git clone #{authenticated_clone_url} #{path}`
     end
   end
@@ -97,5 +92,14 @@ class Repository < ActiveRecord::Base
     clone_url.sub('https://') do
       $& + Rails.application.secrets.github_token + '@'
     end
+  end
+
+  def ensure_correct_remote_url
+    logger.info("Checking remote url of #{name}...")
+    remote_url = `cd #{path} && git remote -v`.split[1]
+    return if remote_url == authenticated_clone_url
+
+    logger.info('Setting new remote url...')
+    `cd #{path} && git remote set-url origin #{authenticated_clone_url}`
   end
 end
