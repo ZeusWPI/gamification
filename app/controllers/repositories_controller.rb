@@ -10,6 +10,6 @@ class RepositoriesController < ApplicationController
     @coders = Coder.only_with_stats(:score, :commit_count, :additions,
                                     :deletions)
               .where(repository: @repository).order(score: :desc).run
-    @chart = AnnotationChart.burndown_chart(@repository.issues)
+    @chart = BurndownChart.new(@repository.issues).timeline
   end
 end
