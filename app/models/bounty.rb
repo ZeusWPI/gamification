@@ -33,9 +33,9 @@ class Bounty < ActiveRecord::Base
 
   def self.update_or_create(issue, coder, new_value)
     # Find the bounty for this issue if it already exists, or make a new one
-    bounty = Bounty.find_or_create_by issue: issue,
+    bounty = Bounty.find_or_create_by(issue: issue,
                                       issuer: coder,
-                                      claimed_at: nil do |b|
+                                      claimed_at: nil) do |b|
       b.absolute_value = 0
     end
 

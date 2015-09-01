@@ -33,7 +33,7 @@ class Repository < ActiveRecord::Base
   require 'rugged'
 
   def pull_or_clone
-    if Dir.exist? path
+    if Dir.exist?(path)
       ensure_correct_remote_url
 
       logger.info("Fetching #{name}...")
@@ -51,7 +51,7 @@ class Repository < ActiveRecord::Base
     r_repo.branches.each { |b| walker.push b.target_id }
     walker.push(r_repo.last_commit)
     walker.each do |commit|
-      Commit.register_rugged self, commit, reward: false
+      Commit.register_rugged(self, commit, reward: false)
     end
   end
 
@@ -59,7 +59,7 @@ class Repository < ActiveRecord::Base
     github = Rails.configuration.x.github
     github.issues.list(user: Rails.application.config.organisation,
                        repo: name, state: 'all', filter: 'all').each do |hash|
-      Issue.find_or_create_from_hash hash, self
+      Issue.find_or_create_from_hash(hash, self)
     end
   end
 
@@ -73,7 +73,7 @@ class Repository < ActiveRecord::Base
   end
 
   def self.create_or_update(repo_hash)
-    repo = Repository.find_or_create_by name: repo_hash['name'] do |r|
+    repo = Repository.find_or_create_by(name: repo_hash['name']) do |r|
       r.github_url = repo_hash['html_url']
       r.clone_url = repo_hash['clone_url']
     end

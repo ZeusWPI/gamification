@@ -10,7 +10,7 @@ module ApplicationHelper
   end
 
   def format_score(score)
-    number_with_delimiter score, delimiter: '&nbsp;'.html_safe
+    number_with_delimiter(score, delimiter: '&nbsp;'.html_safe)
   end
 
   def format_short_score(score)
@@ -21,6 +21,6 @@ module ApplicationHelper
 
   def navbar_item(html, target)
     class_str = current_page?(target) ? 'active' : ''
-    content_tag :li, link_to(html, target), class: class_str
+    content_tag(:li, link_to(html, target), class: class_str)
   end
 end

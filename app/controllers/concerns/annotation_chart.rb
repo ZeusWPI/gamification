@@ -9,7 +9,7 @@ module AnnotationChart
     unless issues.order(:number).first.nil?
       start_date = issues.order(:number).first.opened_at.to_date
     end
-    daterange =  start_date..Time.zone.now.to_date
+    daterange = start_date..Time.zone.now.to_date
 
     data = []
     open = 0

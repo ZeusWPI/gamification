@@ -44,14 +44,13 @@ class Issue < ActiveRecord::Base
 
   def close!(time: Time.zone.now)
     bounties.where(claimed_at: nil).find_each(&:claim!)
-    update! closed_at: time
+    update!(closed_at: time)
     save!
   end
 
   def self.find_or_create_from_hash(json, repo)
     issuer = Coder.find_or_create_by_github_name(json['user']['login'])
-    Issue.find_or_create_by number: json['number'],
-                            repository: repo do |issue|
+    Issue.find_or_create_by(number: json['number'], repository: repo) do |issue|
       issue.github_url = json['html_url']
       issue.number     = json['number']
       issue.title      = json['title']
@@ -62,7 +61,7 @@ class Issue < ActiveRecord::Base
       issue.opened_at  = DateTime.rfc3339(json['created_at'])
 
       closed_at = json['closed_at']
-      issue.closed_at  = DateTime.rfc3339(closed_at) if closed_at
+      issue.closed_at = DateTime.rfc3339(closed_at) if closed_at
 
       unless json['assignee'].blank?
         issue.assignee =
