@@ -8,9 +8,6 @@ AllCops:
     - repos/**/*
 
 
-Style/ClassAndModuleChildren:
-  EnforcedStyle: compact
-
 # We right self-documenting code, right? Disabling for now.
 Style/Documentation:
   Enabled: false
