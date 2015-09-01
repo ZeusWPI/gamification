@@ -49,13 +49,14 @@ class Issue < ActiveRecord::Base
   end
 
   def self.find_or_create_from_hash(json, repo)
+    issuer = Coder.find_or_create_by_github_name(json['user']['login'])
     Issue.find_or_create_by number: json['number'],
                             repository: repo do |issue|
       issue.github_url = json['html_url']
       issue.number     = json['number']
       issue.title      = json['title']
       issue.body       = json['body']
-      issue.issuer     = Coder.find_or_create_by_github_name(json['user']['login'])
+      issue.issuer     = issuer
       issue.labels     = (json['labels'] || []).map  { |label| label['name'] }
       issue.milestone  = json['milestone'].try(:[], :title)
       issue.opened_at  = DateTime.parse(json['created_at'])

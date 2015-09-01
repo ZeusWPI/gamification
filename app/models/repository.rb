@@ -94,6 +94,8 @@ class Repository < ActiveRecord::Base
   end
 
   def authenticated_clone_url
-    clone_url.sub('https://') { $& + Rails.application.secrets.github_token + '@' }
+    clone_url.sub('https://') do
+      $& + Rails.application.secrets.github_token + '@'
+    end
   end
 end

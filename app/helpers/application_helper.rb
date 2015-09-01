@@ -14,7 +14,9 @@ module ApplicationHelper
   end
 
   def format_short_score(score)
-    number_to_human(score, delimiter: '&thinsp;'.html_safe, separator: '.', format: '%n&thinsp;%u'.html_safe, units: { thousand: 'K', million: 'M', billion: 'G' })
+    number_to_human(score, delimiter: '&thinsp;'.html_safe, separator: '.',
+                           format: '%n&thinsp;%u'.html_safe,
+                           units: { thousand: 'K', million: 'M', billion: 'G' })
   end
 
   def navbar_item(html, target)

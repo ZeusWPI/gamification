@@ -12,7 +12,8 @@ set :deploy_to, '/home/gamification/production'
 set :linked_files, %w(config/database.yml config/secrets.yml)
 
 # Default value for linked_dirs is []
-set :linked_dirs, %w(log repos tmp/pids tmp/cache tmp/sockets vendor/bundle public/system)
+set :linked_dirs, %w(log repos tmp/pids tmp/cache tmp/sockets vendor/bundle
+                     public/system)
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
