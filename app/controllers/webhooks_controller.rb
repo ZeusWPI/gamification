@@ -45,7 +45,7 @@ class WebhooksController < ApplicationController
     when 'opened', 'reopened'
       issue.update! closed_at: nil
     when 'closed'
-      issue.close time: DateTime.parse(json['issue']['closed_at'])
+      issue.close time: DateTime.parse.iso8601(json['issue']['closed_at'])
     when 'assigned'
       assignee = Coder.find_by github_name: json['issue']['assignee']['login']
       issue.update! assignee: assignee
