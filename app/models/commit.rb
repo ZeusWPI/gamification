@@ -75,8 +75,9 @@ class Commit < ActiveRecord::Base
   end
 
   def self.get_committer_from_github(repo, r_commit)
-    commit = $github.repos.commits.get Rails.application.config.organisation,
-                                       repo.name, r_commit.oid
+    github = Rails.configuration.x.github
+    commit = github.repos.commits.get Rails.application.config.organisation,
+                                      repo.name, r_commit.oid
     if commit.committer
       Coder.find_or_create_by_github_name commit.committer.login
     end
