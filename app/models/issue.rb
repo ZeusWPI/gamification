@@ -59,10 +59,10 @@ class Issue < ActiveRecord::Base
       issue.issuer     = issuer
       issue.labels     = (json['labels'] || []).map  { |label| label['name'] }
       issue.milestone  = json['milestone'].try(:[], :title)
-      issue.opened_at  = DateTime.parse.iso8601(json['created_at'])
+      issue.opened_at  = DateTime.rfc3339(json['created_at'])
 
       closed_at = json['closed_at']
-      issue.closed_at  = DateTime.parse.iso8601(closed_at) if closed_at
+      issue.closed_at  = DateTime.rfc3339(closed_at) if closed_at
 
       unless json['assignee'].blank?
         issue.assignee =
