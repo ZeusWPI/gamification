@@ -33,9 +33,9 @@ class Bounty < ActiveRecord::Base
 
   def self.update_or_create(issue, coder, new_value)
     # Find the bounty for this issue if it already exists, or make a new one
-    bounty = Bounty.find_or_create_by issue: issue,
+    bounty = Bounty.find_or_create_by(issue: issue,
                                       issuer: coder,
-                                      claimed_at: nil do |b|
+                                      claimed_at: nil) do |b|
       b.absolute_value = 0
     end
 
@@ -44,10 +44,10 @@ class Bounty < ActiveRecord::Base
 
   def update_value!(new_value)
     # Check whether the user has got enought points to spend
-    delta = new_value - self.value
+    delta = new_value - value
     if delta > issuer.bounty_residual
-      raise Error.new("You don\'t have enough bounty points to put a"\
-                      " bounty of this amount.")
+      fail Error, "You don\'t have enough bounty points to put a bounty of"\
+                  ' this amount.'
     end
 
     self.value += delta
@@ -59,32 +59,32 @@ class Bounty < ActiveRecord::Base
     # It is important that this happens at the same time, so
     # BountyPoints.total_bounty_points stays the same!
     transaction do
-      unless save!
-        raise Error.new("There occured an error while trying to save your"\
-                        " bounty (#{bounty.errors.full_messages})")
+      unless save
+        fail Error, 'There occured an error while trying to save your bounty'\
+                    " (#{bounty.errors.full_messages})"
       end
 
-      unless issuer.save!
-        raise Error.new("There occured an error while trying to adjust your"\
-                        " remaining bounty points"\
-                        " (#{bounty.errors.full_messages})")
+      unless issuer.save
+        fail Error, 'There occured an error while trying to adjust your'\
+                    ' remaining bounty points'\
+                    " (#{bounty.errors.full_messages})"
       end
     end
 
     SlackWebhook.publish_bounty(self)
   end
 
-  def claim(time: Time.zone.now)
+  def claim!(time: Time.zone.now)
     return if claimed_at  # This bounty has already been claimed
     if issue.assignee && issue.assignee != issuer
       # Reward assignee
-      pinpoint_value(coder: issue.assignee, time: time)
+      pinpoint_value!(coder: issue.assignee, time: time)
       issue.assignee.reward_bounty!(self)
     else
       # Refund bounty points
       issuer.refund_bounty!(self)
       # This bounty is of no use; destroy it.
-      destroy
+      destroy!
     end
   end
 
@@ -94,13 +94,12 @@ class Bounty < ActiveRecord::Base
 
   def value=(new_value)
     if claimed_at
-      raise Error.new("Trying to set a new value to an already claimed"\
-                      " bounty!")
+      fail Error, 'Trying to set a new value to an already claimed bounty!'
     end
     self.absolute_value = BountyPoints.bounty_points_to_abs(new_value)
   end
 
-  def pinpoint_value(coder: nil, time: Time.current)
+  def pinpoint_value!(coder: nil, time: Time.current)
     self.claimant = coder
     self.claimed_at = time
     self.claimed_value = self.value

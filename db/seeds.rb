@@ -1,5 +1,6 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
+# This file should contain all the record creation needed to seed the database
+# with its default values.  The data can then be loaded with the rake db:seed
+# (or created alongside the db with db:setup).
 #
 # Examples:
 #
@@ -7,8 +8,9 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 # Fetch organisation repositories
-repos = $github.repos.list :all, org: Rails.application.config.organisation
+github = Rails.configuration.x.github
+repos = github.repos.list :all, org: Rails.application.config.organisation
 
-repos.select {|r| RepoFilters.track? r}.each do |hash|
+repos.select { |r| RepoFilters.track? r }.each do |hash|
   Repository.create_or_update hash
 end

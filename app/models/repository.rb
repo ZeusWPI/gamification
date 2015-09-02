@@ -33,37 +33,33 @@ class Repository < ActiveRecord::Base
   require 'rugged'
 
   def pull_or_clone
-    if Dir.exist? path
-      puts "Checking remote url of #{name}..."
-      remote_url = `cd #{path} && git remote -v`.split[1]
-      if remote_url != authenticated_clone_url
-        puts 'Setting new remote url...'
-        `cd #{path} && git remote set-url origin #{authenticated_clone_url}`
-      end
+    if Dir.exist?(path)
+      ensure_correct_remote_url
 
-      puts "Fetching #{name}..."
+      logger.info("Fetching #{name}...")
       `cd #{path} && git fetch && git reset --hard origin/master`
     else
-      puts "Cloning #{name}..."
+      logger.info("Cloning #{name}...")
       `mkdir -p #{path} && git clone #{authenticated_clone_url} #{path}`
     end
   end
 
-  def register_commits
+  def register_commits!
     r_repo = rugged_repo
     walker = Rugged::Walker.new(r_repo)
     # Push all heads
     r_repo.branches.each { |b| walker.push b.target_id }
     walker.push(r_repo.last_commit)
     walker.each do |commit|
-      Commit.register_rugged self, commit, reward: false
+      Commit.register_rugged(self, commit, reward: false)
     end
   end
 
-  def fetch_issues
-    $github.issues.list(user: Rails.application.config.organisation,
-                        repo: name, state: 'all', filter: 'all').each do |hash|
-      Issue.find_or_create_from_hash hash, self
+  def fetch_issues!
+    github = Rails.configuration.x.github
+    github.issues.list(user: Rails.application.config.organisation,
+                       repo: name, state: 'all', filter: 'all').each do |hash|
+      Issue.find_or_create_from_hash(hash, self)
     end
   end
 
@@ -77,13 +73,13 @@ class Repository < ActiveRecord::Base
   end
 
   def self.create_or_update(repo_hash)
-    repo = Repository.find_or_create_by name: repo_hash['name'] do |r|
+    repo = Repository.find_or_create_by(name: repo_hash['name']) do |r|
       r.github_url = repo_hash['html_url']
       r.clone_url = repo_hash['clone_url']
     end
     repo.pull_or_clone
-    repo.register_commits
-    repo.fetch_issues
+    repo.register_commits!
+    repo.fetch_issues!
   end
 
   private
@@ -93,6 +89,17 @@ class Repository < ActiveRecord::Base
   end
 
   def authenticated_clone_url
-    clone_url.sub('https://') { $& + Rails.application.secrets.github_token + '@' }
+    clone_url.sub('https://') do
+      $& + Rails.application.secrets.github_token + '@'
+    end
+  end
+
+  def ensure_correct_remote_url
+    logger.info("Checking remote url of #{name}...")
+    remote_url = `cd #{path} && git remote -v`.split[1]
+    return if remote_url == authenticated_clone_url
+
+    logger.info('Setting new remote url...')
+    `cd #{path} && git remote set-url origin #{authenticated_clone_url}`
   end
 end

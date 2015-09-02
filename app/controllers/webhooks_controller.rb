@@ -7,11 +7,11 @@ class WebhooksController < ApplicationController
 
     case event
     when 'push'
-      push request.request_parameters
+      push(request.request_parameters)
     when 'issues'
-      issues request.request_parameters
+      issues(request.request_parameters)
     when 'repository'
-      repository request.request_parameters
+      repository(request.request_parameters)
     else
       head :ok
     end
@@ -21,14 +21,14 @@ class WebhooksController < ApplicationController
 
   def push(json)
     @owner = json['repository']['owner']['name']
-    repo = Repository.find_by name: json['repository']['name']
+    repo = Repository.find_by(name: json['repository']['name'])
     return head :ok unless repo && valid_owner?
 
     repo.pull_or_clone
 
     if json['commits']
       json['commits'].each do |commit|
-        Commit.register_from_sha repo, commit['id']
+        Commit.register_from_sha(repo, commit['id'])
       end
     end
     head :created
@@ -36,22 +36,21 @@ class WebhooksController < ApplicationController
 
   def issues(json)
     @owner = json['repository']['owner']['login']
-    repo = Repository.find_by name: json['repository']['name']
+    repo = Repository.find_by(name: json['repository']['name'])
     return head :ok unless repo && valid_owner?
 
-    # get issue
-    issue = Issue.find_or_create_from_hash json['issue'], repo
+    issue = Issue.find_or_create_from_hash(json['issue'], repo)
 
     case json['action']
     when 'opened', 'reopened'
-      issue.update! closed_at: nil
+      issue.update!(closed_at: nil)
     when 'closed'
-      issue.close time: DateTime.parse(json['issue']['closed_at'])
+      issue.close!(time: DateTime.rfc3339(json['issue']['closed_at']))
     when 'assigned'
-      assignee = Coder.find_by github_name: json['issue']['assignee']['login']
-      issue.update! assignee: assignee
+      assignee = Coder.find_by(github_name: json['issue']['assignee']['login'])
+      issue.update!(assignee: assignee)
     when 'unassigned'
-      issue.update! assignee: nil
+      issue.update!(assignee: nil)
     else
       return head :ok
     end
@@ -65,7 +64,7 @@ class WebhooksController < ApplicationController
 
     case json['action']
     when 'created'
-      Repository.create_or_update repo
+      Repository.create_or_update(repo)
       return head :created
     end
 

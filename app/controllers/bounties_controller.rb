@@ -10,8 +10,6 @@ class BountiesController < ApplicationController
   end
 
   def update_or_create
-    issue_id = bounty_params[:issue_id]
-
     new_value = bounty_params[:value]
     # Value must be a non-negative integer
     unless new_value =~ /^\d+$/
@@ -19,7 +17,7 @@ class BountiesController < ApplicationController
       return
     end
 
-    @issue = Issue.find issue_id
+    @issue = Issue.find(bounty_params[:issue_id])
 
     begin
       Bounty.update_or_create(@issue, current_coder, new_value.to_i)

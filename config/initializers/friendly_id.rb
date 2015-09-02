@@ -52,10 +52,10 @@ FriendlyId.defaults do |config|
   #
   # config.slug_column = 'slug'
   #
-  # When FriendlyId can not generate a unique ID from your base method, it appends
-  # a UUID, separated by a single dash. You can configure the character used as the
-  # separator. If you're upgrading from FriendlyId 4, you may wish to replace this
-  # with two dashes.
+  # When FriendlyId can not generate a unique ID from your base method, it
+  # appends a UUID, separated by a single dash. You can configure the character
+  # used as the separator. If you're upgrading from FriendlyId 4, you may wish
+  # to replace this with two dashes.
   #
   # config.sequence_separator = '-'
   #
@@ -76,9 +76,9 @@ FriendlyId.defaults do |config|
   # }
   #
   # FriendlyId uses Rails's `parameterize` method to generate slugs, but for
-  # languages that don't use the Roman alphabet, that's not usually suffient. Here
-  # we use the Babosa library to transliterate Russian Cyrillic slugs to ASCII. If
-  # you use this, don't forget to add "babosa" to your Gemfile.
+  # languages that don't use the Roman alphabet, that's not usually suffient.
+  # Here we use the Babosa library to transliterate Russian Cyrillic slugs to
+  # ASCII. If you use this, don't forget to add "babosa" to your Gemfile.
   #
   # config.use Module.new {
   #   def normalize_friendly_id(text)
