@@ -1,4 +1,4 @@
-class Coders
+module Coders
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     def github
       @user = Coder.from_omniauth(request.env['omniauth.auth'])
