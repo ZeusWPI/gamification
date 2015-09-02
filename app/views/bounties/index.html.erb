@@ -26,7 +26,7 @@
           <tr id="issue-<%= issue.id %>", issue.repository>
             <td><%= link_to repo.name, repo %> </td>
             <td><%= link_to issue.title, issue.github_url %></td>
-            <td class="total-bounty"><%= issue.total_bounty_value %></td>
+            <td class="total-bounty"><%= format_score issue.total_bounty_value %></td>
             <% if current_coder %>
               <td class="my-bounty">
                 <div class="input-group">
