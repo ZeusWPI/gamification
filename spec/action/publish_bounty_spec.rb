@@ -29,5 +29,4 @@ RSpec.describe PublishBounty do
     PublishBounty.new(bounty).call
   end
 
-
 end
