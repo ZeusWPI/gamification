@@ -7,6 +7,13 @@ class CodersController < ApplicationController
     ).where(coder_id: @coder).order(score: :desc).run
   end
 
+  def history
+    respond_to do |format|
+      format.html
+      format.json { render json: HistoryDatatable.new(view_context) }
+    end
+  end
+
   private
 
   def set_coder

@@ -8,7 +8,11 @@ Rails.application.routes.draw do
 
   post 'payload', to: 'webhooks#receive'
 
-  resources :coders, only: [:show]
+  resources :coders, only: [:show] do
+    member do
+      get 'history'
+    end
+  end
   resources :repositories, only: [:index, :show]
   resources :bounties, only: [:index] do
     post 'update_or_create', on: :collection

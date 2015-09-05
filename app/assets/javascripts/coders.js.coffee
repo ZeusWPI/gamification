@@ -2,6 +2,15 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+
+
+$ ->
+  $('#history-table').dataTable
+    processing: true
+    serverSide: true
+    ajax: $('#history-table').data('source')
+    pagingType: 'full_numbers'
+
 $('body.scoreboard.index').ready ->
     table = $('#scoreboard').DataTable
         order: [[3, 'desc']]
