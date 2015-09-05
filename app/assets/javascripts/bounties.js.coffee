@@ -14,6 +14,11 @@ $('body.bounties.index').ready ->
         columnDefs: [
                 targets: ['total-bounty', 'my-bounty']
                 orderSequence: ['desc', 'asc']
+                render: (data, type, _row, _meta) ->
+                    if type is 'display'
+                        return data
+                    else
+                        return data.replace(/[^\d]/g, '')
             ,
                 targets: ['my-bounty']
                 orderDataType: 'dom-input-numeric'
