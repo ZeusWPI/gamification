@@ -22,6 +22,9 @@ $('body.coders.show').ready ->
         serverSide: true
         ajax: $('#bounty-table').data('source')
         pagingType: 'full_numbers'
+        "columnDefs": [
+          { className: "text-right", "targets": [ 1 ] }
+        ]
 
 $('body.scoreboard.index').ready ->
     table = $('#scoreboard').DataTable
