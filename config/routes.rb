@@ -10,7 +10,8 @@ Rails.application.routes.draw do
 
   resources :coders, only: [:show] do
     member do
-      get 'history'
+      get 'commit_history'
+      get 'claimed_bounties'
     end
   end
   resources :repositories, only: [:index, :show]

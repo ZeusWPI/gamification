@@ -1,5 +1,7 @@
 class CodersController < ApplicationController
-  before_action :set_coder, only: [:show]
+  before_action :set_coder, only: [:show, :commit_history, :claimed_bounties]
+
+  respond_to :json, only: [:commit_history, :claimed_bounties]
 
   def show
     @repositories = Repository.only_with_stats(
@@ -7,16 +9,21 @@ class CodersController < ApplicationController
     ).where(coder_id: @coder).order(score: :desc).run
   end
 
-  def history
-    respond_to do |format|
-      format.html
-      format.json { render json: HistoryDatatable.new(view_context) }
-    end
+  def commit_history
+    respond_with build_table(HistoryDatatable)
+  end
+
+  def claimed_bounties
+    respond_with build_table(ClaimedBountyDatatable)
   end
 
   private
 
   def set_coder
     @coder = Coder.friendly.find params[:id]
+  end
+
+  def build_table(table)
+    table.new( view_context, { coder: @coder } )
   end
 end

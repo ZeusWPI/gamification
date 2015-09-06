@@ -4,12 +4,24 @@
 
 
 
-$ ->
-  $('#history-table').dataTable
-    processing: true
-    serverSide: true
-    ajax: $('#history-table').data('source')
-    pagingType: 'full_numbers'
+$('body.coders.show').ready ->
+    $('#history-table').dataTable
+        order: [[0, 'desc']]
+        processing: true
+        serverSide: true
+        ajax: $('#history-table').data('source')
+        pagingType: 'full_numbers'
+        "columnDefs": [
+          { className: "text-right", "targets": [ 1 ] }
+        ]
+
+
+    $('#bounty-table').dataTable
+        order: [[0, 'desc']]
+        processing: true
+        serverSide: true
+        ajax: $('#bounty-table').data('source')
+        pagingType: 'full_numbers'
 
 $('body.scoreboard.index').ready ->
     table = $('#scoreboard').DataTable

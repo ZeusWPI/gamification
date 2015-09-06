@@ -16,7 +16,8 @@
       <ul class="nav nav-tabs">
         <li role="presentation" class="active"><a href="#tab-contributions" aria-controls="tab-contributions" role="tab" data-toggle="tab">Contributions</a</li>
         <li role="presentation"><a href="#tab-graphs" aria-controls="tab-graphs" role="tab" data-toggle="tab">Graphs</a></li>
-        <li role="presentation"><a href="#tab-history" aria-controls="tab-history" role="tab" data-toggle="tab">History</a></li>
+        <li role="presentation"><a href="#tab-commit-history" aria-controls="tab-commit-history" role="tab" data-toggle="tab">Commit history</a></li>
+        <li role="presentation"><a href="#tab-claimed-bounties" aria-controls="tab-claimed-bounties" role="tab" data-toggle="tab">Claimed bounties</a></li>
       </ul>
 
       <div class="tab-content">
@@ -30,8 +31,12 @@
           <%= render partial: 'graphs' %>
         </div>
 
-        <div role="tabpanel" class="tab-pane" id="tab-history">
-          <%= render partial: 'history' %>
+        <div role="tabpanel" class="tab-pane" id="tab-commit-history">
+          <%= render partial: 'coders/datatables/commit_history' %>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="tab-claimed-bounties">
+          <%= render partial: 'coders/datatables/claimed_bounties' %>
         </div>
 
       </div>
