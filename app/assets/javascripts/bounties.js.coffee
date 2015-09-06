@@ -25,3 +25,5 @@ $('body.bounties.index').ready ->
                 type: 'numeric'
         ]
         autoWidth: false
+        pagingType: 'full_numbers'
+        language: default_pagination_language

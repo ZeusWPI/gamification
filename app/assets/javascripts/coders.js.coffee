@@ -11,8 +11,12 @@ $('body.coders.show').ready ->
         serverSide: true
         ajax: $('#history-table').data('source')
         pagingType: 'full_numbers'
-        "columnDefs": [
-          { className: "text-right", "targets": [ 1 ] }
+        columnDefs: [
+                targets: 3
+                orderable: false
+            ,
+                targets: 1
+                className: "text-right"
         ]
         language: window.default_pagination_language
 
@@ -24,8 +28,9 @@ $('body.coders.show').ready ->
         serverSide: true
         ajax: $('#bounty-table').data('source')
         pagingType: 'full_numbers'
-        "columnDefs": [
-          { className: "text-right", "targets": [ 1 ] }
+        columnDefs: [
+            targets: 1
+            className: "text-right"
         ]
         language: window.default_pagination_language
 
