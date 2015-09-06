@@ -14,6 +14,8 @@ $('body.coders.show').ready ->
         "columnDefs": [
           { className: "text-right", "targets": [ 1 ] }
         ]
+        language: window.default_pagination_language
+
 
 
     $('#bounty-table').dataTable
@@ -25,6 +27,7 @@ $('body.coders.show').ready ->
         "columnDefs": [
           { className: "text-right", "targets": [ 1 ] }
         ]
+        language: window.default_pagination_language
 
 $('body.scoreboard.index').ready ->
     table = $('#scoreboard').DataTable
@@ -45,6 +48,7 @@ $('body.scoreboard.index').ready ->
         bFilter: false
         paging: false
         autoWidth: false
+        info: false
 
     # Recalculate rank column when table changes, so it stays fixed
     table.on 'order.dt search.dt', ->

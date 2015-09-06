@@ -21,6 +21,7 @@ $('body.repositories.index').ready ->
         bFilter: false
         paging: false
         autoWidth: false
+        info: false
 
     # Recalculate rank column when table changes, so it stays fixed
     table.on 'order.dt search.dt', ->
