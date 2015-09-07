@@ -138,7 +138,7 @@ GEM
       multi_json (>= 1.7.5, < 2.0)
       nokogiri (~> 1.6.3)
       oauth2
-    google_visualr (2.4.0)
+    google_visualr (2.5.1)
     hashie (3.3.2)
     high_voltage (2.2.1)
     hike (1.2.3)

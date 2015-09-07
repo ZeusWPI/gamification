@@ -5,12 +5,13 @@ class BurndownChart
 
   def timeline
     option = {
-      width: 1000,
+      width: '900',
       height: 440,
-      colors: %w(orange green blue)
+      colors: %w(blue orange green),
+      displayAnnotations: false,
     }
 
-    GoogleVisualr::Interactive::AnnotatedTimeLine.new(data_table, option)
+    GoogleVisualr::Interactive::AnnotationChart.new(data_table, option)
   end
 
   private
@@ -19,9 +20,9 @@ class BurndownChart
     data_table = GoogleVisualr::DataTable.new
 
     data_table.new_column('date', 'Date')
+    data_table.new_column('number', 'Open issues')
     data_table.new_column('number', 'New issues')
     data_table.new_column('number', 'Closed issues')
-    data_table.new_column('number', 'Open issues')
 
     data_table.add_rows(data)
 
@@ -44,7 +45,7 @@ class BurndownChart
     open = 0
     full_date_range.each do |d|
       open += (open_issues[d] || 0) - (closed_issues[d] || 0)
-      data << [d, open_issues[d] || 0, closed_issues[d] || 0, open]
+      data << [d, open, open_issues[d] || 0, closed_issues[d] || 0]
     end
 
     data
