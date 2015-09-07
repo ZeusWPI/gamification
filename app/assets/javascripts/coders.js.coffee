@@ -5,7 +5,7 @@
 
 
 $('body.coders.show').ready ->
-    $('#history-table').dataTable
+    $('#history-table').DataTable
         order: [[0, 'desc']]
         processing: true
         serverSide: true
@@ -20,9 +20,7 @@ $('body.coders.show').ready ->
         ]
         language: window.default_pagination_language
 
-
-
-    $('#bounty-table').dataTable
+    $('#bounty-table').DataTable
         order: [[0, 'desc']]
         processing: true
         serverSide: true
@@ -33,6 +31,7 @@ $('body.coders.show').ready ->
             className: "text-right"
         ]
         language: window.default_pagination_language
+
 
 $('body.scoreboard.index').ready ->
     table = $('#scoreboard').DataTable
