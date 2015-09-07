@@ -25,7 +25,9 @@ describe BountiesController, type: :controller do
 
     describe 'PUT update_or_create' do
       it 'returns http success' do
-        put :update_or_create, bounty: { issue_id: @issue, value: 0 }
+        put :update_or_create,
+            bounty: { issue_id: @issue, value: 0 },
+            format: :coffee
         expect(response).to be_success
       end
     end

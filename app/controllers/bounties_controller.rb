@@ -10,19 +10,22 @@ class BountiesController < ApplicationController
   end
 
   def update_or_create
+    @issue = Issue.find(bounty_params[:issue_id])
+
     new_value = bounty_params[:value]
     # Value must be a non-negative integer
     unless new_value =~ /^\d+$/
       flash.now[:error] = 'This value is not an integer.'
+      response.status = :bad_request
       return
     end
 
-    @issue = Issue.find(bounty_params[:issue_id])
-
     begin
       Bounty.update_or_create(@issue, current_coder, new_value.to_i)
+      response.status = :created
     rescue Bounty::Error => error
       flash.now[:error] = error.message
+      response.status = :bad_request
     end
   end
 
