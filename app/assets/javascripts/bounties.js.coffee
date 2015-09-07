@@ -24,6 +24,7 @@ $('body.bounties.index').ready ->
                 orderDataType: 'dom-input-numeric'
                 type: 'numeric'
         ]
+        dom: '<"top"f>rt<"bottom"p>'
         autoWidth: false
         pagingType: 'full_numbers'
         language: default_pagination_language
