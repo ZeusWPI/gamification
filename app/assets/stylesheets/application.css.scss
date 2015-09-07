@@ -28,3 +28,7 @@
 .table:last-child {
     margin-bottom: 0px;
 }
+
+div.dataTables_wrapper > div.row {
+    margin: 0;
+}
