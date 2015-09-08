@@ -11,7 +11,7 @@ $('body.top4.show').ready ->
       # Only select the top 3 contributors and put the rest in and 'other' user
       repo.contributors = repo_contributors[0..2]
       if repo_contributors.length > 3
-        repo.contributors +=
+        repo.contributors.push
           github_name: 'other'
           score: d3.sum(repo_contributors[3..], (d) -> d.score)
 
