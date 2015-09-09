@@ -105,9 +105,9 @@ describe Coder do
     context 'with a bounty placed' do
       before :each do
         @issue = create :issue
-        @bounty = create :bounty, issue: @issue,
-                                  absolute_value: 0,
-                                  issuer: @coder
+        @bounty = build :bounty, issue: @issue,
+                                 absolute_value: 0,
+                                 issuer: @coder
         @bounty.update_value!(100)
       end
 

@@ -28,7 +28,7 @@ class Bounty < ActiveRecord::Base
 
   after_commit :clear_caches
   after_rollback :clear_caches
-  after_save :destroy, if: ->(b){ b.absolute_value == 0 && claimed_at.nil? }
+  after_save :destroy, if: ->(b){ b.absolute_value == 0 && b.claimed_value.nil? }
 
   delegate :to_s, to: :value
 
