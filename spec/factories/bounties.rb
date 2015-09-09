@@ -15,7 +15,7 @@
 
 FactoryGirl.define do
   factory :bounty do
-    absolute_value { rand 100 }
+    absolute_value { rand 1..100 }
     issue
     association :issuer, factory: :coder
 
