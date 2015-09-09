@@ -74,6 +74,22 @@ describe BountiesController, type: :controller do
       expect(@coder.bounty_residual).to eq(100)
       expect(@issue.total_bounty_value).to eq(0)
     end
+
+    it 'cannot place bounties with blank value' do
+      put :update_or_create,
+          bounty: { issue_id: @issue, value: '' },
+          format: :coffee
+      expect(@coder.bounty_residual).to eq(100)
+      expect(@issue.total_bounty_value).to eq(0)
+    end
+
+    it 'cannot place bounties with 0 value' do
+      put :update_or_create,
+          bounty: { issue_id: @issue, value: 0 },
+          format: :coffee
+      expect(@coder.bounty_residual).to eq(100)
+      expect(@issue.total_bounty_value).to eq(0)
+    end
   end
 
   context 'claimed issue' do
