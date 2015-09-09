@@ -13,6 +13,3 @@ notifications:
     - gamification@zeus.ugent.be
     on_success: never
     on_failure: change
-env:
-  matrix:
-    secure: r6SIoQiox7bomDrNNFRpVKz7VVaeg8nkUsT10u+2EAHT0NVCSz7EQeLB2Xw6xqSnkZxxm2Bp5rOwEaQQkU4Aiv7lpjBmhlpWxv2McYOG73ee0J5bdVi+f+MyuUY9c4F6J44y1CO68betCPOytivR/zdaoBP2Y/1VRMgAyHiovLI=
