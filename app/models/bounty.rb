@@ -28,15 +28,27 @@ class Bounty < ActiveRecord::Base
 
   after_commit :clear_caches
   after_rollback :clear_caches
+  after_save :destroy, if: ->(b){ b.absolute_value == 0 }
 
   delegate :to_s, to: :value
 
   def self.update_or_create(issue, coder, new_value)
-    # Find the bounty for this issue if it already exists, or make a new one
-    bounty = Bounty.find_or_create_by(issue: issue,
-                                      issuer: coder,
-                                      claimed_at: nil) do |b|
-      b.absolute_value = 0
+    # Find the bounty for this issue if it already exists
+    # We don't want to directly create it with value == 0 or else the
+    # destroy callback will be called
+    bounty = Bounty.find_by(issue: issue,
+                            issuer: coder,
+                            claimed_at: nil)
+
+    if bounty.nil?
+      if new_value != 0
+        bounty = Bounty.new(issue: issue,
+                            issuer: coder,
+                            claimed_at: nil,
+                            absolute_value: 0)
+      else
+        fail Error, "You can't create an empty bounty."
+      end
     end
 
     bounty.update_value!(new_value)
