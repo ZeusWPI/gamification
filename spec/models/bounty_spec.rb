@@ -24,6 +24,12 @@ describe Bounty do
     expect(@bounty).to be_valid
   end
 
+  it 'gets destroyed when valued is 0' do
+    @bounty.absolute_value = 0
+    @bounty.save
+    expect(@bounty).to be_destroyed
+  end
+
   it 'refunds bounty points when issue was not claimed' do
     @bounty.claim!
     expect(@issuer.bounty_residual).to eq(100)
@@ -72,6 +78,12 @@ describe Bounty do
 
     it 'clears its bounty value' do
       expect(@bounty.absolute_value).to eq(0)
+    end
+
+    it 'does not get destroyed when valued is 0 and is claimed' do
+      @bounty.claim!
+      expect(@bounty).not_to be_destroyed
+      expect(@bounty).to be_valid
     end
   end
 
