@@ -5,7 +5,7 @@ class CoderPointsChart
 
   def timeline
     option = {
-      width: '900',
+      width: 900,
       height: 440,
       colors: %w(blue orange green),
       displayAnnotations: false,
