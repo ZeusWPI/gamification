@@ -30,11 +30,9 @@ class BurndownChart
   end
 
   def full_date_range
-    start_date = Time.zone.now.to_date
-    unless @issues.order(:number).first.nil?
-      start_date = @issues.order(:number).first.opened_at.to_date
-    end
-    start_date..Time.zone.now.to_date
+    start_date = @issues.order(:number).first.try(:opened_at) || Time.zone.now
+
+    start_date.to_date..Time.zone.now.to_date
   end
 
   def data
