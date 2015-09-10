@@ -1,7 +1,8 @@
-describe Top4Controller, type: :controller do
+describe CodersController, type: :controller do
   describe 'GET show' do
     it 'returns http success' do
-      get :show
+      @coder = create :coder
+      get :show, id: @coder
       expect(response).to be_success
     end
   end
