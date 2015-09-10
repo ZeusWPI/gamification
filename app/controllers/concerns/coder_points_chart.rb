@@ -37,7 +37,7 @@ class CoderPointsChart
 
   def data
     daily_claimed_bounty_score = @coder.claimed_bounties.group('DATE(claimed_at)').sum(:claimed_value)
-    daily_commit_score = @coder.commits.group(:date).sum("FLOOR(LN(additions+1)*#{Rails.application.config.addition_score_factor})")
+    daily_commit_score = @coder.commits.group('DATE(date)').sum("FLOOR(LN(additions+1)*#{Rails.application.config.addition_score_factor})")
 
     data = []
     total = 0
