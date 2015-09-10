@@ -32,7 +32,7 @@
                 <div class="input-group">
                   <%= form_for find_bounty(issue, current_coder),
                                url: {action: 'update_or_create'},
-                               method: :post,
+                               method: :put,
                                remote: true do |f| %>
                     <%= f.hidden_field :issue_id %>
                     <%= f.text_field :value,

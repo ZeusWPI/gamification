@@ -6,7 +6,7 @@ class RepositoriesController < ApplicationController
   end
 
   def show
-    @repository = Repository.friendly.find params[:id]
+    @repository = Repository.friendly.find(params[:id])
     @coders = Coder.only_with_stats(:score, :commit_count, :additions,
                                     :deletions)
               .where(repository: @repository).order(score: :desc).run
