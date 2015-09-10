@@ -36,21 +36,15 @@ class Bounty < ActiveRecord::Base
     # Find the bounty for this issue if it already exists
     # We don't want to directly create it with value == 0 or else the
     # destroy callback will be called
-    bounty = Bounty.find_by(issue: issue,
-                            issuer: coder,
-                            claimed_at: nil)
+    bounty = Bounty.find_or_initialize_by(issue: issue,
+                                          issuer: coder,
+                                          claimed_at: nil)
 
-    if bounty.nil?
-      if new_value != 0
-        bounty = Bounty.new(issue: issue,
-                            issuer: coder,
-                            claimed_at: nil,
-                            absolute_value: 0)
-      else
-        fail Error, "You can't create an empty bounty."
-      end
+    if bounty.new_record? && new_value.zero?
+      fail Error, "You can't create an empty bounty."
     end
 
+    bounty.absolute_value = 0
     bounty.update_value!(new_value)
   end
 
