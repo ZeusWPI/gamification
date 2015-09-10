@@ -15,7 +15,13 @@ Rails.application.routes.draw do
       get 'graphs'
     end
   end
-  resources :repositories, only: [:index, :show]
+
+  resources :repositories, only: [:index, :show] do
+    member do
+      get 'graphs'
+    end
+  end
+
   resources :bounties, only: [:index] do
     put 'update_or_create', on: :collection
   end

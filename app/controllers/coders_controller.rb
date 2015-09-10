@@ -1,7 +1,7 @@
 class CodersController < ApplicationController
   before_action :set_coder, only: [:show, :graphs, :commit_history, :claimed_bounties]
 
-  respond_to :json, only: [:graphs, :commit_history, :claimed_bounties]
+  respond_to :json, only: [:commit_history, :claimed_bounties]
 
   def show
     @repositories = Repository.only_with_stats(
