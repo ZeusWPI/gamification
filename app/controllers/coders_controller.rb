@@ -1,13 +1,15 @@
 class CodersController < ApplicationController
-  before_action :set_coder, only: [:show, :commit_history, :claimed_bounties]
+  before_action :set_coder, only: [:show, :graphs, :commit_history, :claimed_bounties]
 
-  respond_to :json, only: [:commit_history, :claimed_bounties]
+  respond_to :json, only: [:graphs, :commit_history, :claimed_bounties]
 
   def show
     @repositories = Repository.only_with_stats(
       :score, :commit_count, :additions, :deletions
     ).where(coder_id: @coder).order(score: :desc).run
+  end
 
+  def graphs
     @chart = CoderPointsChart.new(@coder).timeline
   end
 

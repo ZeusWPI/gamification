@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     member do
       get 'commit_history'
       get 'claimed_bounties'
+      get 'graphs'
     end
   end
   resources :repositories, only: [:index, :show]

@@ -1,0 +1,4 @@
+if (!$("#chart").hasClass('google-visualization-atl container')) {
+  console.log('ik laad')
+  <%= render_chart(@chart, 'chart', { script_tag: false }) %>
+}

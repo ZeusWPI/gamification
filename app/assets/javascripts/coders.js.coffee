@@ -5,6 +5,12 @@
 
 
 $('body.coders.show').ready ->
+
+  $('a[aria-controls="tab-graphs"]').on 'shown.bs.tab', (e) ->
+      $.ajax
+        url: $(this).data('graphurl') + '.js'
+        type: 'GET'
+
     $('#history-table').DataTable
         order: [[0, 'desc']]
         processing: true
