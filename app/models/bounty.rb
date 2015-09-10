@@ -71,7 +71,7 @@ class Bounty < ActiveRecord::Base
       end
     end
 
-    SlackWebhook.publish_bounty(self)
+    PublishBounty.new(self).call
   end
 
   def claim!(time: Time.zone.now)
