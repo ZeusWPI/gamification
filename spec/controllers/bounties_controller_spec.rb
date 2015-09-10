@@ -32,6 +32,15 @@ describe BountiesController, type: :controller do
       end
     end
 
+    describe 'PUT update_or_create with 0 value fails' do
+      it 'returns http success' do
+        put :update_or_create,
+            bounty: { issue_id: @issue, value: 0 },
+            format: :coffee
+        expect(response).not_to be_success
+      end
+    end
+
     it 'correctly sets current user' do
       expect(subject.current_coder).to eq(@coder)
     end
