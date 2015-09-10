@@ -7,6 +7,8 @@ class CodersController < ApplicationController
     @repositories = Repository.only_with_stats(
       :score, :commit_count, :additions, :deletions
     ).where(coder_id: @coder).order(score: :desc).run
+
+    @chart = CoderPointsChart.new(@coder).timeline
   end
 
   def commit_history
