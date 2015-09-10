@@ -13,7 +13,6 @@ class BountiesController < ApplicationController
     @issue = Issue.find(bounty_params[:issue_id])
 
     new_value = bounty_params[:value]
-
     # Value must be a non-negative integer
     unless new_value =~ /^\d+$/
       flash.now[:error] = 'This value is not an integer.'
