@@ -20,7 +20,7 @@ class CodersController < ApplicationController
   private
 
   def set_coder
-    @coder = Coder.friendly.find params[:id]
+    @coder = Coder.friendly.find(params[:id])
   end
 
   def build_table(table)
