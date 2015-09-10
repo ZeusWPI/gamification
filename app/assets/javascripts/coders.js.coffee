@@ -3,12 +3,6 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $('body.coders.show').ready ->
-    $('a[aria-controls="tab-graphs"]').on 'shown.bs.tab', (e) ->
-        if !$("#chart").hasClass('google-visualization-atl container')
-            $.ajax
-                url: $(this).data('graphurl') + '.js'
-                type: 'GET'
-
     $('#history-table').DataTable
         order: [[0, 'desc']]
         processing: true
