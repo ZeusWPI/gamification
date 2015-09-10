@@ -24,7 +24,9 @@ $('body.bounties.index').ready ->
                 orderDataType: 'dom-input-numeric'
                 type: 'numeric'
         ]
-        dom: '<"top"f>rt<"bottom"p>'
+        dom: "<'row'<'col-sm-12'f>>" +
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row'<'col-sm-12'p>>",
         autoWidth: false
         pagingType: 'full_numbers'
         language: default_pagination_language
