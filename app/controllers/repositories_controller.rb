@@ -1,4 +1,6 @@
 class RepositoriesController < ApplicationController
+  before_action :set_repository, only: [:show, :graphs]
+
   def index
     @repositories = Repository
                     .with_stats(:score, :commit_count, :additions, :deletions)
@@ -6,10 +8,18 @@ class RepositoriesController < ApplicationController
   end
 
   def show
-    @repository = Repository.friendly.find(params[:id])
     @coders = Coder.only_with_stats(:score, :commit_count, :additions,
                                     :deletions)
               .where(repository: @repository).order(score: :desc).run
+  end
+
+  def graphs
     @chart = BurndownChart.new(@repository.issues).timeline
+  end
+
+  private
+
+  def set_repository
+    @repository = Repository.friendly.find(params[:id])
   end
 end

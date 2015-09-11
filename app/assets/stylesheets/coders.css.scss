@@ -38,6 +38,13 @@
         vertical-align: middle;
         text-align: right;
     }
+    // Fix for DataTables sorting:after icons in higher rows
+    .sorting:after,
+    .sorting_asc:after,
+    .sorting_desc:after,
+    {
+      top: 21px !important;
+    }
 }
 
 .avatar {

@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-$('body.repositories.index').ready ->
+$('body.repositories.index, body.coders.show').ready ->
     table = $('#top-repos').DataTable
         order: [[2, 'desc']]
         columnDefs: [
@@ -21,6 +21,7 @@ $('body.repositories.index').ready ->
         bFilter: false
         paging: false
         autoWidth: false
+        info: false
 
     # Recalculate rank column when table changes, so it stays fixed
     table.on 'order.dt search.dt', ->

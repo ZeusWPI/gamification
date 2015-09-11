@@ -51,8 +51,7 @@ class Coder < ActiveRecord::Base
   end
 
   def reward_commit!(commit)
-    addition_score = (Math.log(commit.additions + 1) *
-      Rails.application.config.addition_score_factor).round
+    addition_score = commit.addition_score
     self.reward_residual += addition_score
     self.bounty_residual += addition_score
     save!

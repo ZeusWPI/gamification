@@ -22,6 +22,11 @@ class Commit < ActiveRecord::Base
   scope :additions, -> { sum :additions }
   scope :deletions, -> { sum :deletions }
 
+  def addition_score
+    (Math.log(additions + 1) *
+      Rails.application.config.addition_score_factor).round
+  end
+
   def reward!
     coder.reward_commit!(self)
   end
@@ -68,6 +73,10 @@ class Commit < ActiveRecord::Base
   def initialize_from_rugged(r_commit)
     self.date = r_commit.time
     set_stats(r_commit)
+  end
+
+  def github_url
+    repository.github_url + "/commit/#{sha}"
   end
 
   private

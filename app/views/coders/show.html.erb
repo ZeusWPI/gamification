@@ -13,23 +13,34 @@
         </h1>
       </div>
 
-      <div class="well row score-table">
-        <div class="col-md-4">
-          <%= avatar @coder, size: '184' %>
+      <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="#tab-contributions" aria-controls="tab-contributions" role="tab" data-toggle="tab">Contributions</a</li>
+        <li role="presentation"><a href="#tab-graphs" aria-controls="tab-graphs" role="tab" data-toggle="tab" data-load="graph" data-graphurl="<%= graphs_coder_path(@coder) %>">Graphs</a></li>
+        <li role="presentation"><a href="#tab-commit-history" aria-controls="tab-commit-history" role="tab" data-toggle="tab">Commit history</a></li>
+        <li role="presentation"><a href="#tab-claimed-bounties" aria-controls="tab-claimed-bounties" role="tab" data-toggle="tab">Claimed bounties</a></li>
+      </ul>
+
+      <div class="tab-content">
+        <br />
+
+        <div role="tabpanel" class="tab-pane active" id="tab-contributions">
+          <%= render partial: 'contributions' %>
         </div>
-        <div class="col-md-8">
-          <span class="metric"><span class="number"><%= format_score @coder.score %></span> points</span>
-          <div class="row">
-            <div class="col-md-4" title="<%= @coder.commits.count %> commits"><span class="metric"><span class="number"><%= format_short_score @coder.commits.count %></span><br> commits</span></div>
-            <div class="col-md-4" title="<%= @coder.additions %> commits"><span class="metric"><span class="number"><%= format_short_score @coder.additions %></span><br> additions</span></div>
-            <div class="col-md-4" title="<%= @coder.commits.deletions %> commits"><span class="metric"><span class="number"><%= format_short_score @coder.deletions %></span><br> deletions</span></div>
-          </div>
+
+        <div role="tabpanel" class="tab-pane" id="tab-graphs" align="center">
+          <%= render partial: 'application/chart_is_loading' %>
         </div>
+
+        <div role="tabpanel" class="tab-pane" id="tab-commit-history">
+          <%= render partial: 'coders/datatables/commit_history' %>
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="tab-claimed-bounties">
+          <%= render partial: 'coders/datatables/claimed_bounties' %>
+        </div>
+
       </div>
     </div>
 
-    <div class="col-md-8 col-md-offset-2">
-      <%= render partial: 'repositories/scoreboard' %>
-    </div>
   </div>
 <% end %>
