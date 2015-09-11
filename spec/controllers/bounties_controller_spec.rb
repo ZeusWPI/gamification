@@ -26,9 +26,18 @@ describe BountiesController, type: :controller do
     describe 'PUT update_or_create' do
       it 'returns http success' do
         put :update_or_create,
-            bounty: { issue_id: @issue, value: 0 },
+            bounty: { issue_id: @issue, value: 10 },
             format: :coffee
         expect(response).to be_success
+      end
+    end
+
+    describe 'PUT update_or_create with 0 value fails' do
+      it 'returns http success' do
+        put :update_or_create,
+            bounty: { issue_id: @issue, value: 0 },
+            format: :coffee
+        expect(response).not_to be_success
       end
     end
 
@@ -95,6 +104,22 @@ describe BountiesController, type: :controller do
       it 'cannot place bounties with non-numeric value' do
         put :update_or_create,
             bounty: { issue_id: @issue, value: 'A' },
+            format: :coffee
+        expect(@coder.bounty_residual).to eq(100)
+        expect(@issue.total_bounty_value).to eq(0)
+      end
+
+      it 'cannot place bounties with blank value' do
+        put :update_or_create,
+            bounty: { issue_id: @issue, value: '' },
+            format: :coffee
+        expect(@coder.bounty_residual).to eq(100)
+        expect(@issue.total_bounty_value).to eq(0)
+      end
+
+      it 'cannot place bounties with 0 value' do
+        put :update_or_create,
+            bounty: { issue_id: @issue, value: 0 },
             format: :coffee
         expect(@coder.bounty_residual).to eq(100)
         expect(@issue.total_bounty_value).to eq(0)
