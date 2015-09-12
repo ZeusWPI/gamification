@@ -1,17 +1,21 @@
-<div class="well row score-table">
-  <div class="col-md-4">
-    <%= avatar @coder, size: '184' %>
-  </div>
-  <div class="col-md-8">
-    <span class="metric"><span class="number"><%= format_score @coder.score %></span> points</span>
-    <div class="row">
-      <div class="col-md-4" title="<%= @coder.commits.count %> commits"><span class="metric"><span class="number"><%= format_short_score @coder.commits.count %></span><br> commits</span></div>
-      <div class="col-md-4" title="<%= @coder.additions %> commits"><span class="metric"><span class="number"><%= format_short_score @coder.additions %></span><br> additions</span></div>
-      <div class="col-md-4" title="<%= @coder.commits.deletions %> commits"><span class="metric"><span class="number"><%= format_short_score @coder.deletions %></span><br> deletions</span></div>
+<div class="well score-table">
+  <div class="row">
+    <div class="col-md-4">
+      <%= avatar(@coder, size: '184') %>
+    </div>
+    <div class="col-md-8">
+      <span class="metric"><span class="number"><%= format_score @coder.score %></span> points</span>
+      <div class="row">
+        <div class="col-md-4" title="<%= @coder.commits.count %> commits"><span class="metric"><span class="number"><%= format_short_score @coder.commits.count %></span><br> commits</span></div>
+        <div class="col-md-4" title="<%= @coder.additions %> commits"><span class="metric"><span class="number"><%= format_short_score @coder.additions %></span><br> additions</span></div>
+        <div class="col-md-4" title="<%= @coder.commits.deletions %> commits"><span class="metric"><span class="number"><%= format_short_score @coder.deletions %></span><br> deletions</span></div>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="col-md-8 col-md-offset-2">
-  <%= render partial: 'repositories/scoreboard' %>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <%= render partial: 'repositories/scoreboard' %>
+  </div>
 </div>
