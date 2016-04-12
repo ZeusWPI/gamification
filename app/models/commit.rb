@@ -60,7 +60,7 @@ class Commit < ActiveRecord::Base
     end
     identity.coder
   end
-i
+
   def self.get_committer_from_github(repo, r_commit)
     github = Rails.configuration.x.github
     commit = github.repos.commits.get(Rails.application.config.organisation,
