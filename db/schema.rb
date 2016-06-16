@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150829193440) do
+ActiveRecord::Schema.define(version: 20160616201145) do
 
   create_table "bounties", force: true do |t|
     t.integer  "absolute_value", null: false
@@ -30,13 +30,13 @@ ActiveRecord::Schema.define(version: 20150829193440) do
   add_index "bounties", ["issuer_id"], name: "index_bounties_on_issuer_id", using: :btree
 
   create_table "coders", force: true do |t|
-    t.string   "github_name",                           null: false
-    t.string   "full_name",                default: "", null: false
-    t.string   "avatar_url",                            null: false
-    t.string   "github_url",                            null: false
-    t.integer  "reward_residual",          default: 0,  null: false
-    t.integer  "absolute_bounty_residual", default: 0,  null: false
-    t.integer  "other_score",              default: 0,  null: false
+    t.string   "github_name",                                     null: false
+    t.string   "full_name",                          default: "", null: false
+    t.string   "avatar_url",                                      null: false
+    t.string   "github_url",                                      null: false
+    t.integer  "reward_residual",                    default: 0,  null: false
+    t.integer  "absolute_bounty_residual", limit: 8, default: 0,  null: false
+    t.integer  "other_score",                        default: 0,  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

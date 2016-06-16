@@ -64,7 +64,7 @@ group :development do
 
   gem 'annotate'
 
-  gem 'rubocop', github: 'bbatsov/rubocop'
+  gem 'rubocop'
 end
 
 group :production do
