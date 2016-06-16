@@ -32,3 +32,18 @@
 div.dataTables_wrapper > div.row {
     margin: 0;
 }
+
+.navbar-nav .avatar {
+    padding: 10px;
+}
+
+.navbar-nav .avatar img {
+    margin-right: 8px;
+}
+
+@media (max-width: 768px) {
+    .navbar-nav .avatar img {
+        max-width: 20px;
+        max-height: 20px;
+    }
+}
