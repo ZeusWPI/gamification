@@ -126,6 +126,13 @@ $('body.top4.show').ready ->
     .selectAll('text')
     .attr('dy', '1em')
 
+  repo_name_on_click = (repo) ->
+    (event) ->
+      if event.ctrlKey
+        window.open(repo.base_uri, '_blank')
+      else
+        document.location.href = repo.base_uri
+
   # Add links to repo names in x axis
   d3.zip(repo_name_nodes[0], repos).forEach (tuple) ->
     text_node = $(tuple[0])
@@ -136,8 +143,4 @@ $('body.top4.show').ready ->
         -> $(this).css('text-decoration', 'underline')
         -> $(this).css('text-decoration', 'inherit')
       )
-      .click (event) ->
-        if event.ctrlKey
-          window.open(repo.base_uri, '_blank')
-        else
-          document.location.href = repo.base_uri
+      .click repo_name_on_click(repo)
