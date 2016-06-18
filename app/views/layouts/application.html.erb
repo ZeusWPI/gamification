@@ -34,8 +34,9 @@
 
             <ul class="nav navbar-nav navbar-right navbar-user">
               <% if coder_signed_in? %>
-                <li><%= link_to raw('<i class="fa fa-user"></i> ' +
-                                    current_coder.github_name), current_coder %></li>
+                <li>
+                  <%= avatar current_coder, size: '30', name: true %>
+                </li>
                 <li><%= link_to raw('<i class="fa fa-power-off"></i>'),
                   destroy_session_path, :title => "Log out" %></li>
               <% else %>
