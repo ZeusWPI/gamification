@@ -18,32 +18,34 @@
 }
 
 .scoreboard {
-    .rank {
-        font-size: 20pt;
-        text-align: right;
-        width: 45px;
-        height: 45px;
-        vertical-align: middle;
-    }
-    .avatar {
-        width: 45px;
-    }
-    .name {
-        vertical-align: middle;
-    }
-    .username {
-        font-weight: bold;
-    }
-    .score, .commits, .additions, .deletions {
-        vertical-align: middle;
-        text-align: right;
-    }
-    // Fix for DataTables sorting:after icons in higher rows
-    .sorting:after,
-    .sorting_asc:after,
-    .sorting_desc:after,
-    {
-      top: 21px !important;
+    #page-wrapper {
+        .rank {
+            font-size: 20pt;
+            text-align: right;
+            width: 45px;
+            height: 45px;
+            vertical-align: middle;
+        }
+        .avatar {
+            width: 45px;
+        }
+        .name {
+            vertical-align: middle;
+        }
+        .username {
+            font-weight: bold;
+        }
+        .score, .commits, .additions, .deletions {
+            vertical-align: middle;
+            text-align: right;
+        }
+        // Fix for DataTables sorting:after icons in higher rows
+        .sorting:after,
+        .sorting_asc:after,
+        .sorting_desc:after,
+        {
+          top: 21px !important;
+        }
     }
 }
 
