@@ -2,10 +2,11 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#top-repos {
-    .name {
-        font-weight: bold;
-        padding-left: 60px;
+body.repositories-page #page-wrapper {
+    #top-repos {
+        .name {
+            font-weight: bold;
+            padding-left: 60px;
+        }
     }
 }
-

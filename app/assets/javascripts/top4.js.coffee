@@ -3,7 +3,7 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 
-$('body.top4.show').ready ->
+$('body.top4-page.show').ready ->
   # `repos` and `contributors` are defined before this gets executed
 
   for [repo, repo_contributors] in d3.zip(repos, contributors)
