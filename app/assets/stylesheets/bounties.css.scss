@@ -2,33 +2,35 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#bounties-table {
-    td, th {
-        vertical-align: middle;
-        overflow: hidden;
+body.bounties-page #page-wrapper {
+    #bounties-table {
+        td, th {
+            vertical-align: middle;
+            overflow: hidden;
 
-        &.total-bounty {
-            text-align: center;
-        }
-
-        &.my-bounty {
-            text-align: center;
-            min-width: 9em;
-            padding-left: 0;
-            input {
-                max-width: 4em;
+            &.total-bounty {
+                text-align: center;
             }
-            input[type=submit] {
-                min-width: 4em;
+
+            &.my-bounty {
+                text-align: center;
+                min-width: 9em;
+                padding-left: 0;
+                input {
+                    max-width: 4em;
+                }
+                input[type=submit] {
+                    min-width: 4em;
+                }
             }
         }
     }
-}
 
-#bounties-table_filter {
-  text-align: left;
-}
+    #bounties-table_filter {
+        text-align: left;
+    }
 
-#bounties-table_paginate {
-  text-align: center;
+    #bounties-table_paginate {
+        text-align: center;
+    }
 }

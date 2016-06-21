@@ -2,55 +2,54 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#profile_pic {
-    border-radius: 50%;
-    box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
-}
-.number {
-    font-weight:lighter;
-    font-size: 200%;
-}
-.metric {
-    font-size: 18pt;
-}
-.score-table {
-    text-align: center;
-}
-
-.scoreboard {
-    #page-wrapper {
-        .rank {
-            font-size: 20pt;
-            text-align: right;
-            width: 45px;
-            height: 45px;
-            vertical-align: middle;
-        }
-        .avatar {
-            width: 45px;
-        }
-        .name {
-            vertical-align: middle;
-        }
-        .username {
-            font-weight: bold;
-        }
-        .score, .commits, .additions, .deletions {
-            vertical-align: middle;
-            text-align: right;
-        }
-        // Fix for DataTables sorting:after icons in higher rows
-        .sorting:after,
-        .sorting_asc:after,
-        .sorting_desc:after,
-        {
-          top: 21px !important;
-        }
-    }
-}
-
-.avatar {
-    img {
+body.coders-page #page-wrapper,
+body.scoreboard-page #page-wrapper {
+    #profile_pic {
         border-radius: 50%;
+        box-shadow: 0 0 0 3px #fff, 0 0 0 4px #999, 0 2px 5px 4px rgba(0,0,0,.2);
+    }
+    .number {
+        font-weight:lighter;
+        font-size: 200%;
+    }
+    .metric {
+        font-size: 18pt;
+    }
+    .score-table {
+        text-align: center;
+    }
+
+    .rank {
+        font-size: 20pt;
+        text-align: right;
+        width: 45px;
+        height: 45px;
+        vertical-align: middle;
+    }
+    .avatar {
+        width: 45px;
+    }
+    .name {
+        vertical-align: middle;
+    }
+    .username {
+        font-weight: bold;
+    }
+    .score, .commits, .additions, .deletions {
+        vertical-align: middle;
+        text-align: right;
+    }
+    // Fix for DataTables sorting:after icons in higher rows
+    .sorting:after,
+    .sorting_asc:after,
+    .sorting_desc:after,
+    {
+        top: 21px !important;
+    }
+
+    .avatar {
+        img {
+            border-radius: 50%;
+        }
     }
 }

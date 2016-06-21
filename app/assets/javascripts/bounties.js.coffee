@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-$('body.bounties.index').ready ->
+$('body.bounties-page.index').ready ->
 
     # Added a parser for the my-bounty input fields
     $.fn.dataTable.ext.order['dom-input-numeric'] = (_settings, col) ->

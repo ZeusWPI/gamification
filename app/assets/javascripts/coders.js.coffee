@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-$('body.coders.show').ready ->
+$('body.coders-page.show').ready ->
     $('#history-table').DataTable
         order: [[0, 'desc']]
         processing: true
@@ -31,7 +31,7 @@ $('body.coders.show').ready ->
         language: window.default_pagination_language
 
 
-$('body.scoreboard.index').ready ->
+$('body.scoreboard-page.index').ready ->
     table = $('#scoreboard').DataTable
         order: [[3, 'desc']]
         columnDefs: [
