@@ -49,13 +49,13 @@ class Commit < ActiveRecord::Base
   end
 
   def self.get_committer(repo, r_commit)
-    identity = GitIdentity.find_by(name: r_commit.committer[:name],
-                                   email: r_commit.committer[:email])
+    identity = GitIdentity.find_by(name: r_commit.author[:name],
+                                   email: r_commit.author[:email])
     unless identity
       coder = get_committer_from_github(repo, r_commit)
       return nil unless coder
-      identity = GitIdentity.create(name:  r_commit.committer[:name],
-                                    email: r_commit.committer[:email],
+      identity = GitIdentity.create(name:  r_commit.author[:name],
+                                    email: r_commit.author[:email],
                                     coder: coder)
     end
     identity.coder
