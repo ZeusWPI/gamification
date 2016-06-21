@@ -21,7 +21,7 @@
     margin-top: 50px;
 }
 
-.magnificent-top-padding{
+.magnificent-top-padding {
     padding-top: 30px;
 }
 
@@ -35,10 +35,10 @@ div.dataTables_wrapper > div.row {
 
 .navbar-nav .avatar {
     padding: 10px;
-}
-
-.navbar-nav .avatar img {
-    margin-right: 8px;
+    img {
+        margin-right: 8px;
+        border-radius: 50%;
+    }
 }
 
 @media (max-width: 768px) {
