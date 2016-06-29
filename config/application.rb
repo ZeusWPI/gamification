@@ -63,6 +63,14 @@ module Gamification
       g.fixture_replacement :factory_girl, dir: 'spec/factories'
     end
 
+    # CORS headers
+    config.middleware.insert_before 0, "Rack::Cors" do
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :options]
+      end
+    end
+    
     # Backport from Rails 4.2: custom configurations
     # Just remove this block when upgrading from 4.1.8 to 4.2
     if Rails.version == '4.1.8'
