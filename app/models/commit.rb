@@ -65,7 +65,7 @@ class Commit < ActiveRecord::Base
     github = Rails.configuration.x.github
     commit = github.repos.commits.get(Rails.application.config.organisation,
                                       repo.name, r_commit.oid)
-    if commit.committer and commit.author
+    if commit.author
       Coder.find_or_create_by_github_name(commit.author.login)
     end
   end
