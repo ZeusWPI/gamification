@@ -50,3 +50,4 @@ repos/*
 
 # RSpec failure-file
 spec/.failures.txt
+.idea/
