@@ -2,7 +2,7 @@ class ConvertTablesToUtf8 < ActiveRecord::Migration
   def change
     config = Rails.configuration.database_configuration
     db_name = config[Rails.env]["database"]
-    collate = 'utf8mb4_polish_ci'
+    collate = 'utf8mb4_bin'
     char_set = 'utf8mb4'
     row_format = 'DYNAMIC'
  
