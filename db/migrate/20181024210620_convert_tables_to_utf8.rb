@@ -9,9 +9,6 @@ class ConvertTablesToUtf8 < ActiveRecord::Migration
     innodb_file_per_table='ON'
     innodb_large_prefix='1'
     execute("ALTER DATABASE #{db_name} CHARACTER SET #{char_set} COLLATE #{collate}");
-    execute("SET GLOBAL innodb_file_per_table=#{innodb_file_per_table}");
-    execute("SET GLOBAL innodb_large_prefix=#{innodb_large_prefix}");
-    execute("SET GLOBAL innodb_file_format=#{innodb_file_format}");
  
     ActiveRecord::Base.connection.tables.each do |table|
       execute("ALTER TABLE #{table} ROW_FORMAT=#{row_format};")

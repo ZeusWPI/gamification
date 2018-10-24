@@ -11,3 +11,17 @@ This project also uses `capistrano` to manage deployment, after doing `bundle in
 Now you can deploy to production with `cap production deploy`.
 
 You can also do seeding and similar tasks with `cap production rails:rake:db:seed`.
+
+## UTF-8 issues
+
+Make sure the database supports utf8, a migration has been added to set some settings. For others root acces is required.
+
+Set these global variables with `mysql -u root` as well:
+
+```cnf
+SET GLOBAL innodb_file_format=Barracuda;
+SET GLOBAL innodb_file_per_table=ON;
+SET GLOBAL innodb_large_prefix=1;
+```
+
+**[source](https://mensfeld.pl/2016/06/ruby-on-rails-mysql2error-incorrect-string-value-and-specified-key-was-too-long/)**
