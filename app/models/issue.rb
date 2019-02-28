@@ -50,23 +50,27 @@ class Issue < ActiveRecord::Base
 
   def self.find_or_create_from_hash(json, repo)
     issuer = Coder.find_or_create_by_github_name(json['user']['login'])
-    Issue.find_or_create_by(number: json['number'], repository: repo) do |issue|
-      issue.github_url = json['html_url']
-      issue.number     = json['number']
-      issue.title      = json['title']
-      issue.body       = json['body']
-      issue.issuer     = issuer
-      issue.labels     = (json['labels'] || []).map  { |label| label['name'] }
-      issue.milestone  = json['milestone'].try(:[], :title)
-      issue.opened_at  = DateTime.rfc3339(json['created_at'])
+    begin
+      Issue.find_or_create_by(number: json['number'], repository: repo) do |issue|
+        issue.github_url = json['html_url']
+        issue.number     = json['number']
+        issue.title      = json['title']
+        issue.body       = json['body']
+        issue.issuer     = issuer
+        issue.labels     = (json['labels'] || []).map  { |label| label['name'] }
+        issue.milestone  = json['milestone'].try(:[], :title)
+        issue.opened_at  = DateTime.rfc3339(json['created_at'])
 
-      closed_at = json['closed_at']
-      issue.closed_at = DateTime.rfc3339(closed_at) if closed_at
+        closed_at = json['closed_at']
+        issue.closed_at = DateTime.rfc3339(closed_at) if closed_at
 
-      unless json['assignee'].blank?
-        issue.assignee =
-          Coder.find_or_create_by_github_name(json['assignee']['login'])
+        unless json['assignee'].blank?
+          issue.assignee =
+            Coder.find_or_create_by_github_name(json['assignee']['login'])
+        end
       end
     end
+  rescue ActiveRecord::StatementInvalid
+    puts "Error inserting issue:" + json['html_url']
   end
 end
