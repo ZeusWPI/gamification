@@ -12,5 +12,6 @@ github = Rails.configuration.x.github
 repos = github.repos.list :all, org: Rails.application.config.organisation
 
 repos.select { |r| RepoFilters.track? r }.each do |hash|
+  puts "Now creating: " + hash
   Repository.create_or_update hash
 end
