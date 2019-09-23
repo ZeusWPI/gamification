@@ -71,6 +71,7 @@ class Coder < ActiveRecord::Base
   end
 
   def self.find_or_create_by_github_name(name)
+    name.gsub!(/\[bot\]$/,'')
     Coder.find_or_create_by(github_name: name) do |coder|
       # Fetch data from github
       data = Rails.configuration.x.github.users.get(user: name)
