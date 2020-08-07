@@ -25,3 +25,15 @@ SET GLOBAL innodb_large_prefix=1;
 ```
 
 **[source](https://mensfeld.pl/2016/06/ruby-on-rails-mysql2error-incorrect-string-value-and-specified-key-was-too-long/)**
+
+## Fixing a missed webhook
+
+If gamification misses the webhook that a repository was created, it will never add it.
+
+Fix this by adding it manually in the console:
+
+```ruby
+Repository.create_or_update({'name' => 'g2-backend', 'html_url' => 'https://github.com/zeuswpi/g2-backend', 'clone_url' => 'https://github.com/ZeusWPI/g2-backend.git'})
+```
+
+if necessary, first delete the repository in both the console and the actual repository on the filesystem
