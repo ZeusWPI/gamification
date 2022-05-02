@@ -104,7 +104,7 @@ gem 'friendly_id'
 gem 'jquery-turbolinks'
 
 # Use datenfisch (https://github.com/Iasoon/datenfisch.git)
-gem 'datenfisch', git: 'git://github.com/iasoon/datenfisch-sucks.git',
+gem 'datenfisch', git: 'https://github.com/iasoon/datenfisch-sucks.git',
                   ref: '4f39bb3686b5facfb2552fe186d568ce3d259993'
 
 # Use jQuery plugin datatables (https://github.com/DataTables/DataTables)
