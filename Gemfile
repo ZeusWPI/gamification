@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.1'
+gem 'rails', '~> 5'
 
 # Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0'
+gem 'sass-rails'
 
 # Use Bootstrap for styling
 gem 'bootstrap-sass', '~> 3.3.1'
@@ -16,13 +16,7 @@ gem 'font-awesome-rails'
 gem 'uglifier', '>= 1.3.0'
 
 # Use CoffeeScript for .js.coffee assets and views
-gem 'coffee-rails', '~> 4.0.0'
-
-# Airbrake
-gem 'airbrake'
-
-# Coveralls!
-gem 'coveralls', require: false
+gem 'coffee-rails'
 
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
@@ -33,7 +27,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 1.2'
+gem 'jbuilder'
 
 # Build google charts
 gem 'google_visualr'
@@ -48,12 +42,13 @@ end
 
 group :test, :development do
   gem 'pry-byebug'
+  gem 'sqlite3'
 end
 
 group :test do
   gem 'rack-test'
-  gem 'rspec-rails'
-  gem 'factory_girl_rails'
+  gem 'rspec-rails', '~> 5.0.0'
+  gem 'factory_bot_rails'
   gem 'faker'
 end
 
@@ -104,8 +99,9 @@ gem 'friendly_id'
 gem 'jquery-turbolinks'
 
 # Use datenfisch (https://github.com/Iasoon/datenfisch.git)
-gem 'datenfisch', git: 'git://github.com/iasoon/datenfisch-sucks.git',
-                  ref: '4f39bb3686b5facfb2552fe186d568ce3d259993'
+gem 'datenfisch', path: "../datenfisch-sucks"
+# gem 'datenfisch', git: 'https://github.com/iasoon/datenfisch-sucks.git',
+#                   ref: '4f39bb3686b5facfb2552fe186d568ce3d259993'
 
 # Use jQuery plugin datatables (https://github.com/DataTables/DataTables)
 gem 'jquery-datatables-rails'
@@ -120,3 +116,7 @@ gem 'high_voltage'
 
 # Use HTTParty for easier HTTP requests
 gem 'httparty'
+
+gem 'bootsnap'
+
+gem 'listen'

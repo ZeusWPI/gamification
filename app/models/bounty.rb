@@ -13,7 +13,7 @@
 #  updated_at     :datetime
 #
 
-class Bounty < ActiveRecord::Base
+class Bounty < ApplicationRecord
   belongs_to :issue
   has_one :repository, through: :issue
   belongs_to :issuer, class_name: 'Coder', foreign_key: 'issuer_id'

@@ -1,4 +1,4 @@
-class CreateGitIdentities < ActiveRecord::Migration
+class CreateGitIdentities < ActiveRecord::Migration[4.2]
   def change
     create_table :git_identities do |t|
       t.string :name, null: false

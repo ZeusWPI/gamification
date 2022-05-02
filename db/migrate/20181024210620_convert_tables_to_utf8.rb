@@ -1,5 +1,7 @@
-class ConvertTablesToUtf8 < ActiveRecord::Migration
+class ConvertTablesToUtf8 < ActiveRecord::Migration[4.2]
   def change
+    return unless ActiveRecord::Base.connection.instance_values["config"][:adapter] == "mysql"
+
     config = Rails.configuration.database_configuration
     db_name = config[Rails.env]["database"]
     collate = 'utf8mb4_bin'

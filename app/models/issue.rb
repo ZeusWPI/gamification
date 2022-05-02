@@ -18,7 +18,7 @@
 #  updated_at    :datetime
 #
 
-class Issue < ActiveRecord::Base
+class Issue < ApplicationRecord
   extend Datenfisch::Model
   belongs_to :issuer,   class_name: :Coder,
                         inverse_of: :created_issues,

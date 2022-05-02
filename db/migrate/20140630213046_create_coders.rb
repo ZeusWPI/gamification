@@ -1,4 +1,4 @@
-class CreateCoders < ActiveRecord::Migration
+class CreateCoders < ActiveRecord::Migration[4.2]
   def change
     create_table :coders do |t|
       t.string :github_name,      null: false

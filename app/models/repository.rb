@@ -10,7 +10,7 @@
 #  updated_at :datetime
 #
 
-class Repository < ActiveRecord::Base
+class Repository < ApplicationRecord
   extend FriendlyId
   extend Datenfisch::Model
   friendly_id :name

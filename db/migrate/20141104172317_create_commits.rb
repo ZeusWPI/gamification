@@ -1,4 +1,4 @@
-class CreateCommits < ActiveRecord::Migration
+class CreateCommits < ActiveRecord::Migration[4.2]
   def change
     create_table :commits do |t|
       t.references :coder,      index: true

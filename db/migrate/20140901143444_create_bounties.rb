@@ -1,4 +1,4 @@
-class CreateBounties < ActiveRecord::Migration
+class CreateBounties < ActiveRecord::Migration[4.2]
   def change
     create_table :bounties do |t|
       t.integer :value,        null: false

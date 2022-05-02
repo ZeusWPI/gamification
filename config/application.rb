@@ -1,4 +1,4 @@
-require File.expand_path('../boot', __FILE__)
+require_relative 'boot'
 
 require 'rails/all'
 
@@ -8,23 +8,15 @@ Bundler.require(*Rails.groups)
 
 module Gamification
   class Application < Rails::Application
-    # Settings in config/environments/* take precedence over those specified
-    # here.  Application configuration should go into files in
-    # config/initializers -- all .rb files in that directory are automatically
-    # loaded.
+    # Initialize configuration defaults for originally generated Rails version.
+    config.load_defaults 5.0
 
-    # Set Time.zone default to the specified zone and make Active Record
-    # auto-convert to this zone.  Run "rake -D time" for a list of tasks for
-    # finding time zone names. Default is UTC.
-    config.time_zone = 'Brussels'
-    # autoload lib files
-    config.autoload_paths << Rails.root.join('lib')
+    # Settings in config/environments/* take precedence over those specified here.
+    # Application configuration can go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded after loading
+    # the framework and any gems in your application.
+    # , '~> 1.2'
 
-    # The default locale is :en and all translations from
-    # config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path +=
-    #   Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
 
     # Organisation to track
     config.organisation = 'ZeusWPI'
@@ -64,35 +56,11 @@ module Gamification
     end
 
     # CORS headers
-    config.middleware.insert_before 0, "Rack::Cors" do
+    config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins /localhost(:\d+)?/, 'zeus.ugent.be'
-        resource '*', :headers => :any, :methods => [:get, :options]
-      end
-    end
-
-    # Backport from Rails 4.2: custom configurations
-    # Just remove this block when upgrading from 4.1.8 to 4.2
-    if Rails.version == '4.1.8'
-      class Custom
-        def initialize
-          @configurations = {}
+          origins /localhost(:\d+)?/, 'zeus.ugent.be'
+          resource '*', :headers => :any, :methods => [:get, :options]
         end
-
-        def method_missing(method, *args)
-          if method =~ /=$/
-            @configurations[$`.to_sym] = args.first
-          else
-            @configurations.fetch(method) do
-              @configurations[method] = ActiveSupport::OrderedOptions.new
-            end
-          end
-        end
-      end
-
-      config.x = Custom.new
-    else
-      warn('Remove this backport at config/application:62-84')
     end
   end
 end
