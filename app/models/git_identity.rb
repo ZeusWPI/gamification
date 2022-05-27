@@ -10,6 +10,6 @@
 #  updated_at :datetime
 #
 
-class GitIdentity < ActiveRecord::Base
+class GitIdentity < ApplicationRecord
   belongs_to :coder
 end

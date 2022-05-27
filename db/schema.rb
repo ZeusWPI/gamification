@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,91 +10,89 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160616201145) do
+ActiveRecord::Schema.define(version: 2018_10_24_210620) do
 
-  create_table "bounties", force: true do |t|
-    t.integer  "absolute_value", null: false
-    t.integer  "issue_id",       null: false
-    t.integer  "issuer_id",      null: false
-    t.integer  "claimant_id"
-    t.integer  "claimed_value"
+  create_table "bounties", force: :cascade do |t|
+    t.integer "absolute_value", null: false
+    t.integer "issue_id", null: false
+    t.integer "issuer_id", null: false
+    t.integer "claimant_id"
+    t.integer "claimed_value"
     t.datetime "claimed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["claimant_id"], name: "index_bounties_on_claimant_id"
+    t.index ["claimed_at"], name: "index_bounties_on_claimed_at"
+    t.index ["issue_id", "issuer_id"], name: "index_bounties_on_issue_id_and_issuer_id"
+    t.index ["issue_id"], name: "index_bounties_on_issue_id"
+    t.index ["issuer_id"], name: "index_bounties_on_issuer_id"
   end
 
-  add_index "bounties", ["claimant_id"], name: "index_bounties_on_claimant_id", using: :btree
-  add_index "bounties", ["issue_id", "issuer_id"], name: "index_bounties_on_issue_id_and_issuer_id", using: :btree
-  add_index "bounties", ["issue_id"], name: "index_bounties_on_issue_id", using: :btree
-  add_index "bounties", ["issuer_id"], name: "index_bounties_on_issuer_id", using: :btree
-
-  create_table "coders", force: true do |t|
-    t.string   "github_name",                                     null: false
-    t.string   "full_name",                          default: "", null: false
-    t.string   "avatar_url",                                      null: false
-    t.string   "github_url",                                      null: false
-    t.integer  "reward_residual",                    default: 0,  null: false
-    t.integer  "absolute_bounty_residual", limit: 8, default: 0,  null: false
-    t.integer  "other_score",                        default: 0,  null: false
+  create_table "coders", force: :cascade do |t|
+    t.string "github_name", null: false
+    t.string "full_name", default: "", null: false
+    t.string "avatar_url", null: false
+    t.string "github_url", null: false
+    t.integer "reward_residual", default: 0, null: false
+    t.bigint "absolute_bounty_residual", default: 0, null: false
+    t.integer "other_score", default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["github_name"], name: "index_coders_on_github_name", unique: true
+    t.index ["github_url"], name: "index_coders_on_github_url", unique: true
   end
 
-  add_index "coders", ["github_name"], name: "index_coders_on_github_name", unique: true, using: :btree
-  add_index "coders", ["github_url"], name: "index_coders_on_github_url", unique: true, using: :btree
-
-  create_table "commits", force: true do |t|
-    t.integer  "coder_id"
-    t.integer  "repository_id"
-    t.string   "sha",                       null: false
-    t.integer  "additions",     default: 0, null: false
-    t.integer  "deletions",     default: 0, null: false
-    t.datetime "date",                      null: false
+  create_table "commits", force: :cascade do |t|
+    t.integer "coder_id"
+    t.integer "repository_id"
+    t.string "sha", null: false
+    t.integer "additions", default: 0, null: false
+    t.integer "deletions", default: 0, null: false
+    t.datetime "date", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["coder_id"], name: "index_commits_on_coder_id"
+    t.index ["date"], name: "index_commits_on_date"
+    t.index ["repository_id", "sha"], name: "index_commits_on_repository_id_and_sha", unique: true
+    t.index ["repository_id"], name: "index_commits_on_repository_id"
   end
 
-  add_index "commits", ["coder_id"], name: "index_commits_on_coder_id", using: :btree
-  add_index "commits", ["repository_id", "sha"], name: "index_commits_on_repository_id_and_sha", unique: true, using: :btree
-  add_index "commits", ["repository_id"], name: "index_commits_on_repository_id", using: :btree
-
-  create_table "git_identities", force: true do |t|
-    t.string   "name",       null: false
-    t.string   "email",      null: false
-    t.integer  "coder_id"
+  create_table "git_identities", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.integer "coder_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["coder_id"], name: "index_git_identities_on_coder_id"
+    t.index ["name", "email"], name: "index_git_identities_on_name_and_email", unique: true
   end
 
-  add_index "git_identities", ["coder_id"], name: "index_git_identities_on_coder_id", using: :btree
-  add_index "git_identities", ["name", "email"], name: "index_git_identities_on_name_and_email", unique: true, using: :btree
-
-  create_table "issues", force: true do |t|
-    t.string   "github_url",                         null: false
-    t.integer  "number",                             null: false
-    t.string   "title",         default: "Untitled", null: false
-    t.integer  "issuer_id",                          null: false
-    t.integer  "repository_id",                      null: false
-    t.text     "labels",                             null: false
-    t.text     "body"
-    t.integer  "assignee_id"
-    t.string   "milestone"
-    t.datetime "opened_at",                          null: false
+  create_table "issues", force: :cascade do |t|
+    t.string "github_url", null: false
+    t.integer "number", null: false
+    t.string "title", default: "Untitled", null: false
+    t.integer "issuer_id", null: false
+    t.integer "repository_id", null: false
+    t.text "labels", null: false
+    t.text "body"
+    t.integer "assignee_id"
+    t.string "milestone"
+    t.datetime "opened_at", null: false
     t.datetime "closed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["github_url"], name: "index_issues_on_github_url", unique: true
+    t.index ["repository_id", "number"], name: "index_issues_on_repository_id_and_number", unique: true
+    t.index ["repository_id"], name: "index_issues_on_repository_id"
   end
 
-  add_index "issues", ["github_url"], name: "index_issues_on_github_url", unique: true, using: :btree
-  add_index "issues", ["repository_id", "number"], name: "index_issues_on_repository_id_and_number", unique: true, using: :btree
-  add_index "issues", ["repository_id"], name: "index_issues_on_repository_id", using: :btree
-
-  create_table "repositories", force: true do |t|
-    t.string   "name",       null: false
-    t.string   "github_url", null: false
-    t.string   "clone_url",  null: false
+  create_table "repositories", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "github_url", null: false
+    t.string "clone_url", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["name"], name: "index_repositories_on_name"
   end
 
 end

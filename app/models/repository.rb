@@ -10,7 +10,7 @@
 #  updated_at :datetime
 #
 
-class Repository < ActiveRecord::Base
+class Repository < ApplicationRecord
   extend FriendlyId
   extend Datenfisch::Model
   friendly_id :name
@@ -49,7 +49,7 @@ class Repository < ActiveRecord::Base
     walker = Rugged::Walker.new(r_repo)
     # Push all heads
     r_repo.branches.each { |b| walker.push b.target_id }
-    walker.push(r_repo.last_commit)
+    walker.push(r_repo.last_commit.oid)
     walker.each do |commit|
       Commit.register_rugged(self, commit, reward: false)
     end
@@ -80,6 +80,11 @@ class Repository < ActiveRecord::Base
     repo.pull_or_clone
     repo.register_commits!
     repo.fetch_issues!
+  end
+
+  include Rails.application.routes.url_helpers
+  def base_uri
+    repository_url(self)
   end
 
   private

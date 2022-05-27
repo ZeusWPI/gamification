@@ -14,7 +14,7 @@
 #  updated_at               :datetime
 #
 
-class Coder < ActiveRecord::Base
+class Coder < ApplicationRecord
   extend FriendlyId
   extend Datenfisch::Model
   friendly_id :github_name

@@ -13,7 +13,7 @@
 #  updated_at    :datetime
 #
 
-class Commit < ActiveRecord::Base
+class Commit < ApplicationRecord
   belongs_to :coder
   belongs_to :repository
 

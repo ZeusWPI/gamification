@@ -2,9 +2,19 @@
 
 Gamification of Zeus member engagement (with GitHub integration)!
 
-## Dev
+## Setup
 
-This uses an old ruby version, use something like `rbenv` to manage it.
+This uses an old ruby version, use something like `rbenv`, or preferable `asdf` to manage it.
+
+Set your [GitHub API token](https://github.com/settings/tokens) in `.env`:
+```bash
+GITHUB_TOKEN=yourtokenhere
+```
+
+Run `rails db:seed`
+
+
+## Deployment
 
 This project also uses `capistrano` to manage deployment, after doing `bundle install` also intall capistrano with `gem install capistrano`.
 
