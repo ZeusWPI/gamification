@@ -21,21 +21,9 @@ module Gamification
     # Organisation to track
     config.organisation = 'ZeusWPI'
 
+    # Overwrite this per environment
     config.repository_filters = {
-      # only: [ 'gamification', 'Haldis' ]
-      except: [
-        'glowing-octo-dubstep',
-        'VPW-voorbereiding-2015',
-        'VPW-voorbereiding-2014',
-        'contests',
-        'Bestuurstaakjes',
-        'SumoRoboComp',
-        'kaggle-rta',
-        'manage-user',
-        'website-manage',
-        'errbit'
-      ]
-      # private: false
+      only: [ 'gamification', 'Haldis' ]
     }
 
     # Total bounty value

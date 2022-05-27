@@ -94,4 +94,21 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  #
+  config.repository_filters = {
+    except: [
+      'glowing-octo-dubstep',
+      'VPW-voorbereiding-2015',
+      'VPW-voorbereiding-2014',
+      'contests',
+      'Bestuurstaakjes',
+      'SumoRoboComp',
+      'kaggle-rta',
+      'manage-user',
+      'website-manage',
+      'errbit'
+    ]
+    # private: false
+  }
 end

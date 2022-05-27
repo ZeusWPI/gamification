@@ -9,7 +9,7 @@ class PublishBounty
     Slack.send_text(message)
   end
 
-private
+  private
 
   def message
     "#{author} plaatste #{score} op #{repository} ##{github_issue}: #{title}"

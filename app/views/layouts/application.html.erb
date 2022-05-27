@@ -41,7 +41,7 @@
                   destroy_session_path, :title => "Log out" %></li>
               <% else %>
                 <li><%= link_to raw('<i class="fa fa-key"></i>'),
-                  coder_omniauth_authorize_path(:github), :title => "Log in" %></li>
+                  coder_github_omniauth_authorize_path, :title => "Log in" %></li>
               <% end %>
             </ul>
           </div>

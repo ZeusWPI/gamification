@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gem "dotenv-rails", '~> 2.7.6', groups: [:development, :test] # should be the first dependency loaded
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5'
 
