@@ -53,6 +53,9 @@ group :test do
 end
 
 group :development do
+  # Web console
+  gem 'web-console'
+
   gem 'capistrano'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
@@ -99,9 +102,8 @@ gem 'friendly_id'
 gem 'jquery-turbolinks'
 
 # Use datenfisch (https://github.com/Iasoon/datenfisch.git)
-gem 'datenfisch', path: "../datenfisch-sucks"
-# gem 'datenfisch', git: 'https://github.com/iasoon/datenfisch-sucks.git',
-#                   ref: '4f39bb3686b5facfb2552fe186d568ce3d259993'
+# gem 'datenfisch', path: "../datenfisch-lives"
+gem 'datenfisch', git: 'git@github.com:ZeusWPI/datenfisch-lives.git'
 
 # Use jQuery plugin datatables (https://github.com/DataTables/DataTables)
 gem 'jquery-datatables-rails'
